@@ -57,6 +57,7 @@ def _read_bed(fn, nsamples, nmarkers):
     return read_bed(fn, nrows, ncols)
 
 def _check_bed_header(fn):
+    import pdb; pdb.set_trace()
     with open(fn, "rb") as f:
         arr = f.read(2)
         ok = arr[0] == 108 and arr[1] == 27

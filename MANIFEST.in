@@ -1,4 +1,5 @@
 include LICENSE
 include README.md
 include setup.cfg
+include bed_reader_build.py
 recursive-include pandas_plink *.py
