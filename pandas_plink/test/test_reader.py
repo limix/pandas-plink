@@ -14,17 +14,17 @@ def test_read_plink(datafiles):
     (bim, fam, bed) = read_plink(file_prefix)
 
     assert_array_equal(bim.loc[('1', 72515), 'snp'], ['rs4030300'])
-    assert_array_equal(bim.loc[('1', ), :].shape, [10, 4])
+    assert_array_equal(bim.loc[('1', ), :].shape, [10, 5])
     assert_array_equal(fam.loc[('Sample_2', 'Sample_2'), 'trait'],
                        ['-9'])
 
-    assert_array_equal(bed, array([[ nan,  nan,   2.],
-        [ nan,   2.,  nan],
-        [  1.,   1.,   1.],
-        [  1.,   1.,   2.],
-        [ nan,  nan,  nan],
-        [ nan,  nan,  nan],
-        [ nan,   2.,   0.],
-        [ nan,  nan,  nan],
-        [  2.,  nan,  nan],
-        [ nan,   2.,  nan]]))
+    assert_array_equal(bed, array([[  2.,   2.,   1.],
+             [  2.,   1.,   2.],
+             [ nan,  nan,  nan],
+             [ nan,  nan,   1.],
+             [  2.,   2.,   2.],
+             [  2.,   2.,   2.],
+             [  2.,   1.,   0.],
+             [  2.,   2.,   2.],
+             [  1.,   2.,   2.],
+             [  2.,   1.,   2.]]))
