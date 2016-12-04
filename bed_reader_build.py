@@ -12,15 +12,15 @@ r"""
     {
         FILE* f = fopen(filepath, "rb");
         fseek(f, 3, SEEK_SET);
-        uint64_t e;
+        uint64_t e, i, j;
 
         uint64_t linesize = (uint64_t) ceil(ncols / 4.0);
         char* buff = malloc(linesize);
 
-        for (uint64_t i = 0; i < nrows; ++i)
+        for (i = 0; i < nrows; ++i)
         {
             e = fread(buff, linesize, 1, f);
-            for (uint64_t j = 0; j < ncols; ++j)
+            for (j = 0; j < ncols; ++j)
             {
                 out[i * ncols + j] = 3 & (buff[j/3] >> (2*(j%4)));
             }

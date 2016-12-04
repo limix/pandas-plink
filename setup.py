@@ -26,10 +26,10 @@ def setup_package():
 
     metadata = dict(
         name='pandas_plink',
-        version='1.0.0.dev1',
+        version='1.0.0.dev2',
         maintainer="Danilo Horta",
         maintainer_email="horta@ebi.ac.uk",
-        description="Convert plink files to Pandas data frame.",
+        description="Read PLINK files into Pandas data frames.",
         long_description=long_description,
         license="MIT",
         url='https://github.com/Horta/optimix',
