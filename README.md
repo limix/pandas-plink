@@ -26,7 +26,8 @@ After installation, you can test it
 ```
 python -c "import pandas_plink; pandas_plink.test()"
 ```
-as long as you have [pytest](http://docs.pytest.org/en/latest/).
+as long as you have [pytest](http://docs.pytest.org/en/latest/) and
+[pytest-datafiles](https://pypi.python.org/pypi/pytest-datafiles).
 
 ## Authors
 
