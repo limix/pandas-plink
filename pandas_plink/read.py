@@ -23,9 +23,12 @@ def read_plink(file_prefix):
         file_prefix (str): Path prefix to the set of PLINK files.
 
     Returns:
-        :class:`pandas.DataFrame`: Alleles data.
-        :class:`pandas.DataFrame`: Samples data.
-        :class:`numpy.ndarray`: Genotype matrix.
+        bim: :class:`pandas.DataFrame`:
+            Alleles data.
+        fam: :class:`pandas.DataFrame`:
+            Samples data.
+        X: :class:`numpy.ndarray`:
+            Genotype matrix.
     """
 
     fn = {s: "%s.%s" % (file_prefix, s) for s in ['bed', 'bim', 'fam']}
