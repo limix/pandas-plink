@@ -31,20 +31,18 @@ def read_plink(file_prefix):
 
     Examples:
 
-        We have an example data with prefix
-
-        >>> import pandas_plink as pp
-        >>> pp.example_file_prefix()
-        '/path/to/data'
-
-        which you can parse and inspect doing
+        We have shipped this package with an example which can you can parse
+        and inspect doing
 
         .. testcode::
 
+            import pandas_plink as pp
             (bim, fam, G) = pp.read_plink(pp.example_file_prefix())
             print(bim.head())
             print(fam.head())
             print(G)
+
+        which prints
 
         .. testoutput::
 
