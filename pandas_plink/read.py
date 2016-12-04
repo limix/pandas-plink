@@ -23,14 +23,11 @@ def read_plink(file_prefix):
         file_prefix (str): Path prefix to the set of PLINK files.
 
     Returns:
-        bim : pandas.DataFrame
-            Alleles data.
-        fam : pandas.DataFrame
-            Samples data.
-        X : numpy.ndarray
-            Genotype matrix.
+        Tuple[pandas.DataFrame, pandas.DataFrame, numpy.ndarray]: Alleles data,
+        samples data, and genotype matrix, respectively.
 
     Examples:
+
         Assume that you have the following files:
             - /path/to/data.bim
             - /path/to/data.fam
@@ -40,7 +37,6 @@ def read_plink(file_prefix):
 
         >>> from pandas_plink import read_plink
         >>> (bim, fam, bed) = read_plink('/path/to/data')
-
         to parse them into data frames `bim` and `fam` and into
         NumPy array `bed`.
     """
