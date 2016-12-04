@@ -29,3 +29,8 @@ def test():
         print("Congratulations. All tests have passed!")
 
     return return_code
+
+def example_file_prefix():
+    import os
+    p = __import__('pandas_plink').__path__[0]
+    return os.path.join(p, 'test', 'data_files', 'data')

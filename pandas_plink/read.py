@@ -31,19 +31,17 @@ def read_plink(file_prefix):
 
     Examples:
 
-        Assume that you have the following files:
+        We have an example data with prefix
 
-        - /path/to/data.bim
-        - /path/to/data.fam
-        - /path/to/data.bed
+        >>> import pandas_plink as pp
+        >>> pp.example_file_prefix()
 
-        You can simply do
+        which you can parse doing
 
-        >>> from pandas_plink import read_plink
-        >>> (bim, fam, bed) = read_plink('/path/to/data')
-
-        to parse them into data frames `bim` and `fam` and into
-        NumPy array `bed`.
+        >>> (bim, fam, G) = ppread_plink(pp.example_file_prefix())
+        >>> print(bim.head())
+        >>> print(fam.head())
+        >>> print(G)
     """
 
     fn = {s: "%s.%s" % (file_prefix, s) for s in ['bed', 'bim', 'fam']}
