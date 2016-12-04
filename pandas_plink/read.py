@@ -1,6 +1,14 @@
 from __future__ import unicode_literals
 from __future__ import division
 
+import sys
+PY3 = sys.version_info >= (3, )
+
+if PY3:
+    _ord = lambda x: x
+else:
+    _ord = ord
+
 from collections import OrderedDict as odict
 from .bed_reader import read_bed
 import pandas as pd
@@ -57,10 +65,9 @@ def _read_bed(fn, nsamples, nmarkers):
     return read_bed(fn, nrows, ncols)
 
 def _check_bed_header(fn):
-    import pdb; pdb.set_trace()
     with open(fn, "rb") as f:
         arr = f.read(2)
-        ok = arr[0] == 108 and arr[1] == 27
+        ok = _ord(arr[0]) == 108 and _ord(arr[1]) == 27
         if not ok:
             raise ValueError("Invalid BED file: %s." % fn)
 
@@ -68,9 +75,9 @@ def _major_order(fn):
     with open(fn, "rb") as f:
         f.seek(2)
         arr = f.read(1)
-        if arr[0] == 1:
+        if _ord(arr[0]) == 1:
             return 'snp'
-        elif arr[0] == 0:
+        elif _ord(arr[0]) == 0:
             return 'individual'
         raise ValueError("Couldn't understand matrix layout.")
 
