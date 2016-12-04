@@ -26,7 +26,7 @@ def setup_package():
 
     metadata = dict(
         name='pandas_plink',
-        version='1.0.0.dev0',
+        version='1.0.0.dev1',
         maintainer="Danilo Horta",
         maintainer_email="horta@ebi.ac.uk",
         description="Convert plink files to Pandas data frame.",
