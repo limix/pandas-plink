@@ -17,6 +17,16 @@ else:
 
 
 def read_plink(file_prefix):
+    r"""Convert PLINK files into Pandas data frames.
+
+    Args:
+        file_prefix (str): Path prefix to the set of PLINK files.
+
+    Returns:
+        :class:`pandas.DataFrame`: Alleles data.
+        :class:`pandas.DataFrame`: Samples data.
+        :class:`numpy.ndarray`: Genotype matrix.
+    """
 
     fn = {s: "%s.%s" % (file_prefix, s) for s in ['bed', 'bim', 'fam']}
 

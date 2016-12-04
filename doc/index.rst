@@ -26,3 +26,11 @@ An alternative way would be via pip::
   pip install pandas-plink
 
 .. _conda: http://conda.pydata.org/docs/index.html
+
+*****
+Usage
+*****
+
+.. automodule:: pandas_plink
+
+  .. autofunction:: read_plink
