@@ -74,13 +74,23 @@ def read_plink(file_prefix):
 
     fn = {s: "%s.%s" % (file_prefix, s) for s in ['bed', 'bim', 'fam']}
 
+    import sys
+    print("Ponto 1")
+    sys.stdout.flush()
     bim = _read_bim(fn['bim'])
     nmarkers = bim.shape[0]
 
+    print("Ponto 2")
+    sys.stdout.flush()
     fam = _read_fam(fn['fam'])
     nsamples = fam.shape[0]
 
+    print("Ponto 3")
+    sys.stdout.flush()
     bed = _read_bed(fn['bed'], nsamples, nmarkers)
+
+    print("Ponto 4")
+    sys.stdout.flush()
 
     return (bim, fam, bed)
 
