@@ -35,13 +35,43 @@ def read_plink(file_prefix):
 
         >>> import pandas_plink as pp
         >>> pp.example_file_prefix()
+        '/path/to/data'
 
-        which you can parse doing
+        which you can parse and inspect doing
 
-        >>> (bim, fam, G) = ppread_plink(pp.example_file_prefix())
-        >>> print(bim.head())
-        >>> print(fam.head())
-        >>> print(G)
+        .. testcode::
+
+            (bim, fam, G) = pp.read_plink(pp.example_file_prefix())
+            print(bim.head())
+            print(fam.head())
+            print(G)
+
+        .. testoutput::
+
+                                snp   cm a0 a1  i
+            chrom pos
+            1     45162  rs10399749  0.0  G  C  0
+                  45257   rs2949420  0.0  C  T  1
+                  45413   rs2949421  0.0  0  0  2
+                  46844   rs2691310  0.0  A  T  3
+                  72434   rs4030303  0.0  0  G  4
+
+                                 father    mother gender trait  i
+            fid      iid
+            Sample_1 Sample_1         0         0      1    -9  0
+            Sample_2 Sample_2         0         0      2    -9  1
+            Sample_3 Sample_3  Sample_1  Sample_2      2    -9  2
+
+            [[  2.   2.   1.]
+             [  2.   1.   2.]
+             [ nan  nan  nan]
+             [ nan  nan   1.]
+             [  2.   2.   2.]
+             [  2.   2.   2.]
+             [  2.   1.   0.]
+             [  2.   2.   2.]
+             [  1.   2.   2.]
+             [  2.   1.   2.]]
     """
 
     fn = {s: "%s.%s" % (file_prefix, s) for s in ['bed', 'bim', 'fam']}
