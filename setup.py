@@ -25,7 +25,7 @@ def setup_package():
 
     metadata = dict(
         name='pandas_plink',
-        version='1.0.0.dev6',
+        version='1.0.0.dev7',
         maintainer="Danilo Horta",
         maintainer_email="horta@ebi.ac.uk",
         description="Read PLINK files into Pandas data frames.",
@@ -38,6 +38,9 @@ def setup_package():
         setup_requires=setup_requires,
         tests_require=tests_require,
         include_package_data=True,
+        package_data={
+            '': [os.path.join('pandas_link', 'test', 'data_files', '*.*')]
+        },
         cffi_modules=["bed_reader_build.py:ffibuilder"],
         classifiers=[
             "Development Status :: 5 - Production/Stable",
