@@ -29,6 +29,20 @@ def read_plink(file_prefix):
             Samples data.
         X: :class:`numpy.ndarray`:
             Genotype matrix.
+
+    Examples:
+        Assume that you have the following files:
+            - /path/to/data.bim
+            - /path/to/data.fam
+            - /path/to/data.bed
+
+        You can simply do
+
+        >>> from pandas_plink import read_plink
+        >>> (bim, fam, bed) = read_plink('/path/to/data')
+
+        to parse them into data frames `bim` and `fam` and into
+        NumPy array `bed`.
     """
 
     fn = {s: "%s.%s" % (file_prefix, s) for s in ['bed', 'bim', 'fam']}
