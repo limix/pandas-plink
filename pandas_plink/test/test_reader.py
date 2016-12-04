@@ -8,7 +8,7 @@ from numpy import array, nan
 from pandas_plink import read_plink
 
 @pytest.mark.datafiles(join(dirname(realpath(__file__)), 'data_files'))
-def test_bla(datafiles):
+def test_read_plink(datafiles):
     file_prefix = join(str(datafiles), 'data')
 
     (bim, fam, bed) = read_plink(file_prefix)
