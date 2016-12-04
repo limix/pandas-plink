@@ -1,0 +1,49 @@
+language: python
+matrix:
+  include:
+  - os: linux
+    sudo: false
+    dist: trusty
+    python: '2.7'
+  - os: linux
+    sudo: false
+    dist: trusty
+    python: '3.4'
+  - os: linux
+    sudo: false
+    dist: trusty
+    python: '3.5'
+  - os: osx
+    language: generic
+    env: TRAVIS_PYTHON_VERSION=3.5
+before_install:
+- wget https://raw.githubusercontent.com/Horta/travis-miniconda/master/install.sh
+  -O install.sh
+- chmod +x install.sh
+- travis_retry bash -x ./install.sh
+install:
+- export PATH="$HOME/miniconda/bin:$PATH"
+- source activate travisci
+before_script:
+- export PATH="$HOME/miniconda/bin:$PATH"
+- source activate travisci
+- python setup.py test
+script:
+- export PATH="$HOME/miniconda/bin:$PATH"
+- source activate travisci
+- python setup.py sdist
+- pip install dist/`ls dist | grep -i -E '\.(gz)$' | head -1`
+- pushd /
+- python -c "import pandas_plink; pandas_plink.test()"
+- popd
+branches:
+  only:
+  - master
+notifications:
+  email: false
+deploy:
+  provider: pypi
+  user: dhorta
+  on:
+    distributions: sdist bdist_wheel
+    repo: Horta/numpy-sugar
