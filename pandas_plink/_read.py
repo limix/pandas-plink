@@ -5,7 +5,7 @@ from collections import OrderedDict as odict
 
 import pandas as pd
 
-from .bed_reader import read_bed
+from ._bed_read import read_bed
 
 PY3 = sys.version_info >= (3, )
 

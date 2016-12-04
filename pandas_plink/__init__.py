@@ -14,6 +14,11 @@ except _DistributionNotFound:
 
 
 def test():
+    r"""Tests this package.
+
+    You will need both `pytest` and `pytest-datafiles` installed in order to
+    use this function.
+    """
     import os
     p = __import__('pandas_plink').__path__[0]
     src_path = os.path.abspath(p)
@@ -31,6 +36,7 @@ def test():
     return return_code
 
 def example_file_prefix():
+    r"""Data files prefix."""
     import os
     p = __import__('pandas_plink').__path__[0]
     return os.path.join(p, 'test', 'data_files', 'data')
