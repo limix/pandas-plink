@@ -36,6 +36,7 @@ def _read_bim(fn):
                       compression=None, index_col=['chrom', 'pos'],
                       engine='c')
 
+    df['i'] = range(df.shape[0])
     df.sort_index(inplace=True)
     return df
 
@@ -50,6 +51,7 @@ def _read_fam(fn):
                      index_col=['fid', 'iid'],
                      engine='c')
 
+    df['i'] = range(df.shape[0])
     df.sort_index(inplace=True)
     return df
 
