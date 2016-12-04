@@ -1,13 +1,12 @@
 import os
 import sys
 
-from setuptools import find_packages
-from setuptools import setup
+from setuptools import find_packages, setup
 
 try:
     import pypandoc
     long_description = pypandoc.convert('README.md', 'rst')
-except(IOError, ImportError):
+except (IOError, ImportError):
     long_description = open('README.md').read()
 
 
@@ -47,14 +46,14 @@ def setup_package():
             "Programming Language :: Python :: 3.4",
             "Programming Language :: Python :: 3.5",
             "Operating System :: OS Independent",
-        ],
-    )
+        ], )
 
     try:
         setup(**metadata)
     finally:
         del sys.path[0]
         os.chdir(old_path)
+
 
 if __name__ == '__main__':
     setup_package()

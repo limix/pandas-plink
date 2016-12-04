@@ -1,6 +1,7 @@
+from numpy import nan, zeros
+
 from _bed_reader import ffi, lib
 
-from numpy import zeros, nan
 
 def read_bed(filepath, nrows, ncols):
     X = zeros((nrows, ncols), int)

@@ -1,15 +1,17 @@
 from __future__ import absolute_import as _
 from __future__ import unicode_literals as _
 
-from pkg_resources import get_distribution as _get_distribution
 from pkg_resources import DistributionNotFound as _DistributionNotFound
+from pkg_resources import get_distribution as _get_distribution
+
+from .read import read_plink
 
 try:
     __version__ = _get_distribution('pandas_plink').version
 except _DistributionNotFound:
     __version__ = 'unknown'
 
-from .read import read_plink
+
 
 def test():
     import os

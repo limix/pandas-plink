@@ -1,10 +1,10 @@
 from cffi import FFI
+
 ffibuilder = FFI()
 
 ffibuilder.cdef("void read_bed(char*, uint64_t, uint64_t, uint64_t*);")
 
-ffibuilder.set_source("_bed_reader",
-r"""
+ffibuilder.set_source("_bed_reader", r"""
     #include <stdio.h>
     #include <math.h>
 
