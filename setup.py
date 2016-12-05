@@ -20,12 +20,13 @@ def setup_package():
     pytest_runner = ['pytest-runner'] if needs_pytest else []
 
     setup_requires = ['cffi>=1.7'] + pytest_runner
-    install_requires = ['pandas>=0.19', 'cffi>=1.7', 'tqdm>=4.10']
-    tests_require = ['pytest', 'numpy>=1.9', 'cffi>=1.7']
+    install_requires = ['pandas>=0.19', 'cffi>=1.7', 'tqdm>=4.10',
+                        'numpy>=1.9']
+    tests_require = ['pytest', 'pandas>=0.19', 'numpy>=1.9', 'cffi>=1.7']
 
     metadata = dict(
         name='pandas_plink',
-        version='1.0.6.rc6',
+        version='1.0.6.rc7',
         maintainer="Danilo Horta",
         maintainer_email="horta@ebi.ac.uk",
         description="Read PLINK files into Pandas data frames.",
