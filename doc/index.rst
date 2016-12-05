@@ -37,10 +37,9 @@ It is as simple as::
   (bim, fam, G) = read_plink('/path/to/data')
 
 assuming you have the files
-
-- /path/to/data.bim
-- /path/to/data.fam
-- /path/to/data.bed
+- `/path/to/data.bim`
+- `/path/to/data.fam`
+- `/path/to/data.bed`
 
 .. automodule:: pandas_plink
 
