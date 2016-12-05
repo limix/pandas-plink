@@ -16,11 +16,12 @@ else:
 
 
 
-def read_plink(file_prefix):
+def read_plink(file_prefix, verbose=True):
     r"""Convert PLINK files into Pandas data frames.
 
     Args:
         file_prefix (str): Path prefix to the set of PLINK files.
+        verbose (bool): `True` for progress information; `False` otherwise.
 
     Returns:
         tuple: parsed data containing:
@@ -74,16 +75,19 @@ def read_plink(file_prefix):
 
     fn = {s: "%s.%s" % (file_prefix, s) for s in ['bed', 'bim', 'fam']}
 
-    print("Reading %s..." % fn['bim'])
+    if verbose:
+        print("Reading %s..." % fn['bim'])
     bim = _read_bim(fn['bim'])
     nmarkers = bim.shape[0]
 
-    print("Reading %s..." % fn['fam'])
+    if verbose:
+        print("Reading %s..." % fn['fam'])
     fam = _read_fam(fn['fam'])
     nsamples = fam.shape[0]
 
-    print("Reading %s..." % fn['bed'])
-    bed = _read_bed(fn['bed'], nsamples, nmarkers)
+    if verbose:
+        print("Reading %s..." % fn['bed'])
+    bed = _read_bed(fn['bed'], nsamples, nmarkers, verbose)
 
     return (bim, fam, bed)
 
@@ -125,7 +129,7 @@ def _read_fam(fn):
     return df
 
 
-def _read_bed(fn, nsamples, nmarkers):
+def _read_bed(fn, nsamples, nmarkers, verbose):
     fn = _ascii_airlock(fn)
 
     _check_bed_header(fn)
@@ -134,7 +138,7 @@ def _read_bed(fn, nsamples, nmarkers):
     ncols = nmarkers if major == 'individual' else nsamples
     nrows = nmarkers if major == 'snp' else nsamples
 
-    return read_bed(fn, nrows, ncols)
+    return read_bed(fn, nrows, ncols, verbose)
 
 
 def _check_bed_header(fn):
