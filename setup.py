@@ -26,7 +26,7 @@ def setup_package():
 
     metadata = dict(
         name='pandas_plink',
-        version='1.0.6.rc7',
+        version='1.0.6.rc8',
         maintainer="Danilo Horta",
         maintainer_email="horta@ebi.ac.uk",
         description="Read PLINK files into Pandas data frames.",
