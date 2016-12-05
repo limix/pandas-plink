@@ -19,8 +19,7 @@ def test_read_plink(datafiles):
     assert_array_equal(bim.loc[('1', ), :].shape, [10, 5])
     assert_array_equal(fam.loc[('Sample_2', 'Sample_2'), 'trait'], ['-9'])
 
-    assert_array_equal(
-        bed,
-        array([[2., 2., 1.], [2., 1., 2.], [nan, nan, nan], [nan, nan, 1.],
-               [2., 2., 2.], [2., 2., 2.], [2., 1., 0.], [2., 2., 2.],
-               [1., 2., 2.], [2., 1., 2.]]))
+    assert_array_equal(bed,
+                       array([[2, 2, 1], [2, 1, 2], [3, 3, 3], [3, 3, 1],
+                              [2, 2, 2], [2, 2, 2], [2, 1, 0], [2, 2, 2],
+                              [1, 2, 2], [2, 1, 2]]))
