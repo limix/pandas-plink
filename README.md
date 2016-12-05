@@ -44,7 +44,7 @@ from pandas_plink import read_plink
 (bim, fam, G) = read_plink('/path/to/data')
 ```
 
-assuming you have the files `/path/to/data.[bim|fam|bed]`.
+assuming you have the files _/path/to/data.[bim|fam|bed]_.
 
 ## Authors
 
