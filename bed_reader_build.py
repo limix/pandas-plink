@@ -38,7 +38,7 @@ ffibuilder.set_source("_bed_reader", r"""
                 {
                     for (j = 0; j < ncols; ++j)
                     {
-                        b = (buff[j/4] >> (2*(j%4))) & 3;
+                        b = (buff[ (i - row_start) * (uint64_t) ceil(ncols/4.0) + j/4] >> (2*(j%4))) & 3;
 
                         b0 = b & 1;
                         b1 = b >> 1;
