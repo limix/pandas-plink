@@ -4,7 +4,7 @@
 [![PyPIv](https://img.shields.io/pypi/v/pandas_plink.svg?style=flat-square)](https://pypi.python.org/pypi/pandas_plink/)
 [![Documentation Status](https://readthedocs.org/projects/pandas_plink/badge/?style=flat-square&version=latest)](http://pandas_plink.readthedocs.io/en/latest/?badge=latest)
 
-Convert plink files to Pandas data frame.
+Convert PLINK files to Pandas data frame.
 
 ## Install
 
@@ -19,8 +19,7 @@ After installation, you can test it
 ```
 python -c "import pandas_plink; pandas_plink.test()"
 ```
-as long as you have [pytest](http://docs.pytest.org/en/latest/) and
-[pytest-datafiles](https://pypi.python.org/pypi/pytest-datafiles).
+as long as you have [pytest](http://docs.pytest.org/en/latest/).
 
 ## Usage
 

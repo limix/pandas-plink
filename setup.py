@@ -21,11 +21,11 @@ def setup_package():
 
     setup_requires = ['cffi>=1.7'] + pytest_runner
     install_requires = ['pandas>=0.19', 'cffi>=1.7', 'tqdm>=4.10']
-    tests_require = ['pytest', 'pytest-datafiles', 'numpy>=1.9']
+    tests_require = ['pytest', 'numpy>=1.9']
 
     metadata = dict(
         name='pandas_plink',
-        version='1.0.6.rc0',
+        version='1.0.6.rc1',
         maintainer="Danilo Horta",
         maintainer_email="horta@ebi.ac.uk",
         description="Read PLINK files into Pandas data frames.",

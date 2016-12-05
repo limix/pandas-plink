@@ -16,8 +16,7 @@ except _DistributionNotFound:
 def test():
     r"""Tests this package.
 
-    You will need both `pytest` and `pytest-datafiles` installed in order to
-    use this function.
+    You will need `pytest` installed in order to use this function.
     """
     import os
     p = __import__('pandas_plink').__path__[0]

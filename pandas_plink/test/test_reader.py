@@ -2,16 +2,15 @@ from __future__ import unicode_literals
 
 from os.path import dirname, join, realpath
 
-import pytest
-from numpy import array, nan
+from numpy import array
 from numpy.testing import assert_array_equal
 
 from pandas_plink import read_plink
 
 
-@pytest.mark.datafiles(join(dirname(realpath(__file__)), 'data_files'))
-def test_read_plink(datafiles):
-    file_prefix = join(str(datafiles), 'data')
+def test_read_plink():
+    datafiles = join(dirname(realpath(__file__)), 'data_files')
+    file_prefix = join(datafiles, 'data')
 
     (bim, fam, bed) = read_plink(file_prefix)
 
