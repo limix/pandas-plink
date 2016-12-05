@@ -6,7 +6,6 @@ from collections import OrderedDict as odict
 import pandas as pd
 
 from ._bed_read import read_bed
-from tqdm import tqdm
 
 PY3 = sys.version_info >= (3, )
 
@@ -75,17 +74,16 @@ def read_plink(file_prefix):
 
     fn = {s: "%s.%s" % (file_prefix, s) for s in ['bed', 'bim', 'fam']}
 
-    with tqdm(total=3) as pb:
-        bim = _read_bim(fn['bim'])
-        nmarkers = bim.shape[0]
-        pb.update(0)
+    print("Reading %s..." % fn['bim'])
+    bim = _read_bim(fn['bim'])
+    nmarkers = bim.shape[0]
 
-        fam = _read_fam(fn['fam'])
-        nsamples = fam.shape[0]
-        pb.update(1)
+    print("Reading %s..." % fn['fam'])
+    fam = _read_fam(fn['fam'])
+    nsamples = fam.shape[0]
 
-        bed = _read_bed(fn['bed'], nsamples, nmarkers)
-        pb.update(2)
+    print("Reading %s..." % fn['bed'])
+    bed = _read_bed(fn['bed'], nsamples, nmarkers)
 
     return (bim, fam, bed)
 

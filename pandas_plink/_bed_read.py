@@ -4,9 +4,8 @@ from tqdm import tqdm
 from _bed_reader import ffi, lib
 
 @ffi.def_extern()
-def cb_iter(it, nit, pb):
-    print(it)
-    ffi.from_handle(pb).update(it)
+def cb_iter(pb):
+    ffi.from_handle(pb).update(1)
 
 
 def read_bed(filepath, nrows, ncols):
