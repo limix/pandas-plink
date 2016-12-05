@@ -8,10 +8,15 @@ Convert PLINK files to Pandas data frame.
 
 ## Install
 
-You can install via pip
-```bash
-pip install pandas_plink
-```
+The recommended way of installing it is via `conda`_::
+
+  conda install -c conda-forge pandas-plink
+
+An alternative way would be via pip::
+
+  pip install pandas-plink
+
+.. _conda: http://conda.pydata.org/docs/index.html
 
 ## Running the tests
 

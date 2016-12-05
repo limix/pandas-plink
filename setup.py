@@ -25,7 +25,7 @@ def setup_package():
 
     metadata = dict(
         name='pandas_plink',
-        version='1.0.6.rc2',
+        version='1.0.6.rc3',
         maintainer="Danilo Horta",
         maintainer_email="horta@ebi.ac.uk",
         description="Read PLINK files into Pandas data frames.",
@@ -50,15 +50,6 @@ def setup_package():
             "Programming Language :: Python :: 3.5",
             "Operating System :: OS Independent",
         ], )
-
-    try:
-        from distutils.command.bdist_conda import CondaDistribution
-    except ImportError:
-        pass
-    else:
-        metadata['distclass'] = CondaDistribution
-        metadata['conda_buildnum'] = 0
-        metadata['conda_features'] = ['mkl']
 
     try:
         setup(**metadata)
