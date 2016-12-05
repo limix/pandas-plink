@@ -94,8 +94,8 @@ def read_plink(file_prefix, verbose=True):
 
 
 def _read_bim(fn):
-    header = odict([('chrom', 'category'), ('snp', bytes), ('cm', float),
-                    ('pos', int), ('a0', 'category'), ('a1', 'category')])
+    header = odict([('chrom', bytes), ('snp', bytes), ('cm', float),
+                    ('pos', int), ('a0', bytes), ('a1', bytes)])
     df = pd.read_csv(
         fn,
         delim_whitespace=True,
@@ -103,17 +103,20 @@ def _read_bim(fn):
         names=header.keys(),
         dtype=header,
         compression=None,
-        index_col=['chrom', 'pos'],
         engine='c')
 
+    df['chrom'] = df['chrom'].astype('category')
+    df['a0'] = df['a0'].astype('category')
+    df['a1'] = df['a1'].astype('category')
     df['i'] = range(df.shape[0])
+    df.set_index(['chrom', 'pos'], inplace=True)
     df.sort_index(inplace=True)
     return df
 
 
 def _read_fam(fn):
     header = odict([('fid', str), ('iid', str), ('father', str),
-                    ('mother', str), ('gender', 'category'), ('trait', str)])
+                    ('mother', str), ('gender', bytes), ('trait', str)])
 
     df = pd.read_csv(
         fn,
@@ -125,6 +128,7 @@ def _read_fam(fn):
         index_col=['fid', 'iid'],
         engine='c')
 
+    df['gender'] = df['gender'].astype('category')
     df['i'] = range(df.shape[0])
     df.sort_index(inplace=True)
     return df
