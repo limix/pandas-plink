@@ -26,7 +26,7 @@ def setup_package():
 
     metadata = dict(
         name='pandas_plink',
-        version='1.0.9',
+        version='1.0.10',
         maintainer="Danilo Horta",
         maintainer_email="horta@ebi.ac.uk",
         description="Read PLINK files into Pandas data frames.",
@@ -42,7 +42,7 @@ def setup_package():
         package_data={
             '': [os.path.join('pandas_link', 'test', 'data_files', '*.*')]
         },
-        cffi_modules=["bed_reader_build.py:ffibuilder"],
+        cffi_modules=["pandas_plink/_builder.py:ffibuilder"],
         classifiers=[
             "Development Status :: 5 - Production/Stable",
             "License :: OSI Approved :: MIT License",
