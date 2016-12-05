@@ -26,7 +26,7 @@ ffibuilder.set_source("_bed_reader", r"""
 
             FILE* f = fopen(filepath, "rb");
             fseek(f, 3, SEEK_SET);
-            uint64_t i, j;
+            uint64_t i, j, jj_s, jj_e;
             size_t e;
 
             uint64_t ls = (uint64_t) ceil(ncols / 4.0);
@@ -66,13 +66,15 @@ ffibuilder.set_source("_bed_reader", r"""
                         p1 = (b0 | b1) & b0;
                         p1 <<= 1;
                         p0 |= p1;
-                        out[i * ncols + j + 0] = p0 & 3;
-                        p0 >>= 2;
-                        out[i * ncols + j + 1] = p0 & 3;
-                        p0 >>= 2;
-                        out[i * ncols + j + 2] = p0 & 3;
-                        p0 >>= 2;
-                        out[i * ncols + j + 3] = p0 & 3;
+                        jj_s = i * ncols + j;
+                        // jj_e = jj_s + 4 - ncols%4;
+                        // jj_e = jj_s + 4;
+                        jj_e = MIN(jj_s + 4, (i+1) * ncols);
+                        for (; jj_s < jj_e; ++jj_s)
+                        {
+                            out[jj_s] = p0 & 3;
+                            p0 >>= 2;
+                        }
                     }
                 }
                 row_start = row_end;
