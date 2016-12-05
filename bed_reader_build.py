@@ -67,8 +67,6 @@ ffibuilder.set_source("_bed_reader", r"""
                         p1 <<= 1;
                         p0 |= p1;
                         jj_s = i * ncols + j;
-                        // jj_e = jj_s + 4 - ncols%4;
-                        // jj_e = jj_s + 4;
                         jj_e = MIN(jj_s + 4, (i+1) * ncols);
                         for (; jj_s < jj_e; ++jj_s)
                         {
