@@ -13,7 +13,7 @@ def read_bed(filepath, nrows, ncols, verbose):
 
     ptr = ffi.cast("uint64_t *", X.ctypes.data)
 
-    nit = 10 if nrows > 10 else nrows
+    nit = 100 if nrows > 100 else nrows
 
     with tqdm(total=nit, disable=not verbose) as pb:
         pb = ffi.new_handle(pb)
