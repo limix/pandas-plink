@@ -1,4 +1,4 @@
-from numpy import full
+from numpy import zeros
 from tqdm import tqdm
 
 from _bed_reader import ffi, lib
@@ -9,7 +9,7 @@ def cb_iter(pb):
 
 
 def read_bed(filepath, nrows, ncols, verbose):
-    X = full((nrows, ncols), 3, int)
+    X = zeros((nrows, ncols), int)
 
     ptr = ffi.cast("uint64_t *", X.ctypes.data)
 

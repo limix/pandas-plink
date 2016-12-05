@@ -52,13 +52,13 @@ ffibuilder.set_source("_bed_reader", r"""
                         p1 = (b0 | b1) & b0;
                         p1 <<= 1;
                         p0 |= p1;
-                        out[i * ncols + j + 0] &= p0;
+                        out[i * ncols + j + 0] = p0 & 3;
                         p0 >>= 2;
-                        out[i * ncols + j + 1] &= p0;
+                        out[i * ncols + j + 1] = p0 & 3;
                         p0 >>= 2;
-                        out[i * ncols + j + 2] &= p0;
+                        out[i * ncols + j + 2] = p0 & 3;
                         p0 >>= 2;
-                        out[i * ncols + j + 3] &= p0;
+                        out[i * ncols + j + 3] = p0 & 3;
                     }
                 }
                 row_start = row_end;
