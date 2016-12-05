@@ -61,7 +61,7 @@ def read_plink(file_prefix, verbose=True):
             Sample_1 Sample_1         0         0      1    -9  0
             Sample_2 Sample_2         0         0      2    -9  1
             Sample_3 Sample_3  Sample_1  Sample_2      2    -9  2
-asssssssssssssssssssssssss
+
             [[2 2 1]
              [2 1 2]
              [3 3 3]
