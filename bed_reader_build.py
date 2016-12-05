@@ -23,7 +23,7 @@ ffibuilder.set_source("_bed_reader", r"""
             FILE* f = fopen(filepath, "rb");
             fseek(f, 3, SEEK_SET);
             uint64_t i, j;
-            int e;
+            size_t e;
 
             uint64_t ls = (uint64_t) ceil(ncols / 4.0);
 
@@ -33,7 +33,7 @@ ffibuilder.set_source("_bed_reader", r"""
             char* buff = malloc(ls * row_chunk);
 
             char b, b0, b1, p0, p1;
-            uint64_t row_start = 0, row_end;
+            size_t row_start = 0, row_end;
 
             while (row_start < nrows)
             {
