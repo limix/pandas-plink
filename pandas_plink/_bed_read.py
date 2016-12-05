@@ -1,10 +1,11 @@
-from numpy import nan, zeros
+from numpy import zeros
 from tqdm import tqdm
 
 from _bed_reader import ffi, lib
 
 @ffi.def_extern()
 def cb_iter(it, nit, pb):
+    print(it)
     ffi.from_handle(pb).update(it)
 
 
