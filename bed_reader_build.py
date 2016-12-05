@@ -23,6 +23,7 @@ ffibuilder.set_source("_bed_reader", r"""
             FILE* f = fopen(filepath, "rb");
             fseek(f, 3, SEEK_SET);
             uint64_t i, j;
+            int e;
 
             uint64_t ls = (uint64_t) ceil(ncols / 4.0);
 
@@ -37,7 +38,14 @@ ffibuilder.set_source("_bed_reader", r"""
             while (row_start < nrows)
             {
                 row_end = MIN(row_start + row_chunk, nrows);
-                fread(buff, ls, row_end - row_start, f);
+                e = fread(buff, ls, row_end - row_start, f);
+                if (e < row_end - row_start)
+                {
+                    if (e = ferror(f))
+                    {
+                        fprintf(stderr, "File error: %d.\n", e);
+                    }
+                }
 
                 for (i = row_start; i < row_end; ++i)
                 {
