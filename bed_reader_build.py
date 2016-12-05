@@ -48,31 +48,18 @@ ffibuilder.set_source("_bed_reader", r"""
                         b0 = b & 0x55;
                         b1 = (b & 0xAA) >> 1;
 
-                        //b = (buff[(i - row_start) * ls + j/4] >> (2*(j%4))) & 3;
-                        //b0 = b & 1;
-                        //b1 = b >> 1;
-
                         p0 = b0 ^ b1;
                         p1 = (b0 | b1) & b0;
-                        p1 = p1 << 1;
-
-                        out[i * ncols + j + 0] = ((p1 | p0) >> 0) & 3;
-                        out[i * ncols + j + 1] = ((p1 | p0) >> 2) & 3;
-                        out[i * ncols + j + 2] = ((p1 | p0) >> 4) & 3;
-                        out[i * ncols + j + 3] = ((p1 | p0) >> 6) & 3;
+                        p1 <<= 1;
+                        p0 |= p1;
+                        out[i * ncols + j + 0] = p0 & 3;
+                        p0 >>= 2;
+                        out[i * ncols + j + 1] = p0 & 3;
+                        p0 >>= 2;
+                        out[i * ncols + j + 2] = p0 & 3;
+                        p0 >>= 2;
+                        out[i * ncols + j + 3] = p0 & 3;
                     }
-                    /*for (j = 0; j < ncols; ++j)
-                    {
-                        b = (buff[(i - row_start) * ls + j/4] >> (2*(j%4))) & 3;
-
-                        b0 = b & 1;
-                        b1 = b >> 1;
-
-                        p0 = b0 ^ b1;
-                        p1 = (b0 | b1) & b0;
-
-                        out[i * ncols + j] = (p1 << 1) | p0;
-                    }*/
                 }
                 row_start = row_end;
                 cb_iter(pb);
