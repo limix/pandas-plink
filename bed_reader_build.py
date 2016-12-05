@@ -3,7 +3,7 @@ from cffi import FFI
 ffibuilder = FFI()
 
 ffibuilder.cdef(r"""
-    void read_bed(char*, uint64_t, uint64_t, uint64_t*, uint64_t,
+    int read_bed(char*, uint64_t, uint64_t, uint64_t*, uint64_t,
                   void (*cb_iter)(void*),
                   void*);
     extern "Python" void cb_iter(void*);
@@ -15,7 +15,7 @@ ffibuilder.set_source("_bed_reader", r"""
 
     #define MIN( a, b ) ( ( a > b) ? b : a )
 
-    static void read_bed(char *filepath, uint64_t nrows, uint64_t ncols,
+    static int read_bed(char *filepath, uint64_t nrows, uint64_t ncols,
                          uint64_t *out, uint64_t nint,
                          void (*cb_iter)(void*),
                          void *pb)
@@ -44,6 +44,7 @@ ffibuilder.set_source("_bed_reader", r"""
                     if (e = ferror(f))
                     {
                         fprintf(stderr, "File error: %d.\n", e);
+                        return e;
                     }
                 }
 
@@ -75,6 +76,7 @@ ffibuilder.set_source("_bed_reader", r"""
 
             free(buff);
             fclose(f);
+            return 0;
     }
 """)
 
