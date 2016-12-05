@@ -2,3 +2,4 @@ include LICENSE
 include README.md
 include setup.cfg
 recursive-include pandas_plink *.py *.bed *.bim *.fam
+exclude pandas_plink/_builder.py
