@@ -2,8 +2,9 @@
 
 [![PyPIl](https://img.shields.io/pypi/l/pandas_plink.svg?style=flat-square)](https://pypi.python.org/pypi/pandas_plink/)
 [![PyPIv](https://img.shields.io/pypi/v/pandas_plink.svg?style=flat-square)](https://pypi.python.org/pypi/pandas_plink/)
-<!-- [![Anaconda-Server Badge](https://anaconda.org/conda-forge/pandas_plink/badges/version.svg)](https://anaconda.org/conda-forge/pandas_plink) -->
 [![Documentation Status](https://readthedocs.org/projects/pandas_plink/badge/?style=flat-square&version=latest)](http://pandas_plink.readthedocs.io/en/latest/?badge=latest)
+
+<!-- [![Anaconda-Server Badge](https://anaconda.org/conda-forge/pandas_plink/badges/version.svg)](https://anaconda.org/conda-forge/pandas_plink) -->
 
 Convert plink files to Pandas data frame.
 
