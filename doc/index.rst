@@ -42,6 +42,12 @@ assuming you have the files
   - `/path/to/data.fam`
   - `/path/to/data.bed`
 
+*********
+Functions
+*********
+
 .. automodule:: pandas_plink
 
   .. autofunction:: read_plink
+  .. autofunction:: test
+  .. autofunction:: example_file_prefix
