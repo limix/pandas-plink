@@ -32,18 +32,19 @@ def read_plink(file_prefix, verbose=True):
 
     Examples:
 
-        We have shipped this package with an example which can you can parse
-        and inspect doing
+        We have shipped this package with an example so can load and inspect
+        by doing
 
         .. testcode::
 
-            import pandas_plink as pp
-            (bim, fam, G) = pp.read_plink(pp.example_file_prefix())
+            from pandas_plink import read_plink
+            from pandas_plink import example_file_prefix
+            (bim, fam, G) = read_plink(example_file_prefix())
             print(bim.head())
             print(fam.head())
             print(G)
 
-        which prints
+        Running the above code will print
 
         .. testoutput::
 
@@ -60,17 +61,17 @@ def read_plink(file_prefix, verbose=True):
             Sample_1 Sample_1         0         0      1    -9  0
             Sample_2 Sample_2         0         0      2    -9  1
             Sample_3 Sample_3  Sample_1  Sample_2      2    -9  2
-
-            [[  2.   2.   1.]
-             [  2.   1.   2.]
-             [ nan  nan  nan]
-             [ nan  nan   1.]
-             [  2.   2.   2.]
-             [  2.   2.   2.]
-             [  2.   1.   0.]
-             [  2.   2.   2.]
-             [  1.   2.   2.]
-             [  2.   1.   2.]]
+asssssssssssssssssssssssss
+            [[2 2 1]
+             [2 1 2]
+             [3 3 3]
+             [3 3 1]
+             [2 2 2]
+             [2 2 2]
+             [2 1 0]
+             [2 2 2]
+             [1 2 2]
+             [2 1 2]]
     """
 
     fn = {s: "%s.%s" % (file_prefix, s) for s in ['bed', 'bim', 'fam']}

@@ -20,7 +20,7 @@ def setup_package():
     pytest_runner = ['pytest-runner'] if needs_pytest else []
 
     setup_requires = ['cffi>=1.7'] + pytest_runner
-    install_requires = ['pandas>=0.18', 'cffi>=1.7', 'tqdm>=4.10']
+    install_requires = ['pandas>=0.19', 'cffi>=1.7', 'tqdm>=4.10']
     tests_require = ['pytest', 'pytest-datafiles', 'numpy>=1.9']
 
     metadata = dict(

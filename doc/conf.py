@@ -2,6 +2,7 @@
 
 from __future__ import unicode_literals
 
+
 try:
     import pandas_plink
     version = pandas_plink.__version__

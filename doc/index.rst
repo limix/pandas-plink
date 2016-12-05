@@ -36,7 +36,7 @@ It is as simple as::
   from pandas_plink import read_plink
   (bim, fam, G) = read_plink('/path/to/data')
 
-assuming you have the files
+assuming that you have the files
 
   - `/path/to/data.bim`
   - `/path/to/data.fam`
