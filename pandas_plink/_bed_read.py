@@ -15,8 +15,8 @@ def read_bed(filepath, nrows, ncols, verbose):
 
     nit = 100 if nrows > 100 else nrows
 
-    with tqdm(total=nit, disable=not verbose) as pb:
-        pb = ffi.new_handle(pb)
+    with tqdm(total=nit, disable=not verbose) as pb0:
+        pb = ffi.new_handle(pb0)
         e = lib.read_bed(filepath, nrows, ncols, ptr, nit, lib.cb_iter, pb)
         if e != 0:
             raise RuntimeError("Failure while reading BED file %s." % filepath)

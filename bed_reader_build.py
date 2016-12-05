@@ -12,6 +12,7 @@ ffibuilder.cdef(r"""
 ffibuilder.set_source("_bed_reader", r"""
     #include <stdio.h>
     #include <math.h>
+    #include <assert.h>
 
     #define MIN( a, b ) ( ( a > b) ? b : a )
 
@@ -20,6 +21,9 @@ ffibuilder.set_source("_bed_reader", r"""
                          void (*cb_iter)(void*),
                          void *pb)
     {
+            assert(sizeof(uint64_t) == 4);
+            assert(sizeof(char) == 1);
+
             FILE* f = fopen(filepath, "rb");
             fseek(f, 3, SEEK_SET);
             uint64_t i, j;
@@ -30,7 +34,7 @@ ffibuilder.set_source("_bed_reader", r"""
             nint = MIN(nint, nrows);
 
             uint64_t row_chunk = ceil(nrows / ((double) nint));
-            char* buff = malloc(ls * row_chunk);
+            char* buff = malloc(ls * row_chunk * sizeof(char));
 
             char b, b0, b1, p0, p1;
             size_t row_start = 0, row_end;
@@ -41,9 +45,10 @@ ffibuilder.set_source("_bed_reader", r"""
                 e = fread(buff, ls, row_end - row_start, f);
                 if (e < row_end - row_start)
                 {
-                    if (e = ferror(f))
+                    e = ferror(f);
+                    if (e)
                     {
-                        fprintf(stderr, "File error: %d.\n", e);
+                        fprintf(stderr, "File error: %zu.\n", e);
                         return e;
                     }
                 }
