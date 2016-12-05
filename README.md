@@ -39,7 +39,7 @@ as long as you have [pytest](http://docs.pytest.org/en/latest/) and
 
 It is as simple as
 
-```python
+```
 from pandas_plink import read_plink
 (bim, fam, G) = read_plink('/path/to/data')
 ```
