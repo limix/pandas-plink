@@ -38,7 +38,7 @@ from pandas_plink import read_plink
 (bim, fam, G) = read_plink('/path/to/data')
 ```
 
-Refer to the [documentation](http://pandas-plink.readthedocs.io/en/latest/)
+Refer to [documentation](http://pandas-plink.readthedocs.io/en/latest/)
 for more information.
 
 ## Authors
