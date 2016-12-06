@@ -26,13 +26,13 @@ def setup_package():
 
     metadata = dict(
         name='pandas_plink',
-        version='1.0.12',
+        version='1.0.13',
         maintainer="Danilo Horta",
         maintainer_email="horta@ebi.ac.uk",
         description="Read PLINK files into Pandas data frames.",
         long_description=long_description,
         license="MIT",
-        url='https://github.com/Horta/optimix',
+        url='https://github.com/glimix/pandas-plink',
         packages=find_packages(),
         zip_safe=False,
         install_requires=install_requires,
