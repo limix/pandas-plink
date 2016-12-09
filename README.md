@@ -1,8 +1,8 @@
 # pandas-plink
 
-[![PyPIl](https://img.shields.io/pypi/l/pandas_plink.svg?style=flat-square)](https://pypi.python.org/pypi/pandas_plink/)
-[![PyPIv](https://img.shields.io/pypi/v/pandas_plink.svg?style=flat-square)](https://pypi.python.org/pypi/pandas_plink/)
-[![Documentation Status](https://readthedocs.org/projects/pandas_plink/badge/?style=flat-square&version=latest)](http://pandas_plink.readthedocs.io/en/latest/?badge=latest)
+[![PyPIl](https://img.shields.io/pypi/l/pandas-plink.svg?style=flat-square)](https://pypi.python.org/pypi/pandas-plink/)
+[![PyPIv](https://img.shields.io/pypi/v/pandas-plink.svg?style=flat-square)](https://pypi.python.org/pypi/pandas-plink/)
+[![Documentation Status](https://readthedocs.org/projects/pandas-plink/badge/?style=flat-square&version=latest)](http://pandas-plink.readthedocs.io/en/latest/?badge=latest)
 
 Convert PLINK files to Pandas data frame.
 
@@ -12,13 +12,13 @@ The recommended way of installing it is via
 [conda](http://conda.pydata.org/docs/index.html)
 
 ```bash
-conda install -c conda-forge pandas_plink
+conda install -c conda-forge pandas-plink
 ```
 
 An alternative way would be via pip
 
 ```
-pip install pandas_plink
+pip install pandas-plink
 ```
 
 ## Running the tests
