@@ -44,8 +44,6 @@ notifications:
 deploy:
   provider: pypi
   user: dhorta
-  password:
-    secure: 1dfdiCTpCAUYagpOS2+X3mJgeyy5ba/dNTFrKPRZo3cJZXfpExTCZRaougMFhzoB/OcERX8qi5XJXPAcs6G25/H9jDrPUl+J04oiBd0CQW4WV98Tq2EGkoqcuxMrh5QTzWMPf0u2zFEYohsKzJEQpbCPPsgNXVKxtDpH6mY+GYsYI+YCEC46zId5yauQRSTlKFo1E7/PB9t7PlRWIhZpaUu2a21CV08BQf5g3Hn0gUZcfOJwgYPfo1+FxyLnCVXMZREHB2tURPPYkIYjZ5l4FWqjiXZtCNu15tXi1xxh2vvx7HEJApGMHS8DcsoTu/vp2kTOOTg9p97R7zrqX8ZW6JGt/7bx2KT9YJWAnzZTRykHK8+y1MAZjjubTvgTADZ37vI9XET00DtlV1DkWRFc9y2brol11JnMasC7Tkbrl5C/l0SoBFdVmwPvrcVf9E1SOSpscLq6sCNjiVXsm2AX55g+2G8+B+2I5NBgcFqb6D1k1b5QmqDb7xjR/H65Rxceyd38bLjKT0aju059OHkQ9krHLL6Siz+cEUrCEmtMN5NObyWw5DrR95+inoRNpHDWtwpZMTzs/FOor1MhmgunK7fpmuE1ZRbs6acmD9Eu2OgJaws68wgsGcTHGD9bVcRnlfqlcGKzqK3Gx7pjlji0mx/mZWExYyKPzWrItZvSg+k=
   on:
     distributions: sdist bdist_wheel
     repo: glimix/pandas-plink
