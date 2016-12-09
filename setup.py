@@ -25,7 +25,7 @@ def setup_package():
     tests_require = ['pytest']
 
     metadata = dict(
-        name='pandas_plink',
+        name='pandas-plink',
         version='1.0.0rc0',
         maintainer="Danilo Horta",
         maintainer_email="horta@ebi.ac.uk",

@@ -11,7 +11,7 @@ Pandas-plink's documentation
 
 You can get the source and open issues on `Github.`_
 
-.. _Github.: https://github.com/Horta/pandas-plink
+.. _Github.: https://github.com/glimix/pandas-plink
 
 *******
 Install
