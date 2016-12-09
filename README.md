@@ -12,13 +12,13 @@ The recommended way of installing it is via
 [conda](http://conda.pydata.org/docs/index.html)
 
 ```bash
-conda install -c conda-forge pandas-plink
+conda install -c conda-forge pandas_plink
 ```
 
 An alternative way would be via pip
 
 ```
-pip install pandas-plink
+pip install pandas_plink
 ```
 
 ## Running the tests
