@@ -1,4 +1,6 @@
 language: python
+git:
+  depth: 5
 matrix:
   include:
   - os: linux
