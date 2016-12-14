@@ -1,10 +1,3 @@
-.. toctree::
-  :caption: Table of Contents
-  :name: mastertoc
-  :maxdepth: 3
-
-  index
-
 ============================
 Pandas-plink's documentation
 ============================
