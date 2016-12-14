@@ -16,6 +16,7 @@ script:
 - pip install pypandoc
 - python -c "from pypandoc import download_pandoc as dp; dp(targetfolder='~/bin/');"
 - export PATH=~/bin:$PATH
+- ~/bin/pandoc -v
 - python setup.py sdist
 - pip install dist/`ls dist | grep -i -E '\.(gz)$' | head -1`
 - pushd /
