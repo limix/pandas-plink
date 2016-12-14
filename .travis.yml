@@ -10,12 +10,12 @@ matrix:
   - os: linux
     sudo: false
     dist: trusty
-    python: '3.4'
-  - os: linux
-    sudo: false
-    dist: trusty
     python: '3.5'
 script:
+- if [ "${TRAVIS_PYTHON_VERSION}" == "2.7" ]; then pip install enum34; fi
+- pip install pypandoc
+- python -c "from pypandoc import download_pandoc as dp; dp(targetfolder='~/bin/');"
+- export PATH=~/bin:$PATH
 - python setup.py sdist
 - pip install dist/`ls dist | grep -i -E '\.(gz)$' | head -1`
 - pushd /

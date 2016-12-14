@@ -6,7 +6,7 @@ from setuptools import find_packages, setup
 try:
     import pypandoc
     long_description = pypandoc.convert_file('README.md', 'rst')
-except (IOError, ImportError):
+except (OSError, IOError, ImportError):
     long_description = open('README.md').read()
 
 
@@ -47,7 +47,6 @@ def setup_package():
             "Development Status :: 5 - Production/Stable",
             "License :: OSI Approved :: MIT License",
             "Programming Language :: Python :: 2.7",
-            "Programming Language :: Python :: 3.4",
             "Programming Language :: Python :: 3.5",
             "Operating System :: OS Independent",
         ], )
