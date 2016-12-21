@@ -11,6 +11,7 @@ before_install:
   - travis/install_pandoc.sh
 script:
   - python setup.py sdist
+  - pip install dist/`ls dist | grep -i -E '\.(gz)$' | head -1`
   - pushd /
   - python -c "import sys; import pandas_plink; sys.exit(pandas_plink.test())"
   - popd
