@@ -1,30 +1,19 @@
 language: python
+sudo: required
+dist: trusty
 git:
   depth: 5
 matrix:
   include:
-  - os: linux
-    sudo: false
-    dist: trusty
-    python: '2.7'
-  - os: linux
-    sudo: false
-    dist: trusty
-    python: '3.5'
+  - python: 2.7
+  - python: 3.5
+before_install:
+  - travis/install_pandoc.sh
 script:
-- if [ "${TRAVIS_PYTHON_VERSION}" == "2.7" ]; then pip install enum34; fi
-- pip install pypandoc
-- python -c "from pypandoc import download_pandoc as dp; dp(targetfolder='~/bin/');"
-- export PATH=~/bin:$PATH
-- ~/bin/pandoc -v
-- python setup.py sdist
-- pip install dist/`ls dist | grep -i -E '\.(gz)$' | head -1`
-- pushd /
-- python -c "import pandas_plink; pandas_plink.test()"
-- popd
-branches:
-  only:
-  - master
+  - python setup.py sdist
+  - pushd /
+  - python -c "import sys; import pandas_plink; sys.exit(pandas_plink.test())"
+  - popd
 notifications:
   email: false
 deploy:
@@ -34,5 +23,5 @@ deploy:
   password:
     secure: aG28qBLLvD/gwf7H/CTvM/o6SQNo6JRN+STTu2LrOs3yYsdgAijUHrohQD51lPA1iCIaIwYipblCnyfr1gcMRmyLsmAsp46/hoSvFTHcB393gBAsvU5WTETljoRJU3/vdQvskNpLbSJW8T9+IvwNdHa1pZ1lmbwPD2kmHzqp62JcX2b6uimJnwV5uCC6+bgGCXDKsOWgNzLjhIKExdJ5+7osxXhUHgRe28ILiwC+biMU0yEV0L7A+XbvZ6+mzfqdoSk0SRA+DvetWq0c5w/ltTm12fdMnCQcWlrHidmzmXiaI3bGWXcwkZIObsoL8bTFs5IMX1asZgRn/o0l+dkxp1QIPoG+rh4+PgCCQSTbkiFynzfKU9Sm9tPN470UUa94JMQ79eoe7GyJiaOgG5/sH77ZtxEQnY8L00eE3zKnqtnYKuvvk9nT/qx4rj7QNRXlIWX2HIVyPBurAQtn9xwIyLuzFZZsZnY0w6NEae/qKDBddCcXFPCWRyMGk0soMy0nX6x6N6UUQ5eLPncrB32Yo8y1REJioYgFdv6qvhCoZOQ3ILNuW+llYrlS+pgDNXVi8b4BVS5CrkqHYQdObCjHFh87gSzybDQAFv5LB5mThirpKAWyyadIXn4KuJTaLPAISKlLfKcQDqK0jgNK8Jb69s1coeXNM0F3iC38gBfrj90=
   on:
-    distributions: sdist bdist_wheel
+    distributions: sdist
     repo: glimix/pandas-plink
