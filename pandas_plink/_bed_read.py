@@ -3,7 +3,6 @@ from _bed_reader import ffi, lib
 from dask.array import from_delayed
 from dask.delayed import delayed
 from numpy import zeros
-from tqdm import tqdm
 
 
 @ffi.def_extern()
