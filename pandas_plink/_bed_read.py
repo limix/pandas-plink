@@ -22,3 +22,17 @@ def read_bed(filepath, nrows, ncols, verbose):
             raise RuntimeError("Failure while reading BED file %s." % filepath)
 
     return X
+
+def read_bed_chunk(filepath, nrows, ncols, row_start, row_end, col_start,
+                   col_end):
+
+    X = zeros((row_end - row_start, col_end - col_start), int)
+
+    ptr = ffi.cast("uint64_t *", X.ctypes.data)
+
+    e = lib.read_bed_chunk(filepath, nrows, ncols, row_start, col_start,
+                           row_end, col_end, ptr)
+    if e != 0:
+        raise RuntimeError("Failure while reading BED file %s." % filepath)
+
+    return X

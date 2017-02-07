@@ -5,7 +5,7 @@ from collections import OrderedDict as odict
 
 import pandas as pd
 
-from ._bed_read import read_bed
+from ._bed_read import read_bed, read_bed_chunk
 
 PY3 = sys.version_info >= (3, )
 
@@ -15,6 +15,82 @@ else:
     _ord = ord
 
 
+
+def read_plink(file_prefix, verbose=True):
+    r"""Convert PLINK files into Pandas data frames.
+
+    Args:
+        file_prefix (str): Path prefix to the set of PLINK files.
+        verbose (bool): `True` for progress information; `False` otherwise.
+
+    Returns:
+        tuple: parsed data containing:
+
+            - :class:`pandas.DataFrame`: alleles.
+            - :class:`pandas.DataFrame`: samples.
+            - :class:`numpy.ndarray`: genotype.
+
+    Examples:
+
+        We have shipped this package with an example so can load and inspect
+        by doing
+
+        .. testcode::
+
+            from pandas_plink import read_plink
+            from pandas_plink import example_file_prefix
+            (bim, fam, G) = read_plink(example_file_prefix())
+            print(bim.head())
+            print(fam.head())
+            print(G)
+
+        Running the above code will print
+
+        .. testoutput::
+
+                                snp   cm a0 a1  i
+            chrom pos
+            1     45162  rs10399749  0.0  G  C  0
+                  45257   rs2949420  0.0  C  T  1
+                  45413   rs2949421  0.0  0  0  2
+                  46844   rs2691310  0.0  A  T  3
+                  72434   rs4030303  0.0  0  G  4
+
+                                 father    mother gender trait  i
+            fid      iid
+            Sample_1 Sample_1         0         0      1    -9  0
+            Sample_2 Sample_2         0         0      2    -9  1
+            Sample_3 Sample_3  Sample_1  Sample_2      2    -9  2
+
+            [[2 2 1]
+             [2 1 2]
+             [3 3 3]
+             [3 3 1]
+             [2 2 2]
+             [2 2 2]
+             [2 1 0]
+             [2 2 2]
+             [1 2 2]
+             [2 1 2]]
+    """
+
+    fn = {s: "%s.%s" % (file_prefix, s) for s in ['bed', 'bim', 'fam']}
+
+    if verbose:
+        print("Reading %s..." % fn['bim'])
+    bim = _read_bim(fn['bim'])
+    nmarkers = bim.shape[0]
+
+    if verbose:
+        print("Reading %s..." % fn['fam'])
+    fam = _read_fam(fn['fam'])
+    nsamples = fam.shape[0]
+
+    if verbose:
+        print("Reading %s..." % fn['bed'])
+    bed = _read_bed(fn['bed'], nsamples, nmarkers, verbose)
+
+    return (bim, fam, bed)
 
 def read_plink(file_prefix, verbose=True):
     r"""Convert PLINK files into Pandas data frames.
