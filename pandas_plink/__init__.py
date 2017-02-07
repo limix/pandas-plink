@@ -1,8 +1,4 @@
-"""
-pandas-plink
-============
-
-Read PLINK files into Pandas data frames.
+r"""Read PLINK files into Pandas data frames.
 
 .. moduleauthor:: Danilo Horta <horta@ebi.ac.uk>
 
