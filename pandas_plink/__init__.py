@@ -5,7 +5,7 @@ from pkg_resources import DistributionNotFound as _DistributionNotFound
 from pkg_resources import get_distribution as _get_distribution
 
 import _cffi_backend
-from ._read import read_plink, read_plink_lazy
+from ._read import read_plink
 
 try:
     __version__ = _get_distribution('pandas_plink').version
