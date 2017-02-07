@@ -73,6 +73,19 @@ def read_plink(file_prefix, verbose=True):
              [2 2 2]
              [1 2 2]
              [2 1 2]]
+
+        Notice the `i` column in bim and fam data frames. It maps to the
+        corresponding position of the bed matrix:
+
+        .. testcode::
+
+            from pandas_plink import read_plink
+            from pandas_plink import example_file_prefix
+            (bim, fam, G) = read_plink(example_file_prefix())
+
+            chrom1 = bim.loc[('1', ), :]
+            X = bed[chrom1.i,:].compute()
+            print(X)
     """
 
     fn = {s: "%s.%s" % (file_prefix, s) for s in ['bed', 'bim', 'fam']}
