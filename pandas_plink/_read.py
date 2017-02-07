@@ -40,10 +40,10 @@ def read_plink(file_prefix, verbose=True):
 
             from pandas_plink import read_plink
             from pandas_plink import example_file_prefix
-            (bim, fam, G) = read_plink(example_file_prefix())
+            (bim, fam, bed) = read_plink(example_file_prefix(), verbose=False)
             print(bim.head())
             print(fam.head())
-            print(G)
+            print(bed.compute())
 
         Running the above code will print
 
@@ -81,11 +81,24 @@ def read_plink(file_prefix, verbose=True):
 
             from pandas_plink import read_plink
             from pandas_plink import example_file_prefix
-            (bim, fam, G) = read_plink(example_file_prefix())
+            (bim, fam, bed) = read_plink(example_file_prefix(), verbose=False)
 
             chrom1 = bim.loc[('1', ), :]
             X = bed[chrom1.i,:].compute()
             print(X)
+
+        .. testoutput::
+
+            [[2 2 1]
+             [2 1 2]
+             [3 3 3]
+             [3 3 1]
+             [2 2 2]
+             [2 2 2]
+             [2 1 0]
+             [2 2 2]
+             [1 2 2]
+             [2 1 2]]
     """
 
     fn = {s: "%s.%s" % (file_prefix, s) for s in ['bed', 'bim', 'fam']}
