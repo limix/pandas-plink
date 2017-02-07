@@ -65,4 +65,4 @@ def read_bed_lazy(filepath, nrows, ncols, verbose):
         col_xs += [da.concatenate(row_xs, axis=1)]
         row_start = row_end
     X = da.concatenate(col_xs, axis=0)
-    return X.compute()
+    return X
