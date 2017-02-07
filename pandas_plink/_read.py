@@ -5,7 +5,7 @@ from collections import OrderedDict as odict
 
 import pandas as pd
 
-from ._bed_read import read_bed, read_bed_chunk
+from ._bed_read import read_bed, read_bed_lazy
 
 PY3 = sys.version_info >= (3, )
 
@@ -16,7 +16,7 @@ else:
 
 
 
-def read_plink(file_prefix, verbose=True):
+def read_plink_lazy(file_prefix, verbose=True):
     r"""Convert PLINK files into Pandas data frames.
 
     Args:
@@ -88,7 +88,7 @@ def read_plink(file_prefix, verbose=True):
 
     if verbose:
         print("Reading %s..." % fn['bed'])
-    bed = _read_bed(fn['bed'], nsamples, nmarkers, verbose)
+    bed = _read_bed_lazy(fn['bed'], nsamples, nmarkers, verbose)
 
     return (bim, fam, bed)
 
@@ -220,6 +220,17 @@ def _read_bed(fn, nsamples, nmarkers, verbose):
     nrows = nmarkers if major == 'snp' else nsamples
 
     return read_bed(fn, nrows, ncols, verbose)
+
+def _read_bed_lazy(fn, nsamples, nmarkers, verbose):
+    fn = _ascii_airlock(fn)
+
+    _check_bed_header(fn)
+    major = _major_order(fn)
+
+    ncols = nmarkers if major == 'individual' else nsamples
+    nrows = nmarkers if major == 'snp' else nsamples
+
+    return read_bed_lazy(fn, nrows, ncols, verbose)
 
 
 def _check_bed_header(fn):

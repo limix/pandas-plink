@@ -5,7 +5,7 @@ from os.path import dirname, join, realpath
 from numpy import array
 from numpy.testing import assert_array_equal
 
-from pandas_plink import read_plink
+from pandas_plink import read_plink, read_plink_lazy
 
 def _ascii_airlock(v):
     if not isinstance(v, bytes):
@@ -22,6 +22,25 @@ def test_read_plink():
     assert_array_equal(bim.loc[('1', ), :].shape, [10, 5])
     assert_array_equal(fam.loc[('Sample_2', 'Sample_2'), 'trait'], ['-9'])
 
+    assert_array_equal(bed,
+                       array([[2, 2, 1], [2, 1, 2], [3, 3, 3], [3, 3, 1],
+                              [2, 2, 2], [2, 2, 2], [2, 1, 0], [2, 2, 2],
+                              [1, 2, 2], [2, 1, 2]]))
+
+def test_read_plink_lazy():
+    datafiles = join(dirname(realpath(__file__)), 'data_files')
+    file_prefix = join(datafiles, 'data')
+
+    (bim, fam, bed) = read_plink_lazy(file_prefix)
+
+    assert_array_equal(bim.loc[('1', 72515), 'snp'], ['rs4030300'])
+    assert_array_equal(bim.loc[('1', ), :].shape, [10, 5])
+    assert_array_equal(fam.loc[('Sample_2', 'Sample_2'), 'trait'], ['-9'])
+
+    assert_array_equal(bed,
+                       array([[2, 2, 1], [2, 1, 2], [3, 3, 3], [3, 3, 1],
+                              [2, 2, 2], [2, 2, 2], [2, 1, 0], [2, 2, 2],
+                              [1, 2, 2], [2, 1, 2]]))
 
 
 def test_read_bed_block():
@@ -47,4 +66,4 @@ def test_read_bed_block():
     bed = read_bed_chunk(_ascii_airlock(file_prefix + '.bed'), 10, 3,
                          1, 2, 1, 3)
 
-    assert_array_equal(bed, [1, 2])
+    assert_array_equal(bed, [[1, 2]])
