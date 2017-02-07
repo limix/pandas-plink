@@ -24,7 +24,7 @@ def read_bed_chunk(filepath, nrows, ncols, row_start, row_end, col_start,
 
     return X
 
-def read_bed(filepath, nrows, ncols, verbose):
+def read_bed(filepath, nrows, ncols):
     chunk_bytes = 256
 
     row_start = 0

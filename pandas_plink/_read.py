@@ -6,6 +6,7 @@ from collections import OrderedDict as odict
 import pandas as pd
 
 from ._bed_read import read_bed
+from ._timeit import TimeIt
 
 PY3 = sys.version_info >= (3, )
 
@@ -76,19 +77,16 @@ def read_plink(file_prefix, verbose=True):
 
     fn = {s: "%s.%s" % (file_prefix, s) for s in ['bed', 'bim', 'fam']}
 
-    if verbose:
-        print("Reading %s..." % fn['bim'])
-    bim = _read_bim(fn['bim'])
+    with TimeIt("Reading %s..." % fn['bim'], not verbose):
+        bim = _read_bim(fn['bim'])
     nmarkers = bim.shape[0]
 
-    if verbose:
-        print("Reading %s..." % fn['fam'])
-    fam = _read_fam(fn['fam'])
+    with TimeIt("Reading %s..." % fn['fam'], not verbose):
+        fam = _read_fam(fn['fam'])
     nsamples = fam.shape[0]
 
-    if verbose:
-        print("Reading %s..." % fn['bed'])
-    bed = _read_bed(fn['bed'], nsamples, nmarkers, verbose)
+    with TimeIt("Reading %s..." % fn['bed'], not verbose):
+        bed = _read_bed(fn['bed'], nsamples, nmarkers)
 
     return (bim, fam, bed)
 
@@ -132,7 +130,7 @@ def _read_fam(fn):
     df.sort_index(inplace=True)
     return df
 
-def _read_bed(fn, nsamples, nmarkers, verbose):
+def _read_bed(fn, nsamples, nmarkers):
     fn = _ascii_airlock(fn)
 
     _check_bed_header(fn)
@@ -141,7 +139,7 @@ def _read_bed(fn, nsamples, nmarkers, verbose):
     ncols = nmarkers if major == 'individual' else nsamples
     nrows = nmarkers if major == 'snp' else nsamples
 
-    return read_bed(fn, nrows, ncols, verbose)
+    return read_bed(fn, nrows, ncols)
 
 
 def _check_bed_header(fn):
