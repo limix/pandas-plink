@@ -20,6 +20,8 @@ else:
 def read_plink(file_prefix, verbose=True):
     r"""Convert PLINK files into Pandas data frames.
 
+
+
     Args:
         file_prefix (str): Path prefix to the set of PLINK files.
         verbose (bool): `True` for progress information; `False` otherwise.
@@ -36,19 +38,12 @@ def read_plink(file_prefix, verbose=True):
         We have shipped this package with an example so can load and inspect
         by doing
 
-        .. testcode::
+        .. doctest::
 
-            from pandas_plink import read_plink
-            from pandas_plink import example_file_prefix
-            (bim, fam, bed) = read_plink(example_file_prefix(), verbose=False)
-            print(bim.head())
-            print(fam.head())
-            print(bed.compute())
-
-        Running the above code will print
-
-        .. testoutput::
-
+            >>> from pandas_plink import read_plink
+            >>> from pandas_plink import example_file_prefix
+            >>> (bim, fam, bed) = read_plink(example_file_prefix(), verbose=False)
+            >>> print(bim.head()) #doctest: +NORMALIZE_WHITESPACE
                                 snp   cm a0 a1  i
             chrom pos
             1     45162  rs10399749  0.0  G  C  0
@@ -56,13 +51,13 @@ def read_plink(file_prefix, verbose=True):
                   45413   rs2949421  0.0  0  0  2
                   46844   rs2691310  0.0  A  T  3
                   72434   rs4030303  0.0  0  G  4
-
+            >>> print(fam.head()) #doctest: +NORMALIZE_WHITESPACE
                                  father    mother gender trait  i
             fid      iid
             Sample_1 Sample_1         0         0      1    -9  0
             Sample_2 Sample_2         0         0      2    -9  1
             Sample_3 Sample_3  Sample_1  Sample_2      2    -9  2
-
+            >>> print(bed.compute())
             [[2 2 1]
              [2 1 2]
              [3 3 3]
@@ -77,18 +72,14 @@ def read_plink(file_prefix, verbose=True):
         Notice the `i` column in bim and fam data frames. It maps to the
         corresponding position of the bed matrix:
 
-        .. testcode::
+        .. doctest::
 
-            from pandas_plink import read_plink
-            from pandas_plink import example_file_prefix
-            (bim, fam, bed) = read_plink(example_file_prefix(), verbose=False)
-
-            chrom1 = bim.loc[('1', ), :]
-            X = bed[chrom1.i,:].compute()
-            print(X)
-
-        .. testoutput::
-
+            >>> from pandas_plink import read_plink
+            >>> from pandas_plink import example_file_prefix
+            >>> (bim, fam, bed) = read_plink(example_file_prefix(), verbose=False)
+            >>> chrom1 = bim.loc[('1', ), :]
+            >>> X = bed[chrom1.i,:].compute()
+            >>> print(X) #doctest: +NORMALIZE_WHITESPACE
             [[2 2 1]
              [2 1 2]
              [3 3 3]
