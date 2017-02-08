@@ -1,8 +1,7 @@
 # pandas-plink
 
 [![PyPIl](https://img.shields.io/pypi/l/pandas-plink.svg?style=flat-square)](https://pypi.python.org/pypi/pandas-plink/)
-[![PyPIv](https://img.shields.io/pypi/v/pandas-plink.svg?style=flat-square)](https://pypi.python.org/pypi/pandas-plink/)
-[![Documentation Status](https://readthedocs.org/projects/pandas-plink/badge/?style=flat-square&version=latest)](https://pandas-plink.readthedocs.io/en/latest/)
+[![PyPIv](https://img.shields.io/pypi/v/pandas-plink.svg?style=flat-square)](https://pypi.python.org/pypi/pandas-plink/) [![Anaconda-Version Badge](https://anaconda.org/conda-forge/pandas-plink/badges/version.svg)](https://anaconda.org/conda-forge/pandas-plink) [![Anaconda-Downloads Badge](https://anaconda.org/conda-forge/pandas-plink/badges/downloads.svg)](https://anaconda.org/conda-forge/pandas-plink) [![Documentation Status](https://readthedocs.org/projects/pandas-plink/badge/?style=flat-square&version=latest)](https://pandas-plink.readthedocs.io/en/latest/)
 
 Convert PLINK files to Pandas data frame.
 
