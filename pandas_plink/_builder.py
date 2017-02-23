@@ -7,7 +7,6 @@ ffibuilder.cdef(r"""
                        uint64_t, uint64_t,
                        uint64_t, uint64_t,
                        uint64_t*);
-    extern "Python" void cb_iter(void*);
 """)
 
 ffibuilder.set_source("_bed_reader", r"""

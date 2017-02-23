@@ -1,13 +1,10 @@
 import dask.array as da
-from _bed_reader import ffi, lib
 from dask.array import from_delayed
 from dask.delayed import delayed
-from numpy import zeros, int64
+from numpy import int64, zeros
 
+from _bed_reader import ffi, lib
 
-@ffi.def_extern()
-def cb_iter(pb):
-    ffi.from_handle(pb).update(1)
 
 def read_bed_chunk(filepath, nrows, ncols, row_start, row_end, col_start,
                    col_end):
@@ -23,6 +20,7 @@ def read_bed_chunk(filepath, nrows, ncols, row_start, row_end, col_start,
 
     return X
 
+
 def read_bed(filepath, nrows, ncols):
     chunk_bytes = 256
 
@@ -35,9 +33,8 @@ def read_bed(filepath, nrows, ncols):
         while (col_start < ncols):
             col_end = min(col_start + chunk_bytes * 4, ncols)
 
-            x = delayed(read_bed_chunk)(filepath, nrows, ncols,
-                                        row_start, row_end,
-                                        col_start, col_end)
+            x = delayed(read_bed_chunk)(filepath, nrows, ncols, row_start,
+                                        row_end, col_start, col_end)
 
             shape = (row_end - row_start, col_end - col_start)
             row_xs += [from_delayed(x, shape, int64)]
