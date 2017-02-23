@@ -162,6 +162,8 @@ def _read_bed(fn, nsamples, nmarkers):
 def _check_bed_header(fn):
     with open(fn, "rb") as f:
         arr = f.read(2)
+        if len(arr) < 2:
+            raise ValueError("Couldn't read BED header: %s." % fn)
         ok = _ord(arr[0]) == 108 and _ord(arr[1]) == 27
         if not ok:
             raise ValueError("Invalid BED file: %s." % fn)
@@ -171,6 +173,8 @@ def _major_order(fn):
     with open(fn, "rb") as f:
         f.seek(2)
         arr = f.read(1)
+        if len(arr) < 1:
+            raise ValueError("Couldn't read column order: %s." % fn)
         if _ord(arr[0]) == 1:
             return 'snp'
         elif _ord(arr[0]) == 0:

@@ -100,27 +100,40 @@ ffibuilder.set_source("_bed_reader", r"""
             uint64_t entire_line_size = (uint64_t) ceil(ncols / 4.0);
 
             FILE* f = fopen(filepath, "rb");
-            // fseek(f, 3 + row_start * entire_line_size, SEEK_SET);
+            if (f == NULL)
+            {
+                fprintf(stderr, "Couldn't open %s.\n", filepath);
+                return -1;
+            }
             uint64_t j, jj_s, jj_e;
             size_t e;
 
             char* buff = malloc(row_chunk * sizeof(char));
+            if (buff == NULL)
+            {
+                fprintf(stderr, "Not enough memory.\n");
+                return -1;
+            }
 
             char b, b0, b1, p0, p1;
             uint64_t offset = row_start * ncols + col_start;
 
             while (row_start < row_end)
             {
-                // fseek(f, col_start / 4, SEEK_SET);
                 fseek(f, 3 + row_start * entire_line_size + col_start / 4, SEEK_SET);
                 e = fread(buff, row_chunk, 1, f);
-                if (e < row_chunk)
+                if (e != 1)
                 {
+                    if (feof(f))
+                    {
+                        fprintf(stderr, "Error reading %s: unexpected end of file.\n", filepath);
+                        return -1;
+                    }
                     e = ferror(f);
                     if (e)
                     {
                         fprintf(stderr, "File error: %zu.\n", e);
-                        return e;
+                        return -1;
                     }
                 }
 
