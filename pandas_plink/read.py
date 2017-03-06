@@ -44,22 +44,17 @@ def read_plink(file_prefix, verbose=True):
             >>> from pandas_plink import example_file_prefix
             >>> (bim, fam, bed) = read_plink(example_file_prefix(), verbose=False)
             >>> print(bim.head()) #doctest: +NORMALIZE_WHITESPACE
-              chrom         snp   cm     pos a0 a1  i
-            0     1  rs10399749  0.0   45162  G  C  0
-            1     1   rs2949420  0.0   45257  C  T  1
-            2     1   rs2949421  0.0   45413  0  0  2
-            3     1   rs2691310  0.0   46844  A  T  3
-            4     1   rs4030303  0.0   72434  0  G  4
-            5     1   rs4030300  0.0   72515  0  C  5
-            6     1   rs3855952  0.0   77689  G  A  6
-            7     1    rs940550  0.0   78032  0  T  7
-            8     1  rs13328714  0.0   81468  G  C  8
-            9     1  rs11490937  0.0  222077  A  G  9
+              chrom         snp   cm    pos a0 a1  i
+            0     1  rs10399749  0.0  45162  G  C  0
+            1     1   rs2949420  0.0  45257  C  T  1
+            2     1   rs2949421  0.0  45413  0  0  2
+            3     1   rs2691310  0.0  46844  A  T  3
+            4     1   rs4030303  0.0  72434  0  G  4
             >>> print(fam.head()) #doctest: +NORMALIZE_WHITESPACE
-            fid      iid
-            Sample_1 Sample_1         0         0      1    -9  0
-            Sample_2 Sample_2         0         0      2    -9  1
-            Sample_3 Sample_3  Sample_1  Sample_2      2    -9  2
+                    fid       iid    father    mother gender trait  i
+            0  Sample_1  Sample_1         0         0      1    -9  0
+            1  Sample_2  Sample_2         0         0      2    -9  1
+            2  Sample_3  Sample_3  Sample_1  Sample_2      2    -9  2
             >>> print(bed.compute())
             [[2 2 1]
              [2 1 2]
