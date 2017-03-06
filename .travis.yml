@@ -9,22 +9,20 @@ matrix:
   - python: 3.5
   - python: 3.6
 before_install:
-  - travis/install_pandoc.sh
+- travis/install_pandoc.sh
 script:
-  - python setup.py sdist
-  - pip install dist/`ls dist | grep -i -E '\.(gz)$' | head -1`
-  - pushd /
-  - python -c "import sys; import pandas_plink; sys.exit(pandas_plink.test())"
-  - popd
+- python setup.py sdist
+- pip install dist/`ls dist | grep -i -E '\.(gz)$' | head -1`
+- pushd /
+- python -c "import sys; import pandas_plink; sys.exit(pandas_plink.test())"
+- popd
 notifications:
   email: false
 deploy:
   provider: pypi
-  skip_upload_docs: true
-  skip_cleanup: true
   user: dhorta
   password:
-    secure: aG28qBLLvD/gwf7H/CTvM/o6SQNo6JRN+STTu2LrOs3yYsdgAijUHrohQD51lPA1iCIaIwYipblCnyfr1gcMRmyLsmAsp46/hoSvFTHcB393gBAsvU5WTETljoRJU3/vdQvskNpLbSJW8T9+IvwNdHa1pZ1lmbwPD2kmHzqp62JcX2b6uimJnwV5uCC6+bgGCXDKsOWgNzLjhIKExdJ5+7osxXhUHgRe28ILiwC+biMU0yEV0L7A+XbvZ6+mzfqdoSk0SRA+DvetWq0c5w/ltTm12fdMnCQcWlrHidmzmXiaI3bGWXcwkZIObsoL8bTFs5IMX1asZgRn/o0l+dkxp1QIPoG+rh4+PgCCQSTbkiFynzfKU9Sm9tPN470UUa94JMQ79eoe7GyJiaOgG5/sH77ZtxEQnY8L00eE3zKnqtnYKuvvk9nT/qx4rj7QNRXlIWX2HIVyPBurAQtn9xwIyLuzFZZsZnY0w6NEae/qKDBddCcXFPCWRyMGk0soMy0nX6x6N6UUQ5eLPncrB32Yo8y1REJioYgFdv6qvhCoZOQ3ILNuW+llYrlS+pgDNXVi8b4BVS5CrkqHYQdObCjHFh87gSzybDQAFv5LB5mThirpKAWyyadIXn4KuJTaLPAISKlLfKcQDqK0jgNK8Jb69s1coeXNM0F3iC38gBfrj90=
+    secure: xqxMyclxqtRVNrC6j46jwuHG6AzKB50/U5USKjMv5QHVaWyeOk0KltEXaeWPlk0f/P7H7HAmCLsAqhhXtrY+e0eDdDChZeD1ZXZw4Ny7bHbauls+by0s2aGM1puRFKfDeFQYRdsVItpYdTEE4IAEjuW/TzzKRijnSzr0GCZpMEk1RFpa+EMGej6I2dAcJTzzuTCWBPhr1HQuA9C0AeQXoesWSBTicCcbcpGD6Vh3YG8bzHjzGghIk51wClIyR604PJZthXqmbfLw1d/htKPiIoz8NTQyvN70BWUpaLKhMCcMqRhB6WFJ8pn6MTYeLIiHC4+vgFKyt+AGk+fxmQuVHPwmpBkLe5bQZ218LLHo9qjBxVesw0kHpO1STiahY8PjgBGQnfB5wsXUYWHMZMaN9OUxkVYQzR0g3MOnztlatBitJKKPMUWgWHk9GoKZsOaaKzh1ZUOwBAF13adi16CptOgdkG0XdxS7qxA9/sJSrgrk/Fc7crXDUUEEpetEL4KMaXPt1yN5SSNQIEslC6deHoOgHQS9g6dM1aKNF3t73XekDHyiwL5aXdMTb0rvJg9s3LwmoTbf+v16qP1+J7o/rHB5JYoPc9p4qUD/eNLOktjPfJaeNi8QPY+40+GfTbB13awi7gUoLsrJrzEVxKD+j8MgiZivSOs+nVi1gelHpsg=
   on:
-    distributions: sdist
     repo: glimix/pandas-plink
+    branch: 1.1.x
