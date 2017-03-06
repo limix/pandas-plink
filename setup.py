@@ -21,7 +21,7 @@ def setup_package():
 
     setup_requires = ['cffi>=1.7'] + pytest_runner
     install_requires = ['pandas>=0.17', 'cffi>=1.7',
-                        'numpy>=1.9', 'dask>=0.12', 'toolz>=0.8']
+                        'numpy>=1.9', 'dask[complete]>=0.13', 'toolz>=0.8']
     tests_require = ['pytest']
 
     metadata = dict(
