@@ -3,7 +3,11 @@
 [![PyPI-License](https://img.shields.io/pypi/l/pandas-plink.svg?style=flat-square)](https://pypi.python.org/pypi/pandas-plink/)
 [![PyPI-Version](https://img.shields.io/pypi/v/pandas-plink.svg?style=flat-square)](https://pypi.python.org/pypi/pandas-plink/) [![Anaconda-Version](https://anaconda.org/conda-forge/pandas-plink/badges/version.svg)](https://anaconda.org/conda-forge/pandas-plink) [![Anaconda-Downloads](https://anaconda.org/conda-forge/pandas-plink/badges/downloads.svg)](https://anaconda.org/conda-forge/pandas-plink) [![Documentation Status](https://readthedocs.org/projects/pandas-plink/badge/?style=flat-square&version=latest)](https://pandas-plink.readthedocs.io/en/latest/)
 
-Convert PLINK files to Pandas data frame.
+PLINK reader for Python.
+It reads binary PLINK files into [Pandas](http://pandas.pydata.org) data frame
+and [Dask](http://dask.pydata.org/en/latest/index.html) array.
+This package handles larger-than-memory data sets by reading the SNP matrix
+on-demand.
 
 ## Install
 
