@@ -6,7 +6,7 @@ from collections import OrderedDict as odict
 import pandas as pd
 
 from .bed_read import read_bed
-from ._timeit import TimeIt
+from .timeit import TimeIt
 
 PY3 = sys.version_info >= (3, )
 
@@ -80,7 +80,7 @@ def read_plink(file_prefix, verbose=True):
             >>> from pandas_plink import read_plink
             >>> from pandas_plink import example_file_prefix
             >>> (bim, fam, bed) = read_plink(example_file_prefix(), verbose=False)
-            >>> chrom1 = bim.query("chrom=='1'") 
+            >>> chrom1 = bim.query("chrom=='1'")
             >>> X = bed[chrom1.i,:].compute()
             >>> print(X) #doctest: +NORMALIZE_WHITESPACE
             [[2 2 1]

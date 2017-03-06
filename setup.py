@@ -42,7 +42,7 @@ def setup_package():
         package_data={
             '': [os.path.join('pandas_link', 'test', 'data_files', '*.*')]
         },
-        cffi_modules=["pandas_plink/_builder.py:ffibuilder"],
+        cffi_modules=["pandas_plink/builder.py:ffibuilder"],
         classifiers=[
             "Development Status :: 5 - Production/Stable",
             "License :: OSI Approved :: MIT License",
