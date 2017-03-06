@@ -3,7 +3,7 @@ from dask.array import from_delayed
 from dask.delayed import delayed
 from numpy import int64, zeros
 
-from _bed_reader import ffi, lib
+from ._bed_reader import ffi, lib
 
 
 def read_bed_chunk(filepath, nrows, ncols, row_start, row_end, col_start,

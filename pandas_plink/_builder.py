@@ -9,7 +9,7 @@ ffibuilder.cdef(r"""
                        uint64_t*);
 """)
 
-ffibuilder.set_source("_bed_reader", r"""
+ffibuilder.set_source("pandas_plink._bed_reader", r"""
     #include <stdio.h>
     #include <math.h>
     #include <assert.h>
