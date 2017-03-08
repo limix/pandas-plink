@@ -35,7 +35,7 @@ assuming that you have the files
   - `/path/to/data.fam`
   - `/path/to/data.bed`
 
-The returned matrix `G` contains 0, 1, 2, or 3s:
+The returned matrix ``G`` contains 0, 1, 2, or 3s:
 
 - 0 Homozygous for first allele in .bim file
 - 1 Heterozygous
