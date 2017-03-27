@@ -2,6 +2,7 @@ from cffi import FFI
 from os.path import dirname, realpath, join
 
 ffibuilder = FFI()
+ffibuilder.set_unicode(False)
 
 ffibuilder.cdef(r"""
     int read_bed_chunk(char*, uint64_t, uint64_t,

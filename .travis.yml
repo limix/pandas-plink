@@ -18,11 +18,3 @@ script:
 - popd
 notifications:
   email: false
-deploy:
-  provider: pypi
-  user: dhorta
-  password:
-    secure: xqxMyclxqtRVNrC6j46jwuHG6AzKB50/U5USKjMv5QHVaWyeOk0KltEXaeWPlk0f/P7H7HAmCLsAqhhXtrY+e0eDdDChZeD1ZXZw4Ny7bHbauls+by0s2aGM1puRFKfDeFQYRdsVItpYdTEE4IAEjuW/TzzKRijnSzr0GCZpMEk1RFpa+EMGej6I2dAcJTzzuTCWBPhr1HQuA9C0AeQXoesWSBTicCcbcpGD6Vh3YG8bzHjzGghIk51wClIyR604PJZthXqmbfLw1d/htKPiIoz8NTQyvN70BWUpaLKhMCcMqRhB6WFJ8pn6MTYeLIiHC4+vgFKyt+AGk+fxmQuVHPwmpBkLe5bQZ218LLHo9qjBxVesw0kHpO1STiahY8PjgBGQnfB5wsXUYWHMZMaN9OUxkVYQzR0g3MOnztlatBitJKKPMUWgWHk9GoKZsOaaKzh1ZUOwBAF13adi16CptOgdkG0XdxS7qxA9/sJSrgrk/Fc7crXDUUEEpetEL4KMaXPt1yN5SSNQIEslC6deHoOgHQS9g6dM1aKNF3t73XekDHyiwL5aXdMTb0rvJg9s3LwmoTbf+v16qP1+J7o/rHB5JYoPc9p4qUD/eNLOktjPfJaeNi8QPY+40+GfTbB13awi7gUoLsrJrzEVxKD+j8MgiZivSOs+nVi1gelHpsg=
-  on:
-    repo: glimix/pandas-plink
-    branch: 1.1.x
