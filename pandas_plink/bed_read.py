@@ -26,7 +26,7 @@ def read_bed_chunk(filepath, nrows, ncols, row_start, row_end, col_start,
 
 
 def read_bed(filepath, nrows, ncols):
-    chunk_bytes = 10 * 1024
+    chunk_bytes = 1024
 
     row_start = 0
     col_xs = []
