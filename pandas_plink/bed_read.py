@@ -1,7 +1,7 @@
 import dask.array as da
 from dask.array import from_delayed
 from dask.delayed import delayed
-from numpy import int64, zeros, empty
+from numpy import empty, int64, zeros
 
 from .bed_reader import ffi, lib
 
