@@ -8,7 +8,7 @@ ffibuilder.cdef(r"""
     int read_bed_chunk(char*, uint64_t, uint64_t,
                        uint64_t, uint64_t,
                        uint64_t, uint64_t,
-                       uint64_t*);
+                       uint64_t*, uint64_t*);
 """)
 
 dirname(realpath(__file__))
