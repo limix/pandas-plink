@@ -32,7 +32,7 @@ def setup_package():
         description="Read PLINK files into Pandas data frames.",
         long_description=long_description,
         license="MIT",
-        url='https://github.com/glimix/pandas-plink',
+        url='https://github.com/limix/pandas-plink',
         packages=find_packages(),
         zip_safe=False,
         install_requires=install_requires,
