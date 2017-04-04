@@ -1,7 +1,7 @@
 import dask.array as da
 from dask.array import from_delayed
 from dask.delayed import delayed
-from numpy import int64, zeros
+from numpy import int64, zeros, empty
 
 from ._bed_reader import ffi, lib
 
@@ -12,9 +12,13 @@ def read_bed_chunk(filepath, nrows, ncols, row_start, row_end, col_start,
     X = zeros((row_end - row_start, col_end - col_start), int64)
 
     ptr = ffi.cast("uint64_t *", X.ctypes.data)
+    strides = empty(2, int64)
+    strides[:] = X.strides
+    strides //= 8
 
     e = lib.read_bed_chunk(filepath, nrows, ncols, row_start, col_start,
-                           row_end, col_end, ptr)
+                           row_end, col_end, ptr,
+                           ffi.cast("uint64_t *", strides.ctypes.data))
     if e != 0:
         raise RuntimeError("Failure while reading BED file %s." % filepath)
 
