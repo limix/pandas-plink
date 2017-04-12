@@ -24,6 +24,7 @@ for PYBIN in /opt/python/*/bin/; do
         continue
     fi
     "${PYBIN}/pip" install pandas_plink -f /io/wheelhouse
+    "${PYBIN}/pip" install pytest
     cd "$HOME"
     "${PYBIN}/python" -c "import sys; import pandas_plink; sys.exit(pandas_plink.test())"
 done
