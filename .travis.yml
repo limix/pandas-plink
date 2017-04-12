@@ -12,9 +12,7 @@ matrix:
   - sudo: required
     services:
     - docker
-    env:
-      - DOCKER_IMAGE=quay.io/pypa/manylinux1_x86_64
-      - secure: lORcP1fOmLtrdJtI84MtsQyktiN862t5Af7PZQfpvs6zciM7maqRY2jlLGa/p5vtcwHoY6MzHi1FUB6ElYaTxYUPopRoefFm1mHOd+s3nuQfz+01LkUeSl09qje0JjME45NTXgMXAhWc5YnORGzgYDCUBR4FBYgwQNBxr8gBr75lgxTW55OWE+HJv4nFm4JaNDvvawx+3hhH44jBjbDtQNBx6jSGfhrsL9HFKBMnubEGaMWc5wjKIsE29gqLIAnti0CGAPtkHZueAowMDg4iygOIJsmm7D2dLUnYkJdyDYh5Ixh9okitKds/9o2Y7qEpnBonJt5jaBAOBvcH4gl4aISuwEqQRRe1GcqFOKsUj5QwhbvnKj+fTR/tYx16gypwOc5XFedHtlwSBX6IQCywwljXXEKUR1JHLJ32IWST7TX8MQ8+F3TBo4pdwHPbo1vRH5SaIL1EY9lNpzr44vZ1iM9lPVwFdO4UYKoeoXpdvr6qB+RxY2eyTlEPxugmyhkfLD4UVT1hUAgZbXzMryM35ideesAJtQYJRz7eSNYLSDnQaNhJRjVbVcz0AlJxn/FhEYUFol+sSlWw/miwYoFO73iwbYqZozFD04HzgDouf8SZ3Oc0rnd0giKsRQ3oQqnADm2hZ1fKZvKa5wZ0P8hqV8HlEz6RkLBo8SxkHZCXITE=
+    env: DOCKER_IMAGE=quay.io/pypa/manylinux1_x86_64
 before_install:
 - travis_retry travis/before_install_stage.sh
 install:
@@ -33,3 +31,6 @@ deploy:
   on:
     repo: limix/pandas-plink
     branch: 1.1.x
+env:
+  matrix:
+    secure: hIXV9V3yAfTYjxpmph5sGZzyFD3VV5to9ak5ySCeVwvOgjMbdGbr/n+UheQejw867rX2qD8g+ed39iYQk+iNUT1fhL0rZMwpXdu4OmEa7lH0gk7ovhHcIVnj+rMOLFmyLlnjlxTIUBnj7QA0TanTyvP3InfJXsFa57AvIi5CFNVOqunqTpRj7RXhE5c3pEjyrdMtkNTy/G2y8v+QKaIkvr/SJxIYlGIu3r647oEXDSgioX931Y0oKieB5mTfs/YxtEk+BaWWuDm0nQRasHpSBBZKt3dYbkIKop7NGIksr6sohToZlpO6d9emnFb7sEWSUddY11CmRxETBQX/Zn9acaxjW1V9WUVUz2z0YuM5YH+39/X4Oyn7dT+pbisKyqqVZYQcwgQsnY5VOwGKXNguBPUhAD833OwXlZVfqR4yfYjqGvbns+7VO3VZ4hipjvp5/weEpOGdVFmRA58mAdMwfvSGUJiDYpzqkr3h5F2Py1IPtJocjsbVKvqelXHbSlhTdNF2k0QzLRN2pI+HhgGEB4KO68JRTFLTNt3vFBJ8C4dA6Ugs/eQZeE1aQ56sdqM3vPuf16EvJdqgljoocqO2LvY3q4PH7SEHbbKwVnG/ZBHmXX956/W5cuMvuNYqrJV/PeLcOyapQFAaLgxqq8g3oKBc/rQUgTaq7F4sYBEmV40=
