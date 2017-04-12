@@ -3,19 +3,24 @@ sudo: required
 dist: trusty
 git:
   depth: 5
+cache: pip
 matrix:
   include:
   - python: 2.7
   - python: 3.5
   - python: 3.6
+  - sudo: required
+    services:
+    - docker
+    env: DOCKER_IMAGE=quay.io/pypa/manylinux1_x86_64
 before_install:
-- travis_retry travis/install_pandoc.sh
+- travis_retry travis/before_install_stage.sh
+install:
+- travis_retry travis/install_stage.sh
 script:
-- python setup.py sdist
-- pip install dist/`ls dist | grep -i -E '\.(gz)$' | head -1`
-- pushd /
-- python -c "import sys; import pandas_plink; sys.exit(pandas_plink.test())"
-- popd
+- travis_retry travis/script_stage.sh
+after_success:
+- travis_retry travis/deploy_wheels.sh
 notifications:
   email: false
 deploy:
@@ -26,3 +31,6 @@ deploy:
   on:
     repo: limix/pandas-plink
     branch: 1.1.x
+env:
+  global:
+    secure: DJQ72I+eCozv/5eIIU+cUV2D5zeJKCqgXIBNkJIk/lDuE3eqYqryeTFVy0tmpgJtgGTs3XOvo4p5OtJZs/+f4KlOi1wHpXcDmYNvwOvEbJJ6jiTv6bIlmY8HVykbDq/A5oRwFJ0V3UL0bbDGsaB1i5rtTXZx99ZNJBaPsGe+QGf0jw3Q2Gel84CeYDC9M6ZeVTI+qRheKnLC9qzfOg9qNWP9q51D79HysBr3KLD9OMJJb9Gjb9Cwlo/i884KFPx4in3V0GWF8gWyTnRXrU1SgV0/W/unL09ZdpCmTS/J+WbQLx4Rb7onlx83lrRXmJiJvnq4952jctF3xwXmdvpj3HpacBk0LaRScrycsKSIL5lzV+HY7doP5LO1S6xWGR2qyd7pHDLkT2Vtcms1ViXYAMeV+QuEzx8M5H6bqjkMyxdcgOiBR26praYZunQevAnPvxjsIHzyIHtkW3qWzlHBaJ7O+m4wN3+j20fxMbgd8kaGSDQBeMbpvbf9Tg4DVnf6UjppeObJiK035Le4vUUg5237BZhvhsZF1gqapydCkCRIvfXQ1jhU/SaV9ZZ5e4DO/57T/lh5jyDO8vnAYy7Ph2IVt2y7pckfLSgoyBJRxLAxvhYTIR1U3dPaM+fxHN0lYHDJXjry/o4bKTltuQM7Eimh1LAkGyep6Em+/hOp5oA=
