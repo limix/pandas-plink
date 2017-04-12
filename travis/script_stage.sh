@@ -8,6 +8,6 @@ if [ -z ${DOCKER_IMAGE+x} ]; then
     python -c "import sys; import pandas_plink; sys.exit(pandas_plink.test())"
     popd
 else
-    docker run --rm -v `pwd`:/io $DOCKER_IMAGE $PRE_CMD /io/travis/build_wheels.sh
+    docker run --rm -v `pwd`:/io $DOCKER_IMAGE /io/travis/build_wheels.sh
     ls wheelhouse/
 fi
