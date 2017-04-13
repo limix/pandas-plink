@@ -11,7 +11,7 @@ if [ -z ${DOCKER_IMAGE+x} ]; then
         popd
     else
         pip install --upgrade pip
-        pip install wheel
+        pip install wheel setuptools
         python setup.py bdist_wheel
         ls dist
     fi
