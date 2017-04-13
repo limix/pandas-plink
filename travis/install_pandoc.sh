@@ -8,5 +8,5 @@ if [[ $TRAVIS_OS_NAME == 'osx' ]]; then
     sudo python get-pip.py
 fi
 
-pip install pypandoc
-python -c "from pypandoc import download_pandoc as dp; dp(targetfolder='~/bin/');"
+sudo pip install pypandoc
+sudo python -c "from pypandoc import download_pandoc as dp; dp(targetfolder='~/bin/');"
