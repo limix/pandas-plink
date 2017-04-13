@@ -5,7 +5,7 @@ set -e -x
 if [[ $TRAVIS_OS_NAME == 'osx' ]]; then
     brew install python3 pandoc libffi
     wget https://bootstrap.pypa.io/get-pip.py
-    python get-pip.py
+    sudo python get-pip.py
 fi
 
 pip install pypandoc
