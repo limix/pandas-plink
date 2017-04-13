@@ -8,3 +8,7 @@ if [ -z ${DOCKER_IMAGE+x} ]; then
     fi
     travis/install_pandoc.sh
 fi
+
+if [[ $TRAVIS_OS_NAME == 'osx' ]]; then
+    brew install python3 pandoc libffi
+fi
