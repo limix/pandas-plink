@@ -14,9 +14,17 @@ matrix:
     - docker
     env: DOCKER_IMAGE=quay.io/pypa/manylinux1_x86_64
   - os: osx
-    osx_image: xcode7.2
+    osx_image: xcode6.4
     language: generic
     sudo: required
+  - os: osx
+    osx_image: xcode7.3
+    language: generic
+    sudo: required
+- os: osx
+  osx_image: xcode8.3
+  language: generic
+  sudo: required
 before_install:
 - travis_retry travis/before_install_stage.sh
 install:

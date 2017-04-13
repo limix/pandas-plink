@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e
+set -e -x
 
 if ! [ -z ${DOCKER_IMAGE+x} ]; then
     if [[ $TRAVIS_OS_NAME == 'linux' ]]; then
@@ -9,10 +9,11 @@ if ! [ -z ${DOCKER_IMAGE+x} ]; then
         ls wheelhouse/
         pip install twine
         twine upload ${TRAVIS_BUILD_DIR}/wheelhouse/pandas_plink*.whl \
-            -u dhorta -p ${PYPI_PASSWORD}
+              -u dhorta -p ${PYPI_PASSWORD}
     else
         ls dist
         pip install twine
-        twine upload dist/pandas_plink*.whl -u dhorta -p ${PYPI_PASSWORD}
+        twine upload ${TRAVIS_BUILD_DIR}/pandas_plink*.whl \
+              -u dhorta -p ${PYPI_PASSWORD}
     fi
 fi
