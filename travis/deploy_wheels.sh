@@ -9,7 +9,6 @@ if ! [ -z ${DOCKER_IMAGE+x} ]; then
     pip install twine
     twine upload ${TRAVIS_BUILD_DIR}/wheelhouse/pandas_plink*.whl \
           -u dhorta -p ${PYPI_PASSWORD}
-    fi
 else
     if [[ $TRAVIS_OS_NAME == 'osx' ]]; then
         ls dist
