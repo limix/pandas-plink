@@ -12,7 +12,7 @@ if ! [ -z ${DOCKER_IMAGE+x} ]; then
 else
     if [[ $TRAVIS_OS_NAME == 'osx' ]]; then
         ls dist
-        sudo pip install twine
+        pip install twine
         twine upload ${TRAVIS_BUILD_DIR}/pandas_plink*.whl \
               -u dhorta -p ${PYPI_PASSWORD}
     fi
