@@ -3,7 +3,7 @@
 set -e -x
 
 if [[ $TRAVIS_OS_NAME == 'osx' ]]; then
-    brew install python3 pandoc libffi
+    brew install pandoc libffi
 fi
 
 pip install pypandoc

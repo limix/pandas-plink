@@ -17,10 +17,32 @@ matrix:
     osx_image: xcode7.3
     language: generic
     sudo: required
+    env: PYENV=py27
   - os: osx
     osx_image: xcode8.3
     language: generic
     sudo: required
+    env: PYENV=py27
+  - os: osx
+    osx_image: xcode7.3
+    language: generic
+    sudo: required
+    env: PYENV=py35
+  - os: osx
+    osx_image: xcode8.3
+    language: generic
+    sudo: required
+    env: PYENV=py35
+  - os: osx
+    osx_image: xcode7.3
+    language: generic
+    sudo: required
+    env: PYENV=py36
+  - os: osx
+    osx_image: xcode8.3
+    language: generic
+    sudo: required
+    env: PYENV=py36
 before_install:
 - travis_retry travis/before_install_stage.sh
 install:
