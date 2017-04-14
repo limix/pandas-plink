@@ -44,9 +44,7 @@ matrix:
     sudo: required
     env: PYENV=py36
 before_install:
-- travis_retry curl -O https://github.com/limix/travis-tools/blob/master/get-travis-tools.sh
-- travis_retry ./get-travis-tools.sh
-- travis_retry travis/before-install.sh
+- travis_retry bash <(curl -s https://github.com/limix/travis-tools/blob/master/get-travis-tools.sh)
 install:
 - travis_retry travis/install.sh
 script:
