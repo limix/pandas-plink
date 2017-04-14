@@ -10,6 +10,7 @@ if [ -z ${DOCKER_IMAGE+x} ]; then
         python -c "import sys; import pandas_plink; sys.exit(pandas_plink.test())"
         popd
     else
+        source ~/.venv/bin/activate
         pip install wheel setuptools
         python setup.py bdist_wheel
         ls dist

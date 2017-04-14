@@ -3,6 +3,7 @@
 set -e -x
 
 if [[ $TRAVIS_OS_NAME == 'osx' ]]; then
+    source ~/.venv/bin/activate
     brew install pandoc libffi
 fi
 
