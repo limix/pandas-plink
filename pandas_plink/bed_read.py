@@ -1,7 +1,7 @@
 import dask.array as da
 from dask.array import from_delayed
 from dask.delayed import delayed
-from numpy import empty, int64, zeros
+from numpy import empty, int64, zeros, ascontiguousarray, nan
 
 from .bed_reader import ffi, lib
 
@@ -22,6 +22,8 @@ def read_bed_chunk(filepath, nrows, ncols, row_start, row_end, col_start,
     if e != 0:
         raise RuntimeError("Failure while reading BED file %s." % filepath)
 
+    X = ascontiguousarray(X, float)
+    X[X == 3] = nan
     return X
 
 
