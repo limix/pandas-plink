@@ -1,10 +1,16 @@
 #include <assert.h>
 #include <math.h>
-#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 
 #define MIN(a, b) ((a > b) ? b : a)
+
+
+#if (_MSC_VER == 1500)
+typedef unsigned __int64     uint64_t;
+#else
+#include <stdint.h>
+#endif
 
 int read_bed_chunk(char *filepath, uint64_t nrows, uint64_t ncols,
                           uint64_t row_start, uint64_t col_start,
