@@ -11,6 +11,8 @@
  #else
  # include <stdint.h>
  #endif
+#else
+# include <stdint.h>
 #endif
 
 int read_bed_chunk(char *filepath, uint64_t nrows, uint64_t ncols,
