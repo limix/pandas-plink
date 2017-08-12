@@ -1,43 +1,54 @@
 #include <assert.h>
 #include <math.h>
-#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 
 #define MIN(a, b) ((a > b) ? b : a)
+
+#if (_MSC_VER <= 1500)
+ typedef unsigned __int64     uint64_t;
+#else
+# include <stdint.h>
+#endif
 
 int read_bed_chunk(char *filepath, uint64_t nrows, uint64_t ncols,
                           uint64_t row_start, uint64_t col_start,
                           uint64_t row_end, uint64_t col_end,
                           uint64_t *out, uint64_t *strides)
 {
+        char b, b0, b1, p0, p1;
+        uint64_t r;
+        uint64_t c, ce;
+        size_t e;
+        uint64_t row_chunk;
+	uint64_t row_size;
+        FILE* f;
+        char* buff;
+
         assert(sizeof(uint64_t) == 4);
         assert(sizeof(char) == 1);
         assert(col_start % 4 == 0);
 
         // in bytes
-        uint64_t row_chunk = (col_end - col_start + 3) / 4;
+        row_chunk = (col_end - col_start + 3) / 4;
         // in bytes
-        uint64_t row_size = (ncols + 3) / 4;
+        row_size = (ncols + 3) / 4;
 
-        FILE* f = fopen(filepath, "rb");
+        f = fopen(filepath, "rb");
         if (f == NULL)
         {
                 fprintf(stderr, "Couldn't open %s.\n", filepath);
                 return -1;
         }
 
-        char* buff = malloc(row_chunk * sizeof(char));
+        buff = malloc(row_chunk * sizeof(char));
         if (buff == NULL)
         {
                 fprintf(stderr, "Not enough memory.\n");
                 return -1;
         }
 
-        char b, b0, b1, p0, p1;
-        uint64_t r = row_start;
-        uint64_t c, ce;
-        size_t e;
+	r = row_start;
 
         while (r < row_end)
         {
