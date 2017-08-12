@@ -5,10 +5,12 @@
 
 #define MIN(a, b) ((a > b) ? b : a)
 
-#if (_MSC_VER <= 1500)
- typedef unsigned __int64     uint64_t;
-#else
-# include <stdint.h>
+#ifdef _MSC_VER
+ #if (_MSC_VER <= 1500)
+  typedef unsigned __int64     uint64_t;
+ #else
+ # include <stdint.h>
+ #endif
 #endif
 
 int read_bed_chunk(char *filepath, uint64_t nrows, uint64_t ncols,
