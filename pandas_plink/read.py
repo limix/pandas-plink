@@ -3,7 +3,7 @@ from __future__ import division, unicode_literals
 import sys
 from collections import OrderedDict as odict
 from glob import glob
-from os.path import basename, dirname, exists
+from os.path import basename, dirname
 
 import dask.array as da
 from tqdm import tqdm
@@ -96,7 +96,7 @@ def read_plink(file_prefix, verbose=True):
 
         It also allows the use of the wildcard character ``*`` for mapping
         multiple BED files at
-        once: :code:`(bim, fam, bed) = read_plink("chrom*")`.
+        once: ``(bim, fam, bed) = read_plink("chrom*")``.
         In this case, only one of the FAM files will be used to define
         sample information. Data from BIM and BED files are concatenated to
         provide a single view of the files.
@@ -116,8 +116,8 @@ def read_plink(file_prefix, verbose=True):
                      lambda fn: _read_bim(fn['bim']), pbar)
 
     nmarkers = dict()
-    for i in range(len(bim)):
-        nmarkers[fn[i]['bed']] = bim[i].shape[0]
+    for i, bi in enumerate(bim):
+        nmarkers[fn[i]['bed']] = bi.shape[0]
     bim = pd.concat(bim, axis=0, ignore_index=True)
 
     fam = _read_file([fn[0]], "Reading fam file(s)...",
@@ -142,10 +142,8 @@ def _read_file(fn, desc, read_func, pbar):
     return data
 
 
-def _read_bim(fn):
-    header = odict([('chrom', bytes), ('snp', bytes), ('cm', float),
-                    ('pos', int), ('a0', bytes), ('a1', bytes)])
-    df = pd.read_csv(
+def _read_csv(fn, header):
+    return pd.read_csv(
         fn,
         delim_whitespace=True,
         header=None,
@@ -153,6 +151,12 @@ def _read_bim(fn):
         dtype=header,
         compression=None,
         engine='c')
+
+
+def _read_bim(fn):
+    header = odict([('chrom', bytes), ('snp', bytes), ('cm', float),
+                    ('pos', int), ('a0', bytes), ('a1', bytes)])
+    df = _read_csv(fn, header)
 
     df['chrom'] = df['chrom'].astype('category')
     df['a0'] = df['a0'].astype('category')
@@ -165,14 +169,7 @@ def _read_fam(fn):
     header = odict([('fid', str), ('iid', str), ('father', str),
                     ('mother', str), ('gender', bytes), ('trait', str)])
 
-    df = pd.read_csv(
-        fn,
-        delim_whitespace=True,
-        header=None,
-        names=header.keys(),
-        dtype=header,
-        compression=None,
-        engine='c')
+    df = _read_csv(fn, header)
 
     df['gender'] = df['gender'].astype('category')
     df['i'] = range(df.shape[0])
