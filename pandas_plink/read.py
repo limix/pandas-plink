@@ -97,7 +97,7 @@ def read_plink(file_prefix, verbose=True):
         It also allows the use of the wildcard character ``*`` for mapping
         multiple BED files at
         once: :code:`(bim, fam, bed) = read_plink("chrom*")`.
-        In the above case, only one of the FAM files will be used to define
+        In this case, only one of the FAM files will be used to define
         sample information. Data from BIM and BED files are concatenated to
         provide a single view of the files.
     """

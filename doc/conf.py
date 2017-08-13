@@ -11,12 +11,9 @@ except ImportError:
     version = 'unknown'
 
 extensions = [
-    'sphinx.ext.autodoc',
-    'sphinx.ext.doctest',
-    'sphinx.ext.intersphinx',
-    'sphinx.ext.coverage',
-    'sphinx.ext.viewcode',
-    'sphinx.ext.napoleon',
+    'sphinx.ext.autodoc', 'sphinx.ext.doctest', 'sphinx.ext.intersphinx',
+    'sphinx.ext.coverage', 'sphinx.ext.viewcode', 'sphinx.ext.napoleon',
+    'sphinxcontrib.inlinesyntaxhighlight'
 ]
 napoleon_google_docstring = True
 templates_path = ['_templates']
