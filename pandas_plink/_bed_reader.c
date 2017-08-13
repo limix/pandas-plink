@@ -25,7 +25,7 @@ int read_bed_chunk(char *filepath, uint64_t nrows, uint64_t ncols,
         uint64_t c, ce;
         size_t e;
         uint64_t row_chunk;
-	uint64_t row_size;
+       uint64_t row_size;
         FILE* f;
         char* buff;
 
@@ -53,7 +53,7 @@ int read_bed_chunk(char *filepath, uint64_t nrows, uint64_t ncols,
                 return -1;
         }
 
-	r = row_start;
+        r = row_start;
 
         while (r < row_end)
         {
@@ -66,6 +66,7 @@ int read_bed_chunk(char *filepath, uint64_t nrows, uint64_t ncols,
                         {
                                 fprintf(stderr, "Error reading %s: unexpected end of file.\n", filepath);
                                 free(buff);
+                                fclose(f);
                                 return -1;
                         }
                         e = ferror(f);

@@ -3,7 +3,7 @@ from __future__ import division, unicode_literals
 import sys
 from collections import OrderedDict as odict
 from glob import glob
-from os.path import basename, dirname, exists
+from os.path import basename, dirname
 
 import dask.array as da
 from tqdm import tqdm
@@ -116,8 +116,8 @@ def read_plink(file_prefix, verbose=True):
                      lambda fn: _read_bim(fn['bim']), pbar)
 
     nmarkers = dict()
-    for i in range(len(bim)):
-        nmarkers[fn[i]['bed']] = bim[i].shape[0]
+    for i, bi in enumerate(bim):
+        nmarkers[fn[i]['bed']] = bi.shape[0]
     bim = pd.concat(bim, axis=0, ignore_index=True)
 
     fam = _read_file([fn[0]], "Reading fam file(s)...",
