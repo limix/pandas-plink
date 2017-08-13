@@ -23,9 +23,8 @@ int read_bed_chunk(char *filepath, uint64_t nrows, uint64_t ncols,
         char b, b0, b1, p0, p1;
         uint64_t r;
         uint64_t c, ce;
-        size_t e;
         uint64_t row_chunk;
-	uint64_t row_size;
+        uint64_t row_size;
         FILE* f;
         char* buff;
 
@@ -49,27 +48,30 @@ int read_bed_chunk(char *filepath, uint64_t nrows, uint64_t ncols,
         if (buff == NULL)
         {
                 fprintf(stderr, "Not enough memory.\n");
+                fclose(f);
                 return -1;
         }
 
-	r = row_start;
+        r = row_start;
 
         while (r < row_end)
         {
                 fseek(f, 3 + r * row_size + col_start / 4, SEEK_SET);
-                e = fread(buff, row_chunk, 1, f);
 
-                if (e != 1)
+                if (fread(buff, row_chunk, 1, f) != 1)
                 {
                         if (feof(f))
                         {
                                 fprintf(stderr, "Error reading %s: unexpected end of file.\n", filepath);
+                                free(buff);
+                                fclose(f);
                                 return -1;
                         }
-                        e = ferror(f);
-                        if (e)
+                        if (ferror(f))
                         {
-                                fprintf(stderr, "File error: %zu.\n", e);
+                                fprintf(stderr, "File error: %d.\n", ferror(f));
+                                free(buff);
+                                fclose(f);
                                 return -1;
                         }
                 }
