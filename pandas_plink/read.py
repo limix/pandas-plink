@@ -2,11 +2,15 @@ from __future__ import division, unicode_literals
 
 import sys
 from collections import OrderedDict as odict
+from glob import glob
+from os.path import exists
+
+import dask.array as da
+from tqdm import tqdm
 
 import pandas as pd
 
 from .bed_read import read_bed
-from .timeit import TimeIt
 
 PY3 = sys.version_info >= (3, )
 
@@ -16,14 +20,15 @@ else:
     _ord = ord
 
 
-
 def read_plink(file_prefix, verbose=True):
-    r"""Convert PLINK files into Pandas data frames.
+    r"""Read PLINK files into Pandas data frames.
 
-
+    Represent a set of BED files as Pandas data frames.
 
     Args:
-        file_prefix (str): Path prefix to the set of PLINK files.
+        file_prefix (str): Path prefix to the set of PLINK files. It supports
+                           loading many BED files at once using globstrings
+                           wildcard.
         verbose (bool): `True` for progress information; `False` otherwise.
 
     Returns:
@@ -88,22 +93,54 @@ def read_plink(file_prefix, verbose=True):
              [  2.   2.   2.]
              [  1.   2.   2.]
              [  2.   1.   2.]]
+
+        It also allows the use of the wildcard character ``*`` for mapping
+        multiple BED files at
+        once: :code:`(bim, fam, bed) = read_plink("chrom*")`.
+        In the above case, only one of the FAM files will be used to define
+        sample information. Data from BIM and BED files are concatenated to
+        provide a single view of the files.
     """
+    file_prefixes = glob(file_prefix)
+    if len(file_prefixes) == 0:
+        file_prefixes = [file_prefix.replace('*', '')]
 
-    fn = {s: "%s.%s" % (file_prefix, s) for s in ['bed', 'bim', 'fam']}
+    file_prefixes = _clean_prefixes(file_prefixes)
 
-    with TimeIt("Reading %s..." % fn['bim'], not verbose):
-        bim = _read_bim(fn['bim'])
-    nmarkers = bim.shape[0]
+    fn = []
+    for fp in file_prefixes:
+        fn.append({s: "%s.%s" % (fp, s) for s in ['bed', 'bim', 'fam']})
 
-    with TimeIt("Reading %s..." % fn['fam'], not verbose):
-        fam = _read_fam(fn['fam'])
+    pbar = tqdm(desc="Mapping files", total=3 * len(fn), disable=not verbose)
+    bim = _read_file(fn, "Reading bim file(s)...",
+                     lambda fn: _read_bim(fn['bim']), pbar)
+
+    nmarkers = dict()
+    for i in range(len(bim)):
+        nmarkers[fn[i]['bed']] = bim[i].shape[0]
+    bim = pd.concat(bim, axis=0, ignore_index=True)
+
+    fam = _read_file([fn[0]], "Reading fam file(s)...",
+                     lambda fn: _read_fam(fn['fam']), pbar)[0]
     nsamples = fam.shape[0]
 
-    with TimeIt("Reading %s..." % fn['bed'], not verbose):
-        bed = _read_bed(fn['bed'], nsamples, nmarkers)
+    bed = _read_file(
+        fn, "Reading bed file(s)...",
+        lambda fn: _read_bed(fn['bed'], nsamples, nmarkers[fn['bed']]), pbar)
+    bed = da.concatenate(bed, axis=0)
+
+    pbar.close()
 
     return (bim, fam, bed)
+
+
+def _read_file(fn, desc, read_func, pbar):
+    data = []
+    for f in fn:
+        data.append(read_func(f))
+        pbar.update(1)
+    return data
+
 
 def _read_bim(fn):
     header = odict([('chrom', bytes), ('snp', bytes), ('cm', float),
@@ -140,6 +177,7 @@ def _read_fam(fn):
     df['gender'] = df['gender'].astype('category')
     df['i'] = range(df.shape[0])
     return df
+
 
 def _read_bed(fn, nsamples, nmarkers):
     fn = _ascii_airlock(fn)
@@ -180,3 +218,13 @@ def _ascii_airlock(v):
     if not isinstance(v, bytes):
         v = v.encode()
     return v
+
+
+def _clean_prefixes(prefixes):
+    paths = []
+    for p in prefixes:
+        name = '.'.join(p.split('.')[:-1])
+        if len(name) == 0:
+            name = p
+        paths.append(name)
+    return list(set(paths))

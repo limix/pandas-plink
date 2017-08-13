@@ -20,9 +20,10 @@ def setup_package():
     pytest_runner = ['pytest-runner'] if needs_pytest else []
 
     setup_requires = ['cffi>=1.7'] + pytest_runner
-    install_requires = ['pandas>=0.17', 'cffi>=1.7',
-                        'numpy>=1.9',
-                        'dask[array,bag,dataframe,delayed]>=0.14', 'toolz>=0.8']
+    install_requires = [
+        'pandas>=0.17', 'cffi>=1.7', 'numpy>=1.9', 'tqdm>=4.15',
+        'dask[array,bag,dataframe,delayed]>=0.14', 'toolz>=0.8'
+    ]
     tests_require = ['pytest']
 
     metadata = dict(
