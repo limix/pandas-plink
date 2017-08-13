@@ -3,7 +3,7 @@ from __future__ import division, unicode_literals
 import sys
 from collections import OrderedDict as odict
 from glob import glob
-from os.path import exists
+from os.path import basename, dirname, exists
 
 import dask.array as da
 from tqdm import tqdm
@@ -223,8 +223,12 @@ def _ascii_airlock(v):
 def _clean_prefixes(prefixes):
     paths = []
     for p in prefixes:
-        name = '.'.join(p.split('.')[:-1])
-        if len(name) == 0:
-            name = p
-        paths.append(name)
+        dirn = dirname(p)
+        basen = basename(p)
+        basen = '.'.join(basen.split('.')[:-1])
+        if len(basen) == 0:
+            path = p
+        else:
+            path = join(dirn, basen)
+        paths.append(path)
     return list(set(paths))
