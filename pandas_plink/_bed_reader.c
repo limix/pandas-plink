@@ -49,6 +49,7 @@ int read_bed_chunk(char *filepath, uint64_t nrows, uint64_t ncols,
         if (buff == NULL)
         {
                 fprintf(stderr, "Not enough memory.\n");
+                fclose(f);
                 return -1;
         }
 
@@ -64,12 +65,14 @@ int read_bed_chunk(char *filepath, uint64_t nrows, uint64_t ncols,
                         if (feof(f))
                         {
                                 fprintf(stderr, "Error reading %s: unexpected end of file.\n", filepath);
+                                free(buff);
                                 return -1;
                         }
                         e = ferror(f);
                         if (e)
                         {
                                 fprintf(stderr, "File error: %zu.\n", e);
+                                free(buff);
                                 return -1;
                         }
                 }
