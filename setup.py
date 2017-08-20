@@ -14,6 +14,13 @@ except ImportError:
 
 PY2 = sys.version_info[0] == 2
 
+
+def _unicode_airlock(v):
+    if isinstance(v, bytes):
+        v = v.decode()
+    return v
+
+
 if PY2:
     string_types = unicode,
 else:
@@ -56,8 +63,9 @@ def set_long_description(metadata):
 def convert_types(metadata):
     bools = ['True', 'False']
     for k in metadata.keys():
-        if isinstance(metadata[k], string_types) and metadata[k] in bools:
-            metadata[k] = metadata[k] == 'True'
+        v = _unicode_airlock(metadata[k])
+        if isinstance(metadata[k], string_types) and v in bools:
+            metadata[k] = v == 'True'
 
 
 def setup_package():
