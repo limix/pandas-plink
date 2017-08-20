@@ -11,7 +11,6 @@ cache:
 matrix:
   include:
   - python: 2.7
-  - python: 3.5
   - python: 3.6
   - env: DOCKER_IMAGE=quay.io/pypa/manylinux1_x86_64
   - os: osx
@@ -19,13 +18,12 @@ matrix:
     env: PYENV=py27
   - os: osx
     language: generic
-    env: PYENV=py35
-  - os: osx
-    language: generic
     env: PYENV=py36
 before_install:
 - travis_retry bash <(curl -s https://raw.githubusercontent.com/limix/travis-tools/master/get-travis-tools.sh)
 - travis_retry travis/before-install.sh
+install:
+- travis_retry travis/install.sh
 script:
 - travis_retry travis/script.sh
 after_success:
@@ -48,5 +46,3 @@ deploy:
 env:
   global:
     - secure: azfHKw5UiF54CnDOME55bQRqNpS0PJk0Y60oeyMlnqnFm1h6eur3u6XZgg8431+aI05vRb9YOqLlbEegXuC1LNaKTJOrLsQlNfITdfPea6qS+bevPnNoWbbnf08s86NdxFs5Ol9WiTebNgdh6psMBIXiwcWWt/jkQLhTWK/8vk09zF7CBGRWPxgzsszMNqSlk4Yykgsq7DNm/4Ua0QyigDSEpvdCAAbCTt13P5dOt4mAH40E53caY8Ur1Hi8IFTE6YVwAIQ47dGta/kLSL+CQOc0Ue0oPyrefIVdJM/u/NiHp3NznQ75zVvY81JVESGNumom7DZmj5JfVj+Ewn9w9kZuAQNwGM4t0DUfZ/MhGriJxfIZ0ERHdFpPvM+SgC1KVZRobnRXnSYvmQ7JY+mR34tu5/2beNvKYg/bWCyoHISNCPsJbc1kqsTKlo8pEXTSNWIhT7k1By3bRmGrjU6ncmGVoPvvmd5VE7Lilh6iG6BJSfsFeRM96ip3/w+pEc0BbukVxomuRBqVTDdlNXXBcs4OIVBOJv+XvApQ7GmcgOO1g109eiULAXMjh/+z/0pQfN1Tzgp9RGt2xZOze741W+BmLXCKZyowDiYUZchFnVhVrlgtRMyH9Bt9gf2BlIJ1pJ+YSku/e19ZwyyUAYDXlvf6K8H+NBpLvonFGKcAZNc=
-    - PKG_NAME=pandas_plink
-    - PY_DEPS="numpy pandas sphinx_rtd_theme"

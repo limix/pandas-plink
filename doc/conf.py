@@ -1,47 +1,58 @@
-# -*- coding: utf-8 -*-
-
 from __future__ import unicode_literals
 
-import sphinx_rtd_theme
+import re
+from importlib import import_module
+from os import getenv
+from os.path import dirname, join, realpath
+from time import strftime
 
-try:
-    import pandas_plink
-    version = pandas_plink.__version__
-except ImportError:
-    version = 'unknown'
+import sphinx_rtd_theme
+from setuptools import find_packages
+
+
+def get_init_metadata(name):
+    expr = re.compile(r"__%s__ *= *\"(.*)\"" % name)
+
+    dir_path = dirname(realpath(__file__))
+    pkgname = find_packages(where=join(dir_path, '..'))[0]
+
+    data = open(join("..", pkgname, "__init__.py")).read()
+
+    return re.search(expr, data).group(1).strip()
+
+
+if getenv("READTHEDOCS", "False") == "True":
+
+    prjname = getenv("READTHEDOCS_PROJECT", "unknown")
+    pkgname = prjname.replace("-", "_")
+    pkg = import_module(pkgname)
+
+    project = pkg.__name__
+    version = pkg.__version__
+    author = pkg.__author__
+else:
+    project = get_init_metadata('name')
+    version = get_init_metadata('version')
+    author = get_init_metadata('author')
 
 extensions = [
-    'sphinx.ext.autodoc', 'sphinx.ext.doctest', 'sphinx.ext.intersphinx',
-    'sphinx.ext.coverage', 'sphinx.ext.viewcode', 'sphinx.ext.napoleon',
-    'sphinxcontrib.inlinesyntaxhighlight'
+    'sphinx.ext.autodoc',
+    'sphinx.ext.doctest',
+    'sphinx.ext.intersphinx',
+    'sphinx.ext.coverage',
+    'sphinx.ext.viewcode',
+    'sphinx.ext.napoleon',
 ]
 napoleon_google_docstring = True
-templates_path = ['_templates']
-source_suffix = '.rst'
 master_doc = 'index'
-project = 'pandas-plink'
-copyright = '2016, Danilo Horta'
-author = 'Danilo Horta'
+copyright = '%s, %s' % (strftime("%Y"), author)
 release = version
-language = None
-exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
+language = "en"
+exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store', 'conf.py']
 pygments_style = 'sphinx'
-todo_include_todos = False
 html_theme = 'sphinx_rtd_theme'
 html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
-htmlhelp_basename = 'pandas-plinkdoc'
-latex_elements = {}
-latex_documents = [
-    (master_doc, 'pandas-plink.tex', 'pandas-plink Documentation',
-     'Danilo Horta', 'manual'),
-]
-man_pages = [(master_doc, 'pandas-plink', 'pandas-plink Documentation',
-              [author], 1)]
-texinfo_documents = [
-    (master_doc, 'pandas-plink', 'pandas-plink Documentation', author,
-     'pandas-plink', 'One line description of project.', 'Miscellaneous'),
-]
 intersphinx_mapping = {
     'python': ('http://docs.python.org/', None),
-    'pandas': ('http://pandas-docs.github.io/pandas-docs-travis/', None)
+    'numpy': ('http://docs.scipy.org/doc/numpy/', None)
 }
