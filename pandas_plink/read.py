@@ -5,17 +5,16 @@ from collections import OrderedDict as odict
 from glob import glob
 from os.path import basename, dirname
 
-import dask.array as da
 from tqdm import tqdm
-
-import pandas as pd
 
 from .bed_read import read_bed
 
 PY3 = sys.version_info >= (3, )
 
 if PY3:
-    _ord = lambda x: x
+
+    def _ord(x):
+        return x
 else:
     _ord = ord
 
@@ -101,6 +100,9 @@ def read_plink(file_prefix, verbose=True):
         sample information. Data from BIM and BED files are concatenated to
         provide a single view of the files.
     """
+    from pandas import concat
+    from dask.array import concatenate
+
     file_prefixes = glob(file_prefix)
     if len(file_prefixes) == 0:
         file_prefixes = [file_prefix.replace('*', '')]
@@ -118,7 +120,7 @@ def read_plink(file_prefix, verbose=True):
     nmarkers = dict()
     for i, bi in enumerate(bim):
         nmarkers[fn[i]['bed']] = bi.shape[0]
-    bim = pd.concat(bim, axis=0, ignore_index=True)
+    bim = concat(bim, axis=0, ignore_index=True)
 
     fam = _read_file([fn[0]], "Reading fam file(s)...",
                      lambda fn: _read_fam(fn['fam']), pbar)[0]
@@ -127,7 +129,8 @@ def read_plink(file_prefix, verbose=True):
     bed = _read_file(
         fn, "Reading bed file(s)...",
         lambda fn: _read_bed(fn['bed'], nsamples, nmarkers[fn['bed']]), pbar)
-    bed = da.concatenate(bed, axis=0)
+
+    bed = concatenate(bed, axis=0)
 
     pbar.close()
 
@@ -143,7 +146,9 @@ def _read_file(fn, desc, read_func, pbar):
 
 
 def _read_csv(fn, header):
-    return pd.read_csv(
+    from pandas import read_csv
+
+    return read_csv(
         fn,
         delim_whitespace=True,
         header=None,

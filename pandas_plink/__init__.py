@@ -16,8 +16,6 @@ __author__ = "Danilo Horta"
 __author_email__ = "horta@ebi.ac.uk"
 
 
-
-
 def example_file_prefix():
     r"""Data files prefix."""
     import os

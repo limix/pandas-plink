@@ -1,3 +1,5 @@
+from __future__ import unicode_literals
+
 import re
 import sys
 from os import chdir, getcwd
@@ -47,7 +49,7 @@ def set_long_description(metadata):
 def convert_types(metadata):
     bools = ['True', 'False']
     for k in metadata.keys():
-        if isinstance(metadata[k], str) and metadata[k] in bools:
+        if isinstance(metadata[k], (str, unicode)) and metadata[k] in bools:
             metadata[k] = metadata[k] == 'True'
 
 
@@ -55,7 +57,7 @@ def setup_package():
     with setup_folder():
 
         config = ConfigParser()
-        config.read('setup.cfg')
+        config.read('setup.cfg', encoding='utf8')
         metadata = dict(config.items('metadata'))
         metadata['packages'] = find_packages()
         metadata['platforms'] = eval(metadata['platforms'])
@@ -66,6 +68,8 @@ def setup_package():
         metadata['name'] = get_init_metadata(metadata, 'name')
         make_list(metadata, 'classifiers')
         make_list(metadata, 'keywords')
+        if 'cffi_modules' in metadata:
+            make_list(metadata, 'cffi_modules')
         set_long_description(metadata)
         convert_types(metadata)
 

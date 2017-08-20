@@ -1,7 +1,4 @@
-import dask.array as da
-from dask.array import from_delayed
-from dask.delayed import delayed
-from numpy import empty, int64, zeros, ascontiguousarray, nan
+from numpy import ascontiguousarray, empty, int64, nan, zeros
 
 from .bed_reader import ffi, lib
 
@@ -28,6 +25,9 @@ def read_bed_chunk(filepath, nrows, ncols, row_start, row_end, col_start,
 
 
 def read_bed(filepath, nrows, ncols):
+    from dask.array import concatenate, from_delayed
+    from dask.delayed import delayed
+
     chunk_bytes = 1024
 
     row_start = 0
@@ -45,7 +45,7 @@ def read_bed(filepath, nrows, ncols):
             shape = (row_end - row_start, col_end - col_start)
             row_xs += [from_delayed(x, shape, int64)]
             col_start = col_end
-        col_xs += [da.concatenate(row_xs, axis=1)]
+        col_xs += [concatenate(row_xs, axis=1)]
         row_start = row_end
-    X = da.concatenate(col_xs, axis=0)
+    X = concatenate(col_xs, axis=0)
     return X
