@@ -8,6 +8,7 @@ from __future__ import absolute_import as _
 
 import _cffi_backend
 
+from ._test import test
 from .read import read_plink
 
 __name__ = "pandas-plink"
