@@ -12,6 +12,13 @@ try:
 except ImportError:
     from ConfigParser import ConfigParser
 
+PY2 = sys.version_info[0] == 2
+
+if PY2:
+    string_types = unicode,
+else:
+    string_types = str,
+
 
 class setup_folder(object):
     def __init__(self):
@@ -49,7 +56,7 @@ def set_long_description(metadata):
 def convert_types(metadata):
     bools = ['True', 'False']
     for k in metadata.keys():
-        if isinstance(metadata[k], (str, unicode)) and metadata[k] in bools:
+        if isinstance(metadata[k], string_types) and metadata[k] in bools:
             metadata[k] = metadata[k] == 'True'
 
 
@@ -58,6 +65,7 @@ def setup_package():
 
         config = ConfigParser()
         config.read('setup.cfg', encoding='utf8')
+
         metadata = dict(config.items('metadata'))
         metadata['packages'] = find_packages()
         metadata['platforms'] = eval(metadata['platforms'])
