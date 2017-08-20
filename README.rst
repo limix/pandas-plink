@@ -41,13 +41,12 @@ Usage
 
 It is as simple as
 
-```python
-from pandas_plink import read_plink
-(bim, fam, G) = read_plink('/path/to/data')
-```
+.. code:: python
 
-Refer to [documentation](http://pandas-plink.readthedocs.io/en/latest/)
-for more information.
+    from pandas_plink import read_plink
+    (bim, fam, G) = read_plink('/path/to/data')
+
+Refer to the documentation_ for more information.
 
 Authors
 -------
@@ -97,3 +96,5 @@ for details.
 .. _Dask: http://dask.pydata.org/en/latest/index.html
 
 .. _Pandas: http://pandas.pydata.org
+
+.. _documentation: http://pandas-plink.readthedocs.io/
