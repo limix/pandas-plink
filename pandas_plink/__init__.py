@@ -4,14 +4,18 @@ r"""Read PLINK files into Pandas data frames.
 
 """
 
+from __future__ import absolute_import as _
+
+import _cffi_backend
+
+from .read import read_plink
+
 __name__ = "pandas-plink"
 __version__ = "1.2.6"
 __author__ = "Danilo Horta"
 __author_email__ = "horta@ebi.ac.uk"
 
-import _cffi_backend
 
-from .read import read_plink
 
 
 def example_file_prefix():
