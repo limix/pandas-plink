@@ -22,9 +22,9 @@ def _unicode_airlock(v):
 
 
 if PY2:
-    string_types = unicode,
+    string_types = unicode, str
 else:
-    string_types = str,
+    string_types = bytes, str
 
 
 class setup_folder(object):
