@@ -64,7 +64,7 @@ def setup_package():
     with setup_folder():
 
         config = ConfigParser()
-        config.read('setup.cfg', encoding='utf8')
+        config.read('setup.cfg')
 
         metadata = dict(config.items('metadata'))
         metadata['packages'] = find_packages()

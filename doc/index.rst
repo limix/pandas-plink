@@ -2,6 +2,9 @@
 Pandas-plink's documentation
 ============================
 
+:Date: |today|
+:Version: |version|
+
 You can get the source and open issues on `Github.`_
 
 .. _Github.: https://github.com/glimix/pandas-plink
