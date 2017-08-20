@@ -79,7 +79,7 @@ for details.
     :target: https://anaconda.org/conda-forge/pandas-plink
 
 .. |License-Badge| image:: https://img.shields.io/pypi/l/pandas-plink.svg
-    :target: https://raw.githubusercontent.com/pandas-plink/pandas-plink/master/LICENSE.txt
+    :target: https://raw.githubusercontent.com/limix/pandas-plink/master/LICENSE.txt
 
 .. |Doc-Status| image:: https://readthedocs.org/projects/pandas-plink/badge/?style=flat-square&version=stable
     :target: https://pandas-plink.readthedocs.io/
