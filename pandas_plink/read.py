@@ -3,7 +3,7 @@ from __future__ import division, unicode_literals
 import sys
 from collections import OrderedDict as odict
 from glob import glob
-from os.path import basename, dirname
+from os.path import basename, dirname, join
 
 from tqdm import tqdm
 
