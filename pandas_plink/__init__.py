@@ -12,7 +12,7 @@ from ._test import test
 from .read import read_plink
 
 __name__ = "pandas-plink"
-__version__ = "1.2.8"
+__version__ = "1.2.9"
 __author__ = "Danilo Horta"
 __author_email__ = "horta@ebi.ac.uk"
 
