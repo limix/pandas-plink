@@ -227,10 +227,13 @@ def _clean_prefixes(prefixes):
     for p in prefixes:
         dirn = dirname(p)
         basen = basename(p)
-        basen = '.'.join(basen.split('.')[:-1])
-        if len(basen) == 0:
+        base = '.'.join(basen.split('.')[:-1])
+        if len(base) == 0:
             path = p
         else:
-            path = join(dirn, basen)
+            ext = basen.split('.')[-1]
+            if ext not in ['bed', 'fam', 'bim']:
+                base += '.' + ext
+            path = join(dirn, base)
         paths.append(path)
     return list(set(paths))
