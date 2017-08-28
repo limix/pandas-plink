@@ -5,9 +5,8 @@ Pandas-plink's documentation
 :Date: |today|
 :Version: |version|
 
-You can get the source and open issues on `Github.`_
-
-.. _Github.: https://github.com/glimix/pandas-plink
+Read PLINK files into Pandas data frames with support of mapping multiple BED
+files at once.
 
 *******
 Install

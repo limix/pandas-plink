@@ -1,9 +1,3 @@
-r"""Read PLINK files into Pandas data frames.
-
-.. moduleauthor:: Danilo Horta <horta@ebi.ac.uk>
-
-"""
-
 from __future__ import absolute_import as _
 
 import _cffi_backend
@@ -12,7 +6,7 @@ from ._test import test
 from .read import read_plink
 
 __name__ = "pandas-plink"
-__version__ = "1.2.10"
+__version__ = "1.2.11"
 __author__ = "Danilo Horta"
 __author_email__ = "horta@ebi.ac.uk"
 

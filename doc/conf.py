@@ -54,5 +54,6 @@ html_theme = 'sphinx_rtd_theme'
 html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
 intersphinx_mapping = {
     'python': ('http://docs.python.org/', None),
-    'numpy': ('http://docs.scipy.org/doc/numpy/', None)
+    'numpy': ('http://docs.scipy.org/doc/numpy/', None),
+    'pandas': ('http://pandas.pydata.org/pandas-docs/stable/', None)
 }
