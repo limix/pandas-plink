@@ -1,4 +1,7 @@
 include LICENSE.txt
+include README.rst
+include requirements.txt
+include test-requirements.txt
 include pandas_plink/test/data_files/data.bed
 include pandas_plink/test/data_files/data.bim
 include pandas_plink/test/data_files/data.fam
