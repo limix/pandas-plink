@@ -2,6 +2,7 @@ from __future__ import unicode_literals
 
 import re
 import sys
+from ast import literal_eval
 from os import chdir, getcwd
 from os.path import abspath, dirname, join
 
@@ -80,19 +81,26 @@ def setup_package():
 
         metadata = dict(config.items('metadata'))
         metadata['packages'] = find_packages()
-        metadata['platforms'] = eval(metadata['platforms'])
+        metadata['platforms'] = literal_eval(metadata['platforms'])
 
         metadata['version'] = get_init_metadata(metadata, 'version')
         metadata['author'] = get_init_metadata(metadata, 'author')
         metadata['author_email'] = get_init_metadata(metadata, 'author_email')
         metadata['name'] = get_init_metadata(metadata, 'name')
 
+        with open('requirements.txt') as f:
+            metadata['install_requires'] = f.read().splitlines()
+
+        with open('test-requirements.txt') as f:
+            metadata['tests_require'] = f.read().splitlines()
+
         if_set_list(metadata, 'classifiers')
         if_set_list(metadata, 'keywords')
         if_set_list(metadata, 'cffi_modules')
 
         if 'extras_require' in metadata:
-            metadata['extras_require'] = eval(metadata['extras_require'])
+            metadata['extras_require'] = literal_eval(
+                metadata['extras_require'])
 
         if 'console_scripts' in metadata:
             metadata['entry_points'] = {

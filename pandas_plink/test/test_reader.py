@@ -39,7 +39,6 @@ def test_read_plink():
 def test_read_plink_prefix_dot():
 
     datafiles = join(dirname(realpath(__file__)), 'data_files')
-    file_prefix = join(datafiles, 'data')
 
     with pytest.raises(IOError):
-        (bim, fam, bed) = read_plink('/tmp/84759873.genotypes.norm.renamed')
+        read_plink('/home/joao/84757.genotypes.norm.renamed')
