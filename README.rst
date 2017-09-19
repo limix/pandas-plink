@@ -56,8 +56,8 @@ Authors
 License
 -------
 
-This project is licensed under the MIT License - see the `License file`_ file
-for details.
+This project is licensed under the MIT License - see the `license file`_ for
+details.
 
 .. |Build-Status| image:: https://travis-ci.org/limix/pandas-plink.svg?branch=master
     :target: https://travis-ci.org/limix/pandas-plink
@@ -83,7 +83,7 @@ for details.
 .. |Doc-Status| image:: https://readthedocs.org/projects/pandas-plink/badge/?style=flat-square&version=stable
     :target: https://pandas-plink.readthedocs.io/
 
-.. _License file: https://raw.githubusercontent.com/limix/pandas-plink/master/LICENSE.txt
+.. _license file: https://raw.githubusercontent.com/limix/pandas-plink/master/LICENSE.txt
 
 .. _Danilo Horta: https://github.com/horta
 
