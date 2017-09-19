@@ -1,6 +1,5 @@
 language: python
-sudo: required
-dist: trusty
+services: docker
 git:
   depth: 5
 matrix:
