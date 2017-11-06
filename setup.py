@@ -97,6 +97,7 @@ def setup_package():
         if_set_list(metadata, 'classifiers')
         if_set_list(metadata, 'keywords')
         if_set_list(metadata, 'cffi_modules')
+        if_set_list(metadata, 'setup_requires')
 
         if 'extras_require' in metadata:
             metadata['extras_require'] = literal_eval(
