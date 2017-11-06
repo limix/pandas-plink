@@ -4,6 +4,8 @@ import sys
 from collections import OrderedDict as odict
 from glob import glob
 from os.path import basename, dirname, join
+from pandas import concat
+from pandas import read_csv
 
 from tqdm import tqdm
 
@@ -102,7 +104,6 @@ def read_plink(file_prefix, verbose=True):
     sample information. Data from BIM and BED files are concatenated to
     provide a single view of the files.
     """
-    from pandas import concat
     from dask.array import concatenate
 
     file_prefixes = glob(file_prefix)
@@ -148,8 +149,6 @@ def _read_file(fn, desc, read_func, pbar):
 
 
 def _read_csv(fn, header):
-    from pandas import read_csv
-
     return read_csv(
         fn,
         delim_whitespace=True,
