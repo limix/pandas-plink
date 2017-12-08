@@ -2,11 +2,11 @@ from __future__ import absolute_import as _
 
 import _cffi_backend as _
 
-from ._test import test
+from .testit import test
 from .read import read_plink
 
 __name__ = "pandas-plink"
-__version__ = "1.2.16"
+__version__ = "1.2.17"
 __author__ = "Danilo Horta"
 __author_email__ = "horta@ebi.ac.uk"
 
