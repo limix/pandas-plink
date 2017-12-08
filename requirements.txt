@@ -1,6 +1,6 @@
 pandas>=0.21
 cffi
-numpy
-tqdm
-dask
+numpy>=1.10
+tqdm>=4.0
+dask>=0.12
 toolz
