@@ -6,7 +6,7 @@ from .testit import test
 from .read import read_plink
 
 __name__ = "pandas-plink"
-__version__ = "1.2.17"
+__version__ = "1.2.18"
 __author__ = "Danilo Horta"
 __author_email__ = "horta@ebi.ac.uk"
 
