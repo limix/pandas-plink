@@ -28,16 +28,16 @@ def read_bed(filepath, nrows, ncols):
     from dask.array import concatenate, from_delayed
     from dask.delayed import delayed
 
-    chunk_bytes = 1024
+    chunk_size = 1024
 
     row_start = 0
     col_xs = []
     while (row_start < nrows):
-        row_end = min(row_start + chunk_bytes * 4, nrows)
+        row_end = min(row_start + chunk_size, nrows)
         col_start = 0
         row_xs = []
         while (col_start < ncols):
-            col_end = min(col_start + chunk_bytes * 4, ncols)
+            col_end = min(col_start + chunk_size, ncols)
 
             x = delayed(read_bed_chunk)(filepath, nrows, ncols, row_start,
                                         row_end, col_start, col_end)
