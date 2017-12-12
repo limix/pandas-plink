@@ -1,0 +1,36 @@
+build: false
+# Build worker image (VM template)
+# image: Visual Studio 2015
+clone_depth: 5
+
+# build platform, i.e. x86, x64, Any CPU. This setting is optional.
+platform: Any CPU
+
+# to add several platforms to build matrix:
+#platform:
+#  - x86
+#  - Any CPU
+
+configuration: Release
+
+environment:
+    PKGNAME: pandas_plink
+    matrix:
+    - PYTHON_VERSION: 2.7
+        MINICONDA: C:\Miniconda
+        PYTHON_ARCH: "32"
+init:
+    - cmd: echo %PYTHON_VERSION% %MINICONDA%
+
+install:
+    - cmd: set PATH="%MINICONDA%;%MINICONDA%\\Scripts;%PATH%"
+    - conda config --set always_yes yes --set changeps1 no
+    - conda update -q conda pip setuptools
+    - conda info -a
+    - conda install -q --yes numpy scipy pandas pytest
+    - pip install -r requirements.txt
+    - python setup.py install
+
+test_script:
+    - python -c "import sys; import %PKGNAME%; sys.exit(%PKGNAME%.__version__)"
+    - python setup.py test
