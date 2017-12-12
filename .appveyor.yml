@@ -5,7 +5,8 @@ platform: x64
 configuration: Release
 
 build_script:
-    - cmd: call %MINICONDA_PATH%\Scripts\activate.bat
+    - cmd: call %MINICONDA_PATH%\Scripts\deactivate.bat
+    - cmd: echo %PATH%
     - cmd: pip install cibuildwheel
     - cmd: cibuildwheel --output-dir wheelhouse
 
