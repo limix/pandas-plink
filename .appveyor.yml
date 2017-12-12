@@ -1,41 +1,36 @@
+# Skip .NET project specific build phase.
 build: false
-# Build worker image (VM template)
-# image: Visual Studio 2015
+
 clone_depth: 5
 
-# build platform, i.e. x86, x64, Any CPU. This setting is optional.
-platform: Any CPU
-
-# to add several platforms to build matrix:
-#platform:
-#    - x86
-#    - Any CPU
+platform:
+    - x64
 
 configuration: Release
 
 environment:
-    PKGNAME: pandas_plink
+    PKG_NAME: pandas_plink
     matrix:
     - PYTHON_VERSION: 2.7
       MINICONDA: C:\Miniconda
       PYTHON_ARCH: "32"
-init:
-    - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
-    - echo %PYTHON_VERSION% %MINICONDA% %PYTHON_ARCH%
+# init:
+#     - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+#     - echo %PYTHON_VERSION% %MINICONDA% %PYTHON_ARCH%
 
 install:
     - set PATH="%MINICONDA%;%MINICONDA%\\Bin;%MINICONDA%\\Scripts;%PATH%"
-    - conda config --set always_yes yes --set changeps1 no
-    - conda update -q conda pip setuptools
-    - conda info -a
-    - conda install -q --yes numpy scipy pandas pytest
-    - pip install -r requirements.txt
-    - python setup.py install
+
+    - cmd: call %MINICONDA%\Scripts\activate.bat
+    - cmd: appveyor-retry conda update --yes --quiet conda
+    - cmd: appveyor-retry conda install --yes --quiet numpy scipy pandas pytest
+    - cmd: pip install -r requirements.txt
+    - cmd: python setup.py install
 
 test_script:
-    - pip install -r test-requirements.txt
-    - python -c "import sys; import %PKGNAME%; sys.exit(%PKGNAME%.__version__)"
-    - python setup.py test
-
-on_finish:
-  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+    - cmd: pip install -r test-requirements.txt
+    - cmd: python -c "import sys; import %PKG_NAME%; sys.exit(%PKG_NAME%.test())"
+    - cmd: python setup.py test
+#
+# on_finish:
+#   - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
