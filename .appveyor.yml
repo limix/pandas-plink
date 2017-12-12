@@ -1,12 +1,17 @@
 # Skip .NET project specific build phase.
 build: false
-
 clone_depth: 5
-
-platform:
-    - x64
-
+platform: x64
 configuration: Release
+
+build_script:
+    - cmd: call %MINICONDA_PATH%\Scripts\activate.bat
+    - cmd: pip install cibuildwheel
+    - cmd: cibuildwheel --output-dir wheelhouse
+
+artifacts:
+    - path: "wheelhouse\\*.whl"
+      name: Wheels
 
 environment:
     PKG_NAME: pandas_plink
@@ -22,9 +27,10 @@ install:
     - cmd: appveyor-retry conda install --yes --quiet numpy scipy pandas pytest
     - cmd: pip install -r requirements.txt
     - cmd: pip install -r test-requirements.txt
-    - cmd: python setup.py test && git clean -xdf
-    - cmd: python setup.py install && git clean -xdf
+    - cmd: python setup.py test
+    - cmd: python setup.py install
 
 test_script:
     - cmd: cd C:\
-    - cmd: python -c "import sys; import %PKG_NAME%; sys.exit(%PKG_NAME%.test())"
+    - cmd: set T="import sys; import %PKG_NAME%; sys.exit(%PKG_NAME%.test())"
+    - cmd: python -c "%T%"
