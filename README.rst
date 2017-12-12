@@ -3,7 +3,7 @@ pandas-plink
 
 |PyPI-Status| |Conda-Forge-Status| |Conda-Downloads|
 
-|Build-Status| |Codacy-Grade| |License-Badge| |Doc-Status|
+|Build-Status| |Win-Build-Status| |Codacy-Grade| |License-Badge| |Doc-Status|
 
 PLINK reader for Python.
 It reads binary PLINK files into Pandas_ data frame and Dask_ array.
@@ -61,6 +61,9 @@ details.
 
 .. |Build-Status| image:: https://travis-ci.org/limix/pandas-plink.svg?branch=master
     :target: https://travis-ci.org/limix/pandas-plink
+
+.. |Win-Build-Status| image:: https://ci.appveyor.com/api/projects/status/6xji9t7n3yoofm9u/branch/master?svg=true
+    :target: https://ci.appveyor.com/project/Horta/pandas-plink/branch/master
 
 .. |Codacy-Grade| image:: https://api.codacy.com/project/badge/Grade/279d016293724b79ad8e667c1440d3d0
     :target: https://www.codacy.com/app/danilo.horta/pandas-plink?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=limix/pandas-plink&amp;utm_campaign=Badge_Grade
