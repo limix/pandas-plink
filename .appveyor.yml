@@ -17,8 +17,8 @@ environment:
     PKGNAME: pandas_plink
     matrix:
     - PYTHON_VERSION: 2.7
-        MINICONDA: C:\Miniconda
-        PYTHON_ARCH: "32"
+      MINICONDA: C:\Miniconda
+      PYTHON_ARCH: "32"
 init:
     - cmd: echo %PYTHON_VERSION% %MINICONDA%
 
