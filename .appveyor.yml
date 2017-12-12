@@ -15,23 +15,16 @@ environment:
       TARGET_ARCH: "x64"
       MINICONDA_PATH: C:\\Miniconda
       PYTHON_ARCH: "32"
-# init:
-#     - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
-#     - echo %PYTHON_VERSION% %MINICONDA_PATH% %PYTHON_ARCH%
 
 install:
     - cmd: call %MINICONDA_PATH%\Scripts\activate.bat
     - cmd: appveyor-retry conda update --yes --quiet conda
     - cmd: appveyor-retry conda install --yes --quiet numpy scipy pandas pytest
     - cmd: pip install -r requirements.txt
-    - cmd: python setup.py install
+    - cmd: pip install -r test-requirements.txt
+    - cmd: python setup.py test && git clean -xdf
+    - cmd: python setup.py install && git clean -xdf
 
 test_script:
-    - cmd: pip install -r test-requirements.txt
-    - cmd: python setup.py test
     - cmd: cd C:\
     - cmd: python -c "import sys; import %PKG_NAME%; sys.exit(%PKG_NAME%.test())"
-
-#
-# on_finish:
-#   - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
