@@ -18,7 +18,7 @@ environment:
 
 install:
     - cmd: call %MINICONDA_PATH%\Scripts\activate.bat
-    - cmd: appveyor-retry conda update --yes --quiet conda
+    - cmd: appveyor-retry conda update --yes --quiet conda setuptools wheel
     - cmd: appveyor-retry conda install --yes --quiet numpy scipy pandas pytest
     - cmd: pip install -r requirements.txt
     - cmd: pip install -r test-requirements.txt
