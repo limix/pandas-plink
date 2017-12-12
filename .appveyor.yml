@@ -32,5 +32,6 @@ install:
     - python setup.py install
 
 test_script:
+    - pip install -r test-requirements.txt
     - python -c "import sys; import %PKGNAME%; sys.exit(%PKGNAME%.__version__)"
     - python setup.py test
