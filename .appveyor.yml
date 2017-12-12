@@ -34,5 +34,5 @@ install:
 
 test_script:
     - cmd: cd C:\
-    - cmd: set T="import sys; import %PKG_NAME%; sys.exit(%PKG_NAME%.test())"
+    - cmd: set T=import sys; import %PKG_NAME%; sys.exit(%PKG_NAME%.test())
     - cmd: python -c "%T%"
