@@ -36,3 +36,6 @@ test_script:
     - pip install -r test-requirements.txt
     - python -c "import sys; import %PKGNAME%; sys.exit(%PKGNAME%.__version__)"
     - python setup.py test
+
+on_finish:
+  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
