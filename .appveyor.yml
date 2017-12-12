@@ -6,7 +6,6 @@ configuration: Release
 
 build_script:
     - cmd: call %MINICONDA_PATH%\Scripts\deactivate.bat
-    - cmd: echo %PATH%
     - cmd: pip install cibuildwheel
     - cmd: cibuildwheel --output-dir wheelhouse
 
@@ -16,6 +15,7 @@ artifacts:
 
 environment:
     PKG_NAME: pandas_plink
+    CIBW_SKIP: cp33-* cp34-* cp35-*
     matrix:
     - PYTHON_VERSION: 2.7
       TARGET_ARCH: "x64"
