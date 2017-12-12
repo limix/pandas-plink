@@ -29,7 +29,7 @@ install:
 test_script:
     - cmd: pip install -r test-requirements.txt
     - cmd: python setup.py test
-    - cmd: C:\
+    - cmd: cd C:\
     - cmd: python -c "import sys; import %PKG_NAME%; sys.exit(%PKG_NAME%.test())"
 
 #
