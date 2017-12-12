@@ -1,1 +1,1 @@
-collect_ignore = ["testit.py"]
+collect_ignore = ["testit.py", "bed_reader.py"]

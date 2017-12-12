@@ -5,4 +5,3 @@ include test-requirements.txt
 include pandas_plink/test/data_files/data.bed
 include pandas_plink/test/data_files/data.bim
 include pandas_plink/test/data_files/data.fam
-exclude pandas_plink/bed_reader.py
