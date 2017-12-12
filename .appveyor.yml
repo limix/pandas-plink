@@ -20,6 +20,7 @@ environment:
       MINICONDA: C:\Miniconda
       PYTHON_ARCH: "32"
 init:
+    - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
     - echo %PYTHON_VERSION% %MINICONDA% %PYTHON_ARCH%
 
 install:
