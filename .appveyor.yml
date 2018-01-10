@@ -9,7 +9,10 @@ environment:
 
 install:
     - dir %PYTHON%
-    - dir %PYTHON%\\scripts
+    - dir %PYTHON%\\Scripts
+    - dir %PYTHON%\\Lib
+    - dir %PYTHON%\\libs
+    - echo $PYTHONPATH%
     - set PATH=%PYTHON%;%PATH%
     - pip install -U wheel twine six pytest setuptools
     - cp requirements.txt ..\ && cd ..\
