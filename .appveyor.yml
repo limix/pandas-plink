@@ -33,7 +33,8 @@ install:
     - cmd: appveyor-retry conda update --yes --quiet conda setuptools wheel
     - cmd: appveyor-retry conda install --yes --quiet numpy scipy pandas pytest
     - cmd: appveyor-retry conda install --yes --quiet cython
-    - cmd: cp requirements.txt ..\ && pushd ..\
+    - cmd: pushd .
+    - cmd: cp requirements.txt ..\ && cd ..\
     - cmd: pip install -r requirements.txt
     - cmd: del requirements.txt
     - cmd: popd

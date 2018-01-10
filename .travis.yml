@@ -10,7 +10,7 @@ addons:
     - libffi-dev
     - libffi6
 install:
-- cp requirements.txt ~/ && pushd ~/
+- pushd . && cp requirements.txt ~/
 - pip install -r requirements.txt -q && rm requirements.txt && popd
 script:
 - python setup.py build_ext --inplace
