@@ -2,12 +2,9 @@ from __future__ import unicode_literals
 
 from os.path import dirname, join, realpath
 
-import dask
 import pytest
 from numpy import array, nan
 from numpy.testing import assert_array_equal
-
-import pandas
 from pandas_plink import read_plink
 
 
@@ -37,8 +34,6 @@ def test_read_plink():
 
 
 def test_read_plink_prefix_dot():
-
-    datafiles = join(dirname(realpath(__file__)), 'data_files')
 
     with pytest.raises(IOError):
         read_plink('/home/joao/84757.genotypes.norm.renamed')

@@ -9,9 +9,7 @@ environment:
 
 install:
     - set PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%
-    - where pip
-    - where python
-    - pip install -U wheel twine six pytest setuptools
+    - pip install -U wheel six pytest setuptools
     - cp requirements.txt ..\ && cd ..\
     - pip install -r requirements.txt -q
     - del requirements.txt && cd %APPVEYOR_BUILD_FOLDER%
@@ -19,7 +17,5 @@ install:
     - python setup.py install
 
 test_script:
-    - set PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%
     - cd C:\
-    - set T=import sys; import %PKG_NAME%; sys.exit(%PKG_NAME%.test())
-    - python -c "%T%"
+    - python -c "import sys; import %PKG_NAME%; sys.exit(%PKG_NAME%.test())"
