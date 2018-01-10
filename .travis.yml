@@ -10,9 +10,9 @@ addons:
   apt:
     packages:
     - pandoc
-    - python-cffi
+    - python-cffi-backend
 install:
-- pip install -r requirements.txt
+- pip install -r requirements.txt -q
 script:
 script:
 - coverage run --source pandas-plink -m pytest
