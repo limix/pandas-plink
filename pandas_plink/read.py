@@ -75,14 +75,13 @@ def read_plink(file_prefix, verbose=True):
          [ 1.  2.  2.]
          [ 2.  1.  2.]]
 
-    Notice the `i` column in bim and fam data frames. It maps to the
-    corresponding position of the bed matrix:
+    The values of the ``bed`` matrix denote how many alleles ``a1`` (see 
+    output of data frame ``bim``) are in the corresponding position and
+    individual. Notice the column ``i`` in ``bim`` and ``fam`` data frames.
+    It maps to the corresponding position of the bed matrix:
 
     .. doctest::
 
-        >>> from pandas_plink import read_plink
-        >>> from pandas_plink import example_file_prefix
-        >>> (bim, fam, bed) = read_plink(example_file_prefix(), verbose=False)
         >>> chrom1 = bim.query("chrom=='1'")
         >>> X = bed[chrom1.i.values, :].compute()
         >>> print(X) #doctest: +NORMALIZE_WHITESPACE

@@ -1,0 +1,388 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Pandas-plink’s documentation &mdash; pandas-plink 1.2.19 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="pandas-plink 1.2.19 documentation" href="#"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="#" class="icon icon-home"> pandas-plink
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.2.19
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">Pandas-plink’s documentation</a><ul>
+<li><a class="reference internal" href="#install">Install</a></li>
+<li><a class="reference internal" href="#usage">Usage</a></li>
+<li><a class="reference internal" href="#module-pandas_plink">Functions</a></li>
+</ul>
+</li>
+</ul>
+</div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">pandas-plink</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="#">Docs</a> &raquo;</li>
+        
+      <li>Pandas-plink’s documentation</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="pandas-plink-s-documentation">
+<h1>Pandas-plink’s documentation<a class="headerlink" href="#pandas-plink-s-documentation" title="Permalink to this headline">¶</a></h1>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Date:</th><td class="field-body">Jan 10, 2018</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Version:</th><td class="field-body">1.2.19</td>
+</tr>
+</tbody>
+</table>
+<p>Read PLINK files into Pandas data frames with support of mapping multiple BED
+files at once.</p>
+<div class="section" id="install">
+<h2>Install<a class="headerlink" href="#install" title="Permalink to this headline">¶</a></h2>
+<p>The recommended way of installing it is via <a class="reference external" href="http://conda.pydata.org/docs/index.html">conda</a>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">install</span> <span class="o">-</span><span class="n">c</span> <span class="n">conda</span><span class="o">-</span><span class="n">forge</span> <span class="n">pandas</span><span class="o">-</span><span class="n">plink</span>
+</pre></div>
+</div>
+<p>An alternative way would be via pip:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">pandas</span><span class="o">-</span><span class="n">plink</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
+<p>It is as simple as:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pandas_plink</span> <span class="k">import</span> <span class="n">read_plink</span>
+<span class="p">(</span><span class="n">bim</span><span class="p">,</span> <span class="n">fam</span><span class="p">,</span> <span class="n">G</span><span class="p">)</span> <span class="o">=</span> <span class="n">read_plink</span><span class="p">(</span><span class="s1">&#39;/path/to/data&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>assuming that you have the files</p>
+<blockquote>
+<div><ul class="simple">
+<li><cite>/path/to/data.bim</cite></li>
+<li><cite>/path/to/data.fam</cite></li>
+<li><cite>/path/to/data.bed</cite></li>
+</ul>
+</div></blockquote>
+<p>The returned matrix <code class="docutils literal"><span class="pre">G</span></code> contains <code class="docutils literal"><span class="pre">0</span></code>, <code class="docutils literal"><span class="pre">1</span></code>, <code class="docutils literal"><span class="pre">2</span></code>, or <code class="docutils literal"><span class="pre">NaN</span></code>:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">0</span></code> Homozygous having the first allele (column <code class="docutils literal"><span class="pre">a0</span></code> of <code class="docutils literal"><span class="pre">bim</span></code>)</li>
+<li><code class="docutils literal"><span class="pre">1</span></code> Heterozygous</li>
+<li><code class="docutils literal"><span class="pre">2</span></code> Homozygous having the second allele (column <code class="docutils literal"><span class="pre">a1</span></code> of <code class="docutils literal"><span class="pre">bim</span></code>)</li>
+<li><code class="docutils literal"><span class="pre">NaN</span></code> Missing genotype</li>
+</ul>
+<p>The matrix <code class="docutils literal"><span class="pre">G</span></code> is a <a class="reference external" href="https://dask.pydata.org/">Dask</a> array instead of an usual <a class="reference external" href="http://www.numpy.org">NumPy</a> array.
+It allows for lazy-loading large datasets that would not be able to fit
+in memory.</p>
+</div>
+<div class="section" id="module-pandas_plink">
+<span id="functions"></span><h2>Functions<a class="headerlink" href="#module-pandas_plink" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="pandas_plink.read_plink">
+<code class="descclassname">pandas_plink.</code><code class="descname">read_plink</code><span class="sig-paren">(</span><em>file_prefix</em>, <em>verbose=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pandas_plink/read.html#read_plink"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pandas_plink.read_plink" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read PLINK files into Pandas data frames.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>file_prefix</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – Path prefix to the set of PLINK files. It supports loading many BED
+files at once using globstrings wildcard.</li>
+<li><strong>verbose</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – <code class="docutils literal"><span class="pre">True</span></code> for progress information; <code class="docutils literal"><span class="pre">False</span></code> otherwise.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
+<li><a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.22.0)"><code class="xref py py-class docutils literal"><span class="pre">pandas.DataFrame</span></code></a> – Alleles.</li>
+<li><a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.22.0)"><code class="xref py py-class docutils literal"><span class="pre">pandas.DataFrame</span></code></a> – Samples.</li>
+<li><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.14)"><code class="xref py py-class docutils literal"><span class="pre">numpy.ndarray</span></code></a> – Genotype.</li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<p>We have shipped this package with an example so can load and inspect by
+doing</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pandas_plink</span> <span class="k">import</span> <span class="n">read_plink</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pandas_plink</span> <span class="k">import</span> <span class="n">example_file_prefix</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="n">bim</span><span class="p">,</span> <span class="n">fam</span><span class="p">,</span> <span class="n">bed</span><span class="p">)</span> <span class="o">=</span> <span class="n">read_plink</span><span class="p">(</span><span class="n">example_file_prefix</span><span class="p">(),</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">bim</span><span class="o">.</span><span class="n">head</span><span class="p">())</span> 
+<span class="go">  chrom         snp   cm    pos a0 a1  i</span>
+<span class="go">0     1  rs10399749  0.0  45162  G  C  0</span>
+<span class="go">1     1   rs2949420  0.0  45257  C  T  1</span>
+<span class="go">2     1   rs2949421  0.0  45413  0  0  2</span>
+<span class="go">3     1   rs2691310  0.0  46844  A  T  3</span>
+<span class="go">4     1   rs4030303  0.0  72434  0  G  4</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">fam</span><span class="o">.</span><span class="n">head</span><span class="p">())</span> 
+<span class="go">        fid       iid    father    mother gender trait  i</span>
+<span class="go">0  Sample_1  Sample_1         0         0      1    -9  0</span>
+<span class="go">1  Sample_2  Sample_2         0         0      2    -9  1</span>
+<span class="go">2  Sample_3  Sample_3  Sample_1  Sample_2      2    -9  2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">bed</span><span class="o">.</span><span class="n">compute</span><span class="p">())</span> 
+<span class="go">[[ 2.  2.  1.]</span>
+<span class="go"> [ 2.  1.  2.]</span>
+<span class="go"> [nan nan nan]</span>
+<span class="go"> [nan nan  1.]</span>
+<span class="go"> [ 2.  2.  2.]</span>
+<span class="go"> [ 2.  2.  2.]</span>
+<span class="go"> [ 2.  1.  0.]</span>
+<span class="go"> [ 2.  2.  2.]</span>
+<span class="go"> [ 1.  2.  2.]</span>
+<span class="go"> [ 2.  1.  2.]]</span>
+</pre></div>
+</div>
+<p>The values of the <code class="docutils literal"><span class="pre">bed</span></code> matrix denote how many alleles <code class="docutils literal"><span class="pre">a1</span></code> (see
+output of data frame <code class="docutils literal"><span class="pre">bim</span></code>) are in the corresponding position and
+individual. Notice the column <code class="docutils literal"><span class="pre">i</span></code> in <code class="docutils literal"><span class="pre">bim</span></code> and <code class="docutils literal"><span class="pre">fam</span></code> data frames.
+It maps to the corresponding position of the bed matrix:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">chrom1</span> <span class="o">=</span> <span class="n">bim</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;chrom==&#39;1&#39;&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">bed</span><span class="p">[</span><span class="n">chrom1</span><span class="o">.</span><span class="n">i</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="p">:]</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> 
+<span class="go">[[ 2.  2.  1.]</span>
+<span class="go"> [ 2.  1.  2.]</span>
+<span class="go"> [nan nan nan]</span>
+<span class="go"> [nan nan  1.]</span>
+<span class="go"> [ 2.  2.  2.]</span>
+<span class="go"> [ 2.  2.  2.]</span>
+<span class="go"> [ 2.  1.  0.]</span>
+<span class="go"> [ 2.  2.  2.]</span>
+<span class="go"> [ 1.  2.  2.]</span>
+<span class="go"> [ 2.  1.  2.]]</span>
+</pre></div>
+</div>
+<p>It also allows the use of the wildcard character <code class="docutils literal"><span class="pre">*</span></code> for mapping
+multiple BED files at
+once: <code class="docutils literal"><span class="pre">(bim,</span> <span class="pre">fam,</span> <span class="pre">bed)</span> <span class="pre">=</span> <span class="pre">read_plink(&quot;chrom*&quot;)</span></code>.
+In this case, only one of the FAM files will be used to define
+sample information. Data from BIM and BED files are concatenated to
+provide a single view of the files.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pandas_plink.test">
+<code class="descclassname">pandas_plink.</code><code class="descname">test</code><span class="sig-paren">(</span><em>verbose=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pandas_plink/testit.html#test"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pandas_plink.test" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run tests to verify this package’s integrity.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>verbose</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – <code class="docutils literal"><span class="pre">True</span></code> to show diagnostic. Defaults to <code class="docutils literal"><span class="pre">True</span></code>.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Exit code: <code class="docutils literal"><span class="pre">0</span></code> for success.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)">int</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="pandas_plink.example_file_prefix">
+<code class="descclassname">pandas_plink.</code><code class="descname">example_file_prefix</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pandas_plink.html#example_file_prefix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pandas_plink.example_file_prefix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Data files prefix.</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Danilo Horta.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'1.2.19',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
