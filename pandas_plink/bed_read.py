@@ -1,10 +1,9 @@
 from numpy import ascontiguousarray, empty, int64, nan, zeros
 
-from .bed_reader import ffi, lib
-
 
 def read_bed_chunk(filepath, nrows, ncols, row_start, row_end, col_start,
                    col_end):
+    from .bed_reader import ffi, lib
 
     X = zeros((row_end - row_start, col_end - col_start), int64)
 

@@ -1,5 +1,5 @@
 brent-search>=1.0.29
-cffi>=1.11.2
+cffi
 codecov>=2.0.9
 dask>=0.16
 ndarray-listener>=1.0.26
