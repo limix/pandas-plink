@@ -16,6 +16,7 @@ before_install:
 - python -c "import setuptools; print(setuptools.__version__)"
 - pip install -U setuptools -q
 - python -c "import setuptools; print(setuptools.__version__)"
+- pip install -r requirements.txt
 install:
 - pwd
 - ls
