@@ -13,3 +13,5 @@ setuptools>=36.5.0
 ndarray-listener>=1.0.26
 brent-search>=1.0.29
 sphinx_rtd_theme>=0.2.4
+pytest-gitignore>=1.3
+codecov>=2.0.9
