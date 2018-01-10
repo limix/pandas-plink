@@ -75,7 +75,7 @@ def read_plink(file_prefix, verbose=True):
          [ 1.  2.  2.]
          [ 2.  1.  2.]]
 
-    The values of the ``bed`` matrix denote how many alleles ``a1`` (see 
+    The values of the ``bed`` matrix denote how many alleles ``a1`` (see
     output of data frame ``bim``) are in the corresponding position and
     individual. Notice the column ``i`` in ``bim`` and ``fam`` data frames.
     It maps to the corresponding position of the bed matrix:
