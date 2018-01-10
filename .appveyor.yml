@@ -8,12 +8,9 @@ environment:
     PYTHON: "C:\\Python36-x64"
 
 install:
-    - dir %PYTHON%
-    - dir %PYTHON%\\Scripts
-    - dir %PYTHON%\\Lib
-    - dir %PYTHON%\\libs
-    - echo $PYTHONPATH%
-    - set PATH=%PYTHON%;%PATH%
+    - set PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%
+    - where pip
+    - where python
     - pip install -U wheel twine six pytest setuptools
     - cp requirements.txt ..\ && cd ..\
     - pip install -r requirements.txt -q
@@ -22,7 +19,7 @@ install:
     - python setup.py install
 
 test_script:
-    - set PATH=%PYTHON%\\scripts;%PATH%
+    - set PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%
     - cd C:\
     - set T=import sys; import %PKG_NAME%; sys.exit(%PKG_NAME%.test())
     - python -c "%T%"
