@@ -10,7 +10,8 @@ addons:
   apt:
     packages:
     - pandoc
-    - python-cffi-backend
+    - libffi-dev
+    - libffi6
 install:
 - pip install -r requirements.txt -q
 script:
