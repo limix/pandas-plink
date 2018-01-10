@@ -10,6 +10,10 @@ addons:
   apt:
     packages:
     - pandoc
+    - python-cffi
+    - python-cffi-backend
+    - python3-cffi
+    - python3-cffi-backend
 install:
 - pip install -r requirements.txt
 script:
