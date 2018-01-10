@@ -14,7 +14,8 @@ addons:
     - libffi6
 install:
 - pip install -r requirements.txt -q
-script:
+- pwd
+- ls
 script:
 - coverage run --source pandas-plink -m pytest
 - python setup.py install
