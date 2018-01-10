@@ -10,8 +10,9 @@ addons:
     - libffi-dev
     - libffi6
 install:
-- pushd . && cp requirements.txt ~/
-- pip install -r requirements.txt -q && rm requirements.txt && popd
+- pushd . && cp requirements.txt ~/ && cd ~/
+- travis_retry pip install -r requirements.txt -q
+- rm requirements.txt && popd
 script:
 - python setup.py build_ext --inplace
 - coverage run --source pandas_plink -m pytest
