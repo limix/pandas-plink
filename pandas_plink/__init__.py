@@ -5,10 +5,7 @@ import _cffi_backend as _
 from .read import read_plink
 from .testit import test
 
-__name__ = "pandas-plink"
 __version__ = "1.2.18"
-__author__ = "Danilo Horta"
-__author_email__ = "horta@ebi.ac.uk"
 
 
 def example_file_prefix():
@@ -19,6 +16,5 @@ def example_file_prefix():
 
 
 __all__ = [
-    "__name__", "__version__", "__author__", "__author_email__", "test",
-    'example_file_prefix', 'read_plink'
+    "__name__", "__version__", "test", 'example_file_prefix', 'read_plink'
 ]

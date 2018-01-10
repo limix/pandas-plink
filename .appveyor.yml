@@ -34,7 +34,6 @@ install:
     - cmd: appveyor-retry conda install --yes --quiet numpy scipy pandas pytest
     - cmd: appveyor-retry conda install --yes --quiet cython
     - cmd: pip install -r requirements.txt
-    - cmd: pip install -r test-requirements.txt
     - cmd: python setup.py test
     - cmd: python setup.py install
 
