@@ -6,7 +6,7 @@ if __name__ == '__main__':
         import pypandoc
         long_description = pypandoc.convert_text(
             readme, 'rst', format='markdown_github')
-    except (ImportError, RuntimeError):
+    except (ImportError, RuntimeError, OSError):
         long_description = readme
 
     setup(
