@@ -63,7 +63,7 @@ def read_plink(file_prefix, verbose=True):
         0  Sample_1  Sample_1         0         0      1    -9  0
         1  Sample_2  Sample_2         0         0      2    -9  1
         2  Sample_3  Sample_3  Sample_1  Sample_2      2    -9  2
-        >>> print(bed.compute())
+        >>> print(bed.compute()) #doctest: +NORMALIZE_WHITESPACE
         [[  2.   2.   1.]
          [  2.   1.   2.]
          [ nan  nan  nan]
