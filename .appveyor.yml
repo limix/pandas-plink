@@ -17,6 +17,7 @@ install:
     - python setup.py install
 
 test_script:
+    - set PATH=%PYTHON%\\scripts;%PATH%
     - cd C:\
     - set T=import sys; import %PKG_NAME%; sys.exit(%PKG_NAME%.test())
     - python -c "%T%"
