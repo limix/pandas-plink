@@ -1,6 +1,6 @@
 # pandas-plink
 
-[![Travis](https://img.shields.io/travis/limix/pandas-plink/master.svg?style=flat-square&label=build)](https://travis-ci.org/limix/pandas-plink) [![Documentation](https://img.shields.io/readthedocs/pandas-plink.svg?style=flat-square&version=stable)](https://pandas-plink.readthedocs.io/) [![Gitter](https://img.shields.io/gitter/room/limix/pandas-plink.js.svg?style=flat-square)](https://gitter.im/pandas-plink/Lobby)
+[![Travis](https://img.shields.io/travis/limix/pandas-plink/master.svg?style=flat-square)](https://travis-ci.org/limix/pandas-plink) [![Documentation](https://img.shields.io/readthedocs/pandas-plink.svg?style=flat-square&version=stable)](https://pandas-plink.readthedocs.io/) [![Gitter](https://img.shields.io/gitter/room/limix/pandas-plink.js.svg?style=flat-square)](https://gitter.im/pandas-plink/Lobby)
 
 Pandas-plink is a Python package for reading [PLINK binary file format](https://www.cog-genomics.org/plink2/formats).
 The file reading is taken place via [lazy loading](https://en.wikipedia.org/wiki/Lazy_loading), meaning that it saves up memory by actually reading only the genotypes that are actually accessed by the user.
