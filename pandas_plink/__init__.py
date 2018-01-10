@@ -1,6 +1,9 @@
 from __future__ import absolute_import as _
 
-import _cffi_backend as _
+try:
+    import _cffi_backend as _
+except ImportError:
+    pass
 
 from .read import read_plink
 from .testit import test
