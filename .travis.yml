@@ -12,7 +12,13 @@ addons:
     - pandoc
     - libffi-dev
     - libffi6
+before_install:
+- echo "before install"
 install:
+- pwd
+- ls
+- cat requirements.txt
+- which pip
 - pip install -r requirements.txt -q
 - pwd
 - ls
