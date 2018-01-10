@@ -1,48 +1,22 @@
-# Skip .NET project specific build phase.
-build: false
+build: off
 clone_depth: 5
 platform: x64
 configuration: Release
 
-build_script:
-    - cmd: call %MINICONDA_PATH%\Scripts\deactivate.bat
-    - cmd: pip install cibuildwheel
-    - cmd: cibuildwheel --output-dir wheelhouse
-    - ps: >-
-        if ($env:APPVEYOR_REPO_TAG -eq "true") {
-            python -m pip install twine
-            python -m twine upload (resolve-path wheelhouse\*.whl)
-        }
-
-artifacts:
-    - path: "wheelhouse\\*.whl"
-      name: Wheels
-
 environment:
     PKG_NAME: pandas_plink
-    TWINE_USERNAME: dhorta
-    CIBW_SKIP: cp33-* cp34-* cp35-*
-    matrix:
-    - PYTHON_VERSION: 2.7
-      TARGET_ARCH: "x64"
-      MINICONDA_PATH: C:\\Miniconda
-      PYTHON_ARCH: "32"
+    PYTHON: "C:\\Python36-x64"
 
 install:
-    - cmd: call %MINICONDA_PATH%\Scripts\activate.bat
-    - cmd: appveyor-retry conda update --yes --quiet conda setuptools wheel
-    - cmd: appveyor-retry conda install --yes --quiet numpy scipy pandas pytest
-    - cmd: appveyor-retry conda install --yes --quiet cython
-    - cmd: cp requirements.txt ..\ && cd ..\
-    - cmd: pip install -r requirements.txt
-    - cmd: del requirements.txt
-    - cmd: cd %APPVEYOR_BUILD_FOLDER%
-    - cmd: echo %cd%
-    - cmd: python setup.py test
-    - cmd: python setup.py install
+    - set PATH=%PYTHON%\\scripts;%PATH%
+    - pip install -U wheel twine six pytest setuptools
+    - cp requirements.txt ..\ && cd ..\
+    - pip install -r requirements.txt -q
+    - del requirements.txt && cd %APPVEYOR_BUILD_FOLDER%
+    - python setup.py test
+    - python setup.py install
 
 test_script:
-    - cmd: call %MINICONDA_PATH%\Scripts\activate.bat
-    - cmd: cd C:\
-    - cmd: set T=import sys; import %PKG_NAME%; sys.exit(%PKG_NAME%.test())
-    - cmd: python -c "%T%"
+    - cd C:\
+    - set T=import sys; import %PKG_NAME%; sys.exit(%PKG_NAME%.test())
+    - python -c "%T%"
