@@ -8,7 +8,9 @@ environment:
     PYTHON: "C:\\Python36-x64"
 
 install:
-    - set PATH=%PYTHON%\\scripts;%PATH%
+    - dir %PYTHON%
+    - dir %PYTHON%\\scripts
+    - set PATH=%PYTHON%;%PATH%
     - pip install -U wheel twine six pytest setuptools
     - cp requirements.txt ..\ && cd ..\
     - pip install -r requirements.txt -q
