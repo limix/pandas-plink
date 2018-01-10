@@ -14,9 +14,9 @@ install:
 - cp requirements.txt ~/ && pushd ~/
 - pip install -r requirements.txt -q && rm requirements.txt && popd
 script:
-- coverage run --source pandas-plink -m pytest
-- python setup.py install
-- pip uninstall pandas-plink --yes
+- python setup.py build_ext --inplace
+- coverage run --source pandas_plink -m pytest
+- python setup.py install && pip uninstall pandas-plink --yes
 - python setup.py sdist
 - pip install dist/$(ls dist | grep -i -E '\.(gz)$' | head -1)
 - pip uninstall pandas-plink --yes
