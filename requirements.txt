@@ -3,7 +3,7 @@ cffi
 codecov>=2.0.9
 dask>=0.16.1
 ndarray_listener>=1.0.26
-numpy>=1.13.3
+numpy>=1.14.0
 pandas>=0.22
 pypandoc>=1.4
 pytest_gitignore>=1.3
