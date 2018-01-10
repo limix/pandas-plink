@@ -24,11 +24,9 @@ def test(verbose=True):
     chdir(src_path)
 
     try:
-        return_code = __import__('pytest').main(['-q', '--doctest-modules'])
+        return_code = __import__('pytest').main(
+            ['--doctest-modules', '-x', '--pep8'])
     finally:
         chdir(old_path)
-
-    if return_code == 0:
-        print("Congratulations. All tests have passed!")
 
     return return_code
