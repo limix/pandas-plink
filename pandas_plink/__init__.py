@@ -8,7 +8,7 @@ except ImportError:
 from .read import read_plink
 from .testit import test
 
-__version__ = "1.2.18"
+__version__ = "1.2.19"
 
 
 def example_file_prefix():
