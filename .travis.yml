@@ -10,19 +10,9 @@ addons:
     - pandoc
     - libffi-dev
     - libffi6
-before_install:
-- python -c "import setuptools; print(setuptools.__version__)"
-- pip install -U setuptools -q
-- python -c "import setuptools; print(setuptools.__version__)"
-- pip install -r requirements.txt
 install:
-- pwd
-- ls
-- cat requirements.txt
-- which pip
-- pip install -r requirements.txt -q
-- pwd
-- ls
+- cp requirements.txt ~/ && pushd ~/
+- pip install -r requirements.txt -q && rm requirements.txt && popd
 script:
 - coverage run --source pandas-plink -m pytest
 - python setup.py install
