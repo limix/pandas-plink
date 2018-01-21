@@ -1,27 +1,29 @@
-language: python
-sudo: false
+os:
+  - osx
+  - linux
+language:       python
+sudo:           false
 python:
-- '2.7'
-- '3.6'
+    - '3.6'
 addons:
   apt:
     packages:
-    - pandoc
-    - libffi-dev
-    - libffi6
+        - pandoc
+        - libffi-dev
+        - libffi6
 install:
-- pushd . && cp requirements.txt ~/ && cd ~/
-- travis_retry pip install -r requirements.txt -q
-- rm requirements.txt && popd
+    - pushd . && cp requirements.txt ~/ && cd ~/
+    - travis_retry pip install -r requirements.txt -q
+    - rm requirements.txt && popd
 script:
-- python setup.py build_ext --inplace
-- coverage run --source pandas_plink -m pytest
-- python setup.py install && pip uninstall pandas-plink --yes
-- python setup.py sdist
-- pip install dist/$(ls dist | grep -i -E '\.(gz)$' | head -1)
-- pip uninstall pandas-plink --yes
+    - python setup.py build_ext --inplace
+    - coverage run --source pandas_plink -m pytest
+    - python setup.py install && pip uninstall pandas-plink --yes
+    - python setup.py sdist
+    - pip install dist/$(ls dist | grep -i -E '\.(gz)$' | head -1)
+    - pip uninstall pandas-plink --yes
 after_success:
-- codecov
+    - codecov
 notifications:
   email:
     recipients:
@@ -29,11 +31,11 @@ notifications:
     on_success: never
     on_failure: always
 deploy:
-  provider: pypi
-  user: dhorta
+  provider:     pypi
+  user:         dhorta
   password:
-    secure: UCQ8qCXJOJnGUxVHsj+m1NAcGrS02TAK9mS86HzOnpuzcyomw1RrP02f6qgsAYJNPozlm5eQh0puKFAfAvhU1G8Na/pe1SzSXrKlo3OuaaZNp/MQqKj/SVHZt2OHB05YfvkmPStTUSlcwlinMqKiYv4M9oBbyRhE9tJhOOmxcilsY77my3EApPzmp8A6UJftENz5VEs+/e/SDZni+h/skme+7n4TyFUkosDCksyjxq+ShHwr+VxQfDnd7PlLJSTxMFqlIIgTwotVZsGI8kPHuiz/M740kKx7ORGxhqqxSN57AQEEDEPwBta954SO0j/ot+1rhIRatKesDkFw4RnIqW2idVY2WNOkca2KaCN+76H/TKNPMt7ZctS1hZbKWCC7e8xFtnARpsdRnJxe1n7MlZM80vCy0trzsC4ibhU68XkjGiwxQ8QPsuM+NvxieiT71W0N2II4lDEG4f+ZfNapVWb1g3R1RjCZzbrdqyAo/BZMvhBRYj4zfDiQ4xb7RBg0YAIr2Q2f+dttnBF5KL420RTgT6XtxYW55bv2gTKusifao/48Pd/OvHOmth8sv1At4cQUj/drPoChOcZcVGOWwT+Hl8/ZHXy+EASTNOLFRv7+iNjSl6vycN18Ny6ZlqiUirme7ztxqFf47XhZBPeIJYgaj88Gclv5ND7KLytSp7A=
+    secure:     UCQ8qCXJOJnGUxVHsj+m1NAcGrS02TAK9mS86HzOnpuzcyomw1RrP02f6qgsAYJNPozlm5eQh0puKFAfAvhU1G8Na/pe1SzSXrKlo3OuaaZNp/MQqKj/SVHZt2OHB05YfvkmPStTUSlcwlinMqKiYv4M9oBbyRhE9tJhOOmxcilsY77my3EApPzmp8A6UJftENz5VEs+/e/SDZni+h/skme+7n4TyFUkosDCksyjxq+ShHwr+VxQfDnd7PlLJSTxMFqlIIgTwotVZsGI8kPHuiz/M740kKx7ORGxhqqxSN57AQEEDEPwBta954SO0j/ot+1rhIRatKesDkFw4RnIqW2idVY2WNOkca2KaCN+76H/TKNPMt7ZctS1hZbKWCC7e8xFtnARpsdRnJxe1n7MlZM80vCy0trzsC4ibhU68XkjGiwxQ8QPsuM+NvxieiT71W0N2II4lDEG4f+ZfNapVWb1g3R1RjCZzbrdqyAo/BZMvhBRYj4zfDiQ4xb7RBg0YAIr2Q2f+dttnBF5KL420RTgT6XtxYW55bv2gTKusifao/48Pd/OvHOmth8sv1At4cQUj/drPoChOcZcVGOWwT+Hl8/ZHXy+EASTNOLFRv7+iNjSl6vycN18Ny6ZlqiUirme7ztxqFf47XhZBPeIJYgaj88Gclv5ND7KLytSp7A=
   on:
-    tags: true
-    repo: limix/pandas-plink
-    banch: master
+    tags:       true
+    repo:       limix/pandas-plink
+    banch:      master
