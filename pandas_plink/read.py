@@ -4,9 +4,8 @@ import sys
 from collections import OrderedDict as odict
 from glob import glob
 from os.path import basename, dirname, join
-from pandas import concat
-from pandas import read_csv
 
+import pandas as pd
 from tqdm import tqdm
 
 from .bed_read import read_bed
@@ -122,7 +121,7 @@ def read_plink(file_prefix, verbose=True):
     nmarkers = dict()
     for i, bi in enumerate(bim):
         nmarkers[fn[i]['bed']] = bi.shape[0]
-    bim = concat(bim, axis=0, ignore_index=True)
+    bim = pd.concat(bim, axis=0, ignore_index=True)
 
     fam = _read_file([fn[0]], "Reading fam file(s)...",
                      lambda fn: _read_fam(fn['fam']), pbar)[0]
@@ -148,7 +147,7 @@ def _read_file(fn, desc, read_func, pbar):
 
 
 def _read_csv(fn, header):
-    return read_csv(
+    return pd.read_csv(
         fn,
         delim_whitespace=True,
         header=None,
