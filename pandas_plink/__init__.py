@@ -1,14 +1,9 @@
 from __future__ import absolute_import as _
 
-try:
-    import _cffi_backend as _
-except ImportError:
-    pass
-
 from .read import read_plink
 from .testit import test
 
-__version__ = "1.2.21"
+__version__ = "1.2.22"
 
 
 def example_file_prefix():
