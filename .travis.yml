@@ -1,6 +1,4 @@
-os:
-  - osx
-  - linux
+os: linux
 language:       python
 sudo:           false
 python:
