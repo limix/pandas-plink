@@ -1,4 +1,3 @@
-include CHANGELOG.md
 include LICENSE.md
 include pandas_plink/test/data_files/data.bed
 include pandas_plink/test/data_files/data.bim
