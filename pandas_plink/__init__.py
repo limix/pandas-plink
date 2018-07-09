@@ -1,9 +1,9 @@
 from __future__ import absolute_import as _
 
-from .read import read_plink
-from .testit import test
+from ._read import read_plink
+from ._testit import test
 
-__version__ = "1.2.25"
+__version__ = "1.2.26"
 
 
 def example_file_prefix():
@@ -14,5 +14,5 @@ def example_file_prefix():
 
 
 __all__ = [
-    "__name__", "__version__", "test", 'example_file_prefix', 'read_plink'
+    "__version__", "test", 'example_file_prefix', 'read_plink'
 ]

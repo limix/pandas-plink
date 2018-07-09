@@ -10,12 +10,14 @@ from tqdm import tqdm
 
 from .bed_read import read_bed
 
-PY3 = sys.version_info >= (3, )
+PY3 = sys.version_info >= (3,)
 
 if PY3:
 
     def _ord(x):
         return x
+
+
 else:
     _ord = ord
 
@@ -106,30 +108,35 @@ def read_plink(file_prefix, verbose=True):
 
     file_prefixes = glob(file_prefix)
     if len(file_prefixes) == 0:
-        file_prefixes = [file_prefix.replace('*', '')]
+        file_prefixes = [file_prefix.replace("*", "")]
 
     file_prefixes = _clean_prefixes(file_prefixes)
 
     fn = []
     for fp in file_prefixes:
-        fn.append({s: "%s.%s" % (fp, s) for s in ['bed', 'bim', 'fam']})
+        fn.append({s: "%s.%s" % (fp, s) for s in ["bed", "bim", "fam"]})
 
     pbar = tqdm(desc="Mapping files", total=3 * len(fn), disable=not verbose)
-    bim = _read_file(fn, "Reading bim file(s)...",
-                     lambda fn: _read_bim(fn['bim']), pbar)
+    bim = _read_file(
+        fn, "Reading bim file(s)...", lambda fn: _read_bim(fn["bim"]), pbar
+    )
 
     nmarkers = dict()
     for i, bi in enumerate(bim):
-        nmarkers[fn[i]['bed']] = bi.shape[0]
+        nmarkers[fn[i]["bed"]] = bi.shape[0]
     bim = pd.concat(bim, axis=0, ignore_index=True)
 
-    fam = _read_file([fn[0]], "Reading fam file(s)...",
-                     lambda fn: _read_fam(fn['fam']), pbar)[0]
+    fam = _read_file(
+        [fn[0]], "Reading fam file(s)...", lambda fn: _read_fam(fn["fam"]), pbar
+    )[0]
     nsamples = fam.shape[0]
 
     bed = _read_file(
-        fn, "Reading bed file(s)...",
-        lambda fn: _read_bed(fn['bed'], nsamples, nmarkers[fn['bed']]), pbar)
+        fn,
+        "Reading bed file(s)...",
+        lambda fn: _read_bed(fn["bed"], nsamples, nmarkers[fn["bed"]]),
+        pbar,
+    )
 
     bed = concatenate(bed, axis=0)
 
@@ -154,29 +161,46 @@ def _read_csv(fn, header):
         names=header.keys(),
         dtype=header,
         compression=None,
-        engine='c')
+        engine="c",
+    )
 
 
 def _read_bim(fn):
-    header = odict([('chrom', bytes), ('snp', bytes), ('cm', float),
-                    ('pos', int), ('a0', bytes), ('a1', bytes)])
+    header = odict(
+        [
+            ("chrom", bytes),
+            ("snp", bytes),
+            ("cm", float),
+            ("pos", int),
+            ("a0", bytes),
+            ("a1", bytes),
+        ]
+    )
     df = _read_csv(fn, header)
 
-    df['chrom'] = df['chrom'].astype('category')
-    df['a0'] = df['a0'].astype('category')
-    df['a1'] = df['a1'].astype('category')
-    df['i'] = range(df.shape[0])
+    df["chrom"] = df["chrom"].astype("category")
+    df["a0"] = df["a0"].astype("category")
+    df["a1"] = df["a1"].astype("category")
+    df["i"] = range(df.shape[0])
     return df
 
 
 def _read_fam(fn):
-    header = odict([('fid', str), ('iid', str), ('father', str),
-                    ('mother', str), ('gender', bytes), ('trait', str)])
+    header = odict(
+        [
+            ("fid", str),
+            ("iid", str),
+            ("father", str),
+            ("mother", str),
+            ("gender", bytes),
+            ("trait", str),
+        ]
+    )
 
     df = _read_csv(fn, header)
 
-    df['gender'] = df['gender'].astype('category')
-    df['i'] = range(df.shape[0])
+    df["gender"] = df["gender"].astype("category")
+    df["i"] = range(df.shape[0])
     return df
 
 
@@ -186,8 +210,8 @@ def _read_bed(fn, nsamples, nmarkers):
     _check_bed_header(fn)
     major = _major_order(fn)
 
-    ncols = nmarkers if major == 'individual' else nsamples
-    nrows = nmarkers if major == 'snp' else nsamples
+    ncols = nmarkers if major == "individual" else nsamples
+    nrows = nmarkers if major == "snp" else nsamples
 
     return read_bed(fn, nrows, ncols)
 
@@ -209,9 +233,9 @@ def _major_order(fn):
         if len(arr) < 1:
             raise ValueError("Couldn't read column order: %s." % fn)
         if _ord(arr[0]) == 1:
-            return 'snp'
+            return "snp"
         elif _ord(arr[0]) == 0:
-            return 'individual'
+            return "individual"
         raise ValueError("Couldn't understand matrix layout.")
 
 
@@ -226,13 +250,13 @@ def _clean_prefixes(prefixes):
     for p in prefixes:
         dirn = dirname(p)
         basen = basename(p)
-        base = '.'.join(basen.split('.')[:-1])
+        base = ".".join(basen.split(".")[:-1])
         if len(base) == 0:
             path = p
         else:
-            ext = basen.split('.')[-1]
-            if ext not in ['bed', 'fam', 'bim']:
-                base += '.' + ext
+            ext = basen.split(".")[-1]
+            if ext not in ["bed", "fam", "bim"]:
+                base += "." + ext
             path = join(dirn, base)
         paths.append(path)
     return list(set(paths))
