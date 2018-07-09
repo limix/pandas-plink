@@ -4,7 +4,6 @@ env:
   global:
   - PKG_NAME=pandas_plink
   - CIBW_SKIP="cp27-* cp34-* cp35-*"
-  - CIBW_BEFORE_BUILD_LINUX="./before-build-linux"
 matrix:
   include:
     - sudo: required
@@ -26,10 +25,10 @@ script:
     sudo chown -R "${USER}:admin" /usr/local/man
   fi
 - bash <(curl -fsSL https://raw.githubusercontent.com/horta/ci/master/travis.sh)
+- pip install cibuildwheel>=0.9.1
+- cibuildwheel --output-dir wheelhouse
 - |
   if [ "${TRAVIS_TAG:-}" != "" ]; then
-    pip install cibuildwheel>=0.9.1
-    cibuildwheel --output-dir wheelhouse
     pip install twine
     python -m twine upload --skip-existing wheelhouse/*
   fi
