@@ -6,31 +6,27 @@
 #define MIN(a, b) ((a > b) ? b : a)
 
 #ifdef _MSC_VER
- #if (_MSC_VER <= 1500)
-  typedef unsigned __int64     uint64_t;
- #else
- # include <stdint.h>
- #endif
+#if (_MSC_VER <= 1500)
+typedef unsigned __int64 uint64_t;
 #else
-# include <stdint.h>
+#include <stdint.h>
+#endif
+#else
+#include <stdint.h>
 #endif
 
 int read_bed_chunk(char *filepath, uint64_t nrows, uint64_t ncols,
-                          uint64_t row_start, uint64_t col_start,
-                          uint64_t row_end, uint64_t col_end,
-                          uint64_t *out, uint64_t *strides)
+                   uint64_t row_start, uint64_t col_start,
+                   uint64_t row_end, uint64_t col_end,
+                   uint64_t *out, uint64_t *strides)
 {
         char b, b0, b1, p0, p1;
         uint64_t r;
         uint64_t c, ce;
         uint64_t row_chunk;
         uint64_t row_size;
-        FILE* f;
-        char* buff;
-
-        assert(sizeof(uint64_t) == 4);
-        assert(sizeof(char) == 1);
-        assert(col_start % 4 == 0);
+        FILE *f;
+        char *buff;
 
         // in bytes
         row_chunk = (col_end - col_start + 3) / 4;
@@ -76,10 +72,9 @@ int read_bed_chunk(char *filepath, uint64_t nrows, uint64_t ncols,
                         }
                 }
 
-
-                for (c = col_start; c < col_end; )
+                for (c = col_start; c < col_end;)
                 {
-                        b = buff[(c - col_start)/4];
+                        b = buff[(c - col_start) / 4];
 
                         b0 = b & 0x55;
                         b1 = (b & 0xAA) >> 1;
