@@ -4,6 +4,7 @@ configuration: Release
 
 environment:
   PKG_NAME: pandas_plink
+  CIBW_TEST_COMMAND: "python -c \"import %PKG_NAME%; import sys; sys.exit(%PKG_NAME%.test())\""
   matrix:
     - platform: x64
       ARCH: x64
@@ -21,11 +22,7 @@ install:
 build_script:
   - powershell -Command "(New-Object Net.WebClient).DownloadFile('https://raw.githubusercontent.com/horta/ci/master/appveyor.bat', 'appveyor.bat')" && appveyor.bat
   - "%PYTHON%\\python.exe -m cibuildwheel --output-dir wheelhouse"
-  - FOR %%F IN (wheelhouse\*.whl) DO set filename=%%F
-  - "%PYTHON%\\python.exe -m pip install %filename%"
-  - cd ..
   - "%PYTHON%\\python.exe -c \"import pandas_plink; import sys; sys.exit(pandas_plink.test())\""
-  - cd %APPVEYOR_BUILD_FOLDER%
   - if [%APPVEYOR_REPO_TAG%]==[true] (%PYTHON%\python.exe -m pip install twine && %PYTHON%\python.exe -m twine upload --skip-existing wheelhouse/*)
 
 artifacts:
