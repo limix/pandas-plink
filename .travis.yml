@@ -14,7 +14,7 @@ matrix:
       language: generic
       before_install:
         - brew update
-        - brew outdated python || brew upgrade python
+        - brew upgrade python
         - brew unlink python && brew link python
         - export PATH="/usr/local/opt/python/libexec/bin:$PATH"
         - hash -r
