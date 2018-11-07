@@ -106,29 +106,35 @@ def read_plink(file_prefix, verbose=True):
     """
     from dask.array import concatenate
 
-    file_prefixes = glob(file_prefix)
+    file_prefixes = sorted(glob(file_prefix))
     if len(file_prefixes) == 0:
         file_prefixes = [file_prefix.replace("*", "")]
 
-    file_prefixes = _clean_prefixes(file_prefixes)
+    file_prefixes = sorted(_clean_prefixes(file_prefixes))
 
     fn = []
     for fp in file_prefixes:
         fn.append({s: "%s.%s" % (fp, s) for s in ["bed", "bim", "fam"]})
 
     pbar = tqdm(desc="Mapping files", total=3 * len(fn), disable=not verbose)
-    bim = _read_file(
-        fn, "Reading bim file(s)...", lambda fn: _read_bim(fn["bim"]), pbar
-    )
+
+    msg = "Reading bim file(s)..."
+    bim = _read_file(fn, msg, lambda fn: _read_bim(fn["bim"]), pbar)
+    if len(file_prefixes) > 1:
+        if verbose:
+            msg = "Multiple files read in this order: {}"
+            print(msg.format([basename(f) for f in file_prefixes]))
 
     nmarkers = dict()
+    index_offset = 0
     for i, bi in enumerate(bim):
         nmarkers[fn[i]["bed"]] = bi.shape[0]
+        bi["i"] += index_offset
+        index_offset += bi.shape[0]
     bim = pd.concat(bim, axis=0, ignore_index=True)
 
-    fam = _read_file(
-        [fn[0]], "Reading fam file(s)...", lambda fn: _read_fam(fn["fam"]), pbar
-    )[0]
+    msg = "Reading fam file(s)..."
+    fam = _read_file([fn[0]], msg, lambda fn: _read_fam(fn["fam"]), pbar)[0]
     nsamples = fam.shape[0]
 
     bed = _read_file(
@@ -255,7 +261,7 @@ def _clean_prefixes(prefixes):
             path = p
         else:
             ext = basen.split(".")[-1]
-            if ext not in ["bed", "fam", "bim"]:
+            if ext not in ["bed", "fam", "bim", "nosex", "log"]:
                 base += "." + ext
             path = join(dirn, base)
         paths.append(path)

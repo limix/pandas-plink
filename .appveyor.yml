@@ -8,16 +8,16 @@ environment:
   matrix:
     - platform: x64
       ARCH: x64
-      PYTHON: C:\Python36-x64
+      PYTHON: C:\Python37-x64
       CIBW_SKIP: cp27-* cp33-* cp34-* cp35-* *-win32
     - platform: x86
       ARCH: x86
-      PYTHON: C:\Python36
+      PYTHON: C:\Python37
       CIBW_SKIP: cp27-* cp33-* cp34-* cp35-* *-win_amd64
 
 install:
   - set PATH=%PYTHON%;%PYTHON%\Scripts;%PATH%
-  - "%PYTHON%\\python.exe -m pip install cibuildwheel>=0.9.1"
+  - "%PYTHON%\\python.exe -m pip install cibuildwheel>=0.10.0"
 
 build_script:
   - powershell -Command "(New-Object Net.WebClient).DownloadFile('https://raw.githubusercontent.com/horta/ci/master/appveyor.bat', 'appveyor.bat')" && appveyor.bat

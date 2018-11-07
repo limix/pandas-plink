@@ -1,6 +1,14 @@
 include LICENSE.md
+include README.md
+include version.py
 include pandas_plink/test/data_files/data.bed
 include pandas_plink/test/data_files/data.bim
 include pandas_plink/test/data_files/data.fam
-include README.md
-include version.py
+include pandas_plink/test/data_files/chr11.bed
+include pandas_plink/test/data_files/chr11.bim
+include pandas_plink/test/data_files/chr11.fam
+include pandas_plink/test/data_files/chr11.nosex
+include pandas_plink/test/data_files/chr12.bed
+include pandas_plink/test/data_files/chr12.bim
+include pandas_plink/test/data_files/chr12.fam
+include pandas_plink/test/data_files/chr12.nosex
