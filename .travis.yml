@@ -13,11 +13,10 @@ matrix:
     - os: osx
       language: generic
       before_install:
-        - brew update
-        - brew upgrade python
-        - export PATH="/usr/local/opt/python/libexec/bin:$PATH"
+        - HOMEBREW_NO_AUTO_UPDATE=1 brew install python3
+        - export PATH=$(brew --prefix)/bin:$(brew --prefix)/sbin:$PATH
         - hash -r
-        - pip install --upgrade pip setuptools wheel
+        - pip3 install --upgrade pip setuptools wheel
 script:
 - |
   if [ "${TRAVIS_OS_NAME}" == "osx" ]; then
@@ -25,12 +24,12 @@ script:
     sudo chown -R "${USER}:admin" /usr/local/man
   fi
 - bash <(curl -fsSL https://raw.githubusercontent.com/horta/ci/master/travis.sh)
-- pip install cibuildwheel>=0.9.1
+- pip3 install cibuildwheel>=0.9.1
 - cibuildwheel --output-dir wheelhouse
 - |
   if [ "${TRAVIS_TAG:-}" != "" ]; then
-    pip install twine
-    python -m twine upload --skip-existing wheelhouse/*
+    pip3 install twine
+    python3 -m twine upload --skip-existing wheelhouse/*
   fi
 notifications:
   email:
