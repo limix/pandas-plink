@@ -5,7 +5,7 @@ env:
   - PKG_NAME=pandas_plink
   - CIBW_SKIP="cp27-* cp34-* cp35-*"
   - CIBW_TEST_COMMAND="python -c \"import $PKG_NAME; import sys; sys.exit($PKG_NAME.test())\""
-  - CIBW_BEFORE_BUILD="python -m pip install numpy && python -m pip install pandas"
+  - CIBW_BEFORE_BUILD="python -m pip install pandas"
 matrix:
   include:
     - sudo: required
@@ -20,10 +20,6 @@ matrix:
         - ln -s $(brew --prefix)/bin/python3 $(brew --prefix)/bin/python
         - ln -s $(brew --prefix)/bin/pip3 $(brew --prefix)/bin/pip
         - hash -r
-        - which python
-        - python --version
-        - echo $PATH
-        - ls $(brew --prefix)/bin
         - python -m pip install --upgrade pip setuptools wheel
 script:
 - |
@@ -31,8 +27,6 @@ script:
     sudo mkdir -p /usr/local/man
     sudo chown -R "${USER}:admin" /usr/local/man
   fi
-- python -m pip install numpy
-- python -m pip install pandas
 - python -m pip install pandas
 - bash <(curl -fsSL https://raw.githubusercontent.com/horta/ci/master/travis.sh)
 - pip install cibuildwheel>=0.9.1
