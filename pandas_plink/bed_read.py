@@ -1,8 +1,7 @@
 from numpy import ascontiguousarray, empty, int64, nan, zeros
 
 
-def read_bed_chunk(filepath, nrows, ncols, row_start, row_end, col_start,
-                   col_end):
+def read_bed_chunk(filepath, nrows, ncols, row_start, row_end, col_start, col_end):
     from .bed_reader import ffi, lib
 
     X = zeros((row_end - row_start, col_end - col_start), int64)
@@ -12,9 +11,17 @@ def read_bed_chunk(filepath, nrows, ncols, row_start, row_end, col_start,
     strides[:] = X.strides
     strides //= 8
 
-    e = lib.read_bed_chunk(filepath, nrows, ncols, row_start, col_start,
-                           row_end, col_end, ptr,
-                           ffi.cast("uint64_t *", strides.ctypes.data))
+    e = lib.read_bed_chunk(
+        filepath,
+        nrows,
+        ncols,
+        row_start,
+        col_start,
+        row_end,
+        col_end,
+        ptr,
+        ffi.cast("uint64_t *", strides.ctypes.data),
+    )
     if e != 0:
         raise RuntimeError("Failure while reading BED file %s." % filepath)
 
@@ -31,15 +38,16 @@ def read_bed(filepath, nrows, ncols):
 
     row_start = 0
     col_xs = []
-    while (row_start < nrows):
+    while row_start < nrows:
         row_end = min(row_start + chunk_size, nrows)
         col_start = 0
         row_xs = []
-        while (col_start < ncols):
+        while col_start < ncols:
             col_end = min(col_start + chunk_size, ncols)
 
-            x = delayed(read_bed_chunk)(filepath, nrows, ncols, row_start,
-                                        row_end, col_start, col_end)
+            x = delayed(read_bed_chunk)(
+                filepath, nrows, ncols, row_start, row_end, col_start, col_end
+            )
 
             shape = (row_end - row_start, col_end - col_start)
             row_xs += [from_delayed(x, shape, int64)]

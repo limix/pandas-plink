@@ -3,8 +3,9 @@ python: 3.6
 env:
   global:
   - PKG_NAME=pandas_plink
-  - CIBW_SKIP="cp34-* cp35-*"
+  - CIBW_SKIP="cp27-* cp34-* cp35-*"
   - CIBW_TEST_COMMAND="python -c \"import $PKG_NAME; import sys; sys.exit($PKG_NAME.test())\""
+  - CIBW_BEFORE_BUILD="python -m pip install numpy && python -m pip install pandas"
 matrix:
   include:
     - sudo: required
@@ -13,28 +14,32 @@ matrix:
     - os: osx
       language: generic
       before_install:
+        - HOMEBREW_NO_AUTO_UPDATE=1 brew unlink python2
         - HOMEBREW_NO_AUTO_UPDATE=1 brew install python3
         - export PATH=$(brew --prefix)/bin:$(brew --prefix)/sbin:$PATH
+        - ln -s $(brew --prefix)/bin/python3 $(brew --prefix)/bin/python
+        - ln -s $(brew --prefix)/bin/pip3 $(brew --prefix)/bin/pip
         - hash -r
-        - pip3 install --upgrade pip setuptools wheel
+        - python -m pip install --upgrade pip setuptools wheel
 script:
 - |
   if [ "${TRAVIS_OS_NAME}" == "osx" ]; then
     sudo mkdir -p /usr/local/man
     sudo chown -R "${USER}:admin" /usr/local/man
   fi
-- bash <(curl -fsSL https://raw.githubusercontent.com/horta/ci/master/travis.sh)
-- pip3 install cibuildwheel>=0.9.1
+- python -m pip install numpy pandas
+- bash <(curl -fsSL https://raw.githubusercontent.com/horta/ci/master/travis.sh) || exit 1
+- pip install cibuildwheel>=0.9.1
 - cibuildwheel --output-dir wheelhouse
 - |
   if [ "${TRAVIS_TAG:-}" != "" ]; then
-    pip3 install twine
-    python3 -m twine upload --skip-existing wheelhouse/*
+    python -m pip install twine
+    python -m twine upload --skip-existing wheelhouse/*
   fi
 notifications:
   email:
     recipients:
-    - danilo.horta@gmail.com
+    - danilo.horta@pm.me
     on_success: never
     on_failure: always
 deploy:
