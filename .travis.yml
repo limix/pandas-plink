@@ -15,7 +15,7 @@ matrix:
       language: generic
       before_install:
         - HOMEBREW_NO_AUTO_UPDATE=1 brew install python3
-        - HOMEBREW_NO_AUTO_UPDATE=1 brew uninstall python2
+        - HOMEBREW_NO_AUTO_UPDATE=1 brew unlink python2
         - export PATH=$(brew --prefix)/bin:$(brew --prefix)/sbin:$PATH
         - hash -r
         - python -m pip install --upgrade pip setuptools wheel
