@@ -14,17 +14,16 @@ matrix:
     - os: osx
       language: generic
       before_install:
-        - HOMEBREW_NO_AUTO_UPDATE=1 brew install python3
         - HOMEBREW_NO_AUTO_UPDATE=1 brew unlink python2
-        - HOMEBREW_NO_AUTO_UPDATE=1 brew unlink python3 && brew link python3
+        - HOMEBREW_NO_AUTO_UPDATE=1 brew install python3
         - export PATH=$(brew --prefix)/bin:$(brew --prefix)/sbin:$PATH
+        - ln -s $(brew --prefix)/bin/python3 $(brew --prefix)/bin/python
+        - ln -s $(brew --prefix)/bin/pip3 $(brew --prefix)/bin/pip
         - hash -r
         - which python
         - python --version
         - echo $PATH
         - ls $(brew --prefix)/bin
-        - curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
-        - python get-pip.py
         - python -m pip install --upgrade pip setuptools wheel
 script:
 - |
@@ -36,7 +35,7 @@ script:
 - python -m pip install pandas
 - python -m pip install pandas
 - bash <(curl -fsSL https://raw.githubusercontent.com/horta/ci/master/travis.sh)
-- pip3 install cibuildwheel>=0.9.1
+- pip install cibuildwheel>=0.9.1
 - cibuildwheel --output-dir wheelhouse
 - |
   if [ "${TRAVIS_TAG:-}" != "" ]; then
