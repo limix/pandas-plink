@@ -16,8 +16,11 @@ matrix:
       before_install:
         - HOMEBREW_NO_AUTO_UPDATE=1 brew install python3
         - HOMEBREW_NO_AUTO_UPDATE=1 brew unlink python2
+        - HOMEBREW_NO_AUTO_UPDATE=1 brew link python3
         - export PATH=$(brew --prefix)/bin:$(brew --prefix)/sbin:$PATH
         - hash -r
+        - which python
+        - python --version
         - curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
         - python get-pip.py
         - python -m pip install --upgrade pip setuptools wheel
