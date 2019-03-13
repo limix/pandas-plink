@@ -5,7 +5,7 @@ env:
   - PKG_NAME=pandas_plink
   - CIBW_SKIP="cp27-* cp34-* cp35-*"
   - CIBW_TEST_COMMAND="python -c \"import $PKG_NAME; import sys; sys.exit($PKG_NAME.test())\""
-  - CIBW_BEFORE_BUILD="python -m pip install numpy pandas"
+  - CIBW_BEFORE_BUILD="python -m pip install numpy && python -m pip install pandas"
 matrix:
   include:
     - sudo: required
