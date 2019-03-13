@@ -15,9 +15,10 @@ matrix:
       language: generic
       before_install:
         - HOMEBREW_NO_AUTO_UPDATE=1 brew install python3
+        - HOMEBREW_NO_AUTO_UPDATE=1 brew uninstall python2
         - export PATH=$(brew --prefix)/bin:$(brew --prefix)/sbin:$PATH
         - hash -r
-        - pip3 install --upgrade pip setuptools wheel
+        - python -m pip install --upgrade pip setuptools wheel
 script:
 - |
   if [ "${TRAVIS_OS_NAME}" == "osx" ]; then
@@ -32,8 +33,8 @@ script:
 - cibuildwheel --output-dir wheelhouse
 - |
   if [ "${TRAVIS_TAG:-}" != "" ]; then
-    pip3 install twine
-    python3 -m twine upload --skip-existing wheelhouse/*
+    python -m pip install twine
+    python -m twine upload --skip-existing wheelhouse/*
   fi
 notifications:
   email:
