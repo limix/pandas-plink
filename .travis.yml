@@ -26,6 +26,7 @@ script:
   fi
 - python -m pip install numpy
 - python -m pip install pandas
+- python -m pip install pandas
 - bash <(curl -fsSL https://raw.githubusercontent.com/horta/ci/master/travis.sh)
 - pip3 install cibuildwheel>=0.9.1
 - cibuildwheel --output-dir wheelhouse
