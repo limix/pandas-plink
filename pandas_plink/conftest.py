@@ -8,9 +8,6 @@ import pytest
 def pytest_configure(*_):
     _compatibility()
     import doctest
-    import matplotlib as mpl
-
-    mpl.use("agg")
 
     pandas_format()
     doctest.ELLIPSIS_MARKER = "-ignore-"
