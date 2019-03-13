@@ -3,8 +3,9 @@ python: 3.6
 env:
   global:
   - PKG_NAME=pandas_plink
-  - CIBW_SKIP="cp27-* cp34-* cp35-*"
+  - CIBW_SKIP="cp34-* cp35-*"
   - CIBW_TEST_COMMAND="python -c \"import $PKG_NAME; import sys; sys.exit($PKG_NAME.test())\""
+  - CIBW_BEFORE_BUILD="pip install numpy"
 matrix:
   include:
     - sudo: required
