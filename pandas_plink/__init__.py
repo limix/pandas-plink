@@ -3,7 +3,7 @@ from __future__ import absolute_import as _
 from ._read import read_plink
 from ._testit import test
 
-__version__ = "1.2.30"
+__version__ = "1.2.31"
 
 
 def example_file_prefix():
