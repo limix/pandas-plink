@@ -8,7 +8,7 @@ from os.path import basename, dirname, join
 import pandas as pd
 from tqdm import tqdm
 
-from .bed_read import read_bed
+from ._bed_read import read_bed
 
 PY3 = sys.version_info >= (3,)
 
@@ -149,6 +149,48 @@ def read_plink(file_prefix, verbose=True):
     pbar.close()
 
     return (bim, fam, bed)
+
+
+def read_plink1_bin(bed, bim, fam, verbose=True):
+    """
+    Read PLINK1 binary file into Pandas data frames.
+
+    Parameters
+    ----------
+    bed : str
+        Path prefix to the BED file.
+    bim : str
+        Path prefix to the BIM file.
+    fam : str
+        Path prefix to the FAM file.
+    verbose : bool
+        ``True`` for progress information; ``False`` otherwise.
+
+    Returns
+    -------
+    :class:`pandas.DataFrame`
+        Alleles.
+    :class:`pandas.DataFrame`
+        Samples.
+    :class:`numpy.ndarray`
+        Genotype.
+
+    """
+    if verbose:
+        print("Reading bim file...")
+    _bim = _read_bim(bim)
+    nmarkers = _bim.shape[0]
+
+    if verbose:
+        print("Reading fam file(s)...")
+    _fam = _read_fam(fam)
+    nsamples = _fam.shape[0]
+
+    if verbose:
+        print("Reading bed file(s)...")
+    _bed = _read_bed(bed, nsamples, nmarkers)
+
+    return (_bim, _fam, _bed)
 
 
 def _read_file(fn, desc, read_func, pbar):

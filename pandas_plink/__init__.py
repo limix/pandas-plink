@@ -1,9 +1,9 @@
 from __future__ import absolute_import as _
 
-from ._read import read_plink
+from ._read import read_plink, read_plink1_bin
 from ._testit import test
 
-__version__ = "1.2.31"
+__version__ = "1.3.0"
 
 
 def example_file_prefix():
@@ -14,4 +14,10 @@ def example_file_prefix():
     return os.path.join(p, "test", "data_files", "data")
 
 
-__all__ = ["__version__", "test", "example_file_prefix", "read_plink"]
+__all__ = [
+    "__version__",
+    "test",
+    "example_file_prefix",
+    "read_plink",
+    "read_plink1_bin",
+]

@@ -3,8 +3,8 @@ from __future__ import unicode_literals
 from os.path import dirname, join, realpath
 
 import pytest
-from numpy import array, nan
-from numpy.testing import assert_array_equal
+from numpy import array, nan, dtype
+from numpy.testing import assert_array_equal, assert_equal
 from pandas_plink import read_plink
 
 
@@ -20,6 +20,7 @@ def test_read_plink():
     file_prefix = join(datafiles, "data")
 
     (bim, fam, bed) = read_plink(file_prefix, verbose=False)
+    assert_equal(bed.dtype, dtype("float64"))
 
     assert_array_equal(bim.query("chrom=='1' and pos==72515")["snp"], ["rs4030300"])
     assert_array_equal(bim.query("chrom=='1'").shape, [10, 7])
