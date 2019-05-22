@@ -177,17 +177,17 @@ def read_plink1_bin(bed, bim, fam, verbose=True):
 
     """
     if verbose:
-        print("Reading bim file...")
+        print("Reading bim file {}...".format(basename(bim)))
     _bim = _read_bim(bim)
     nmarkers = _bim.shape[0]
 
     if verbose:
-        print("Reading fam file(s)...")
+        print("Reading fam file {}...".format(basename(fam)))
     _fam = _read_fam(fam)
     nsamples = _fam.shape[0]
 
     if verbose:
-        print("Reading bed file(s)...")
+        print("Reading bed file {}...".format(basename(bed)))
     _bed = _read_bed(bed, nsamples, nmarkers)
 
     return (_bim, _fam, _bed)
