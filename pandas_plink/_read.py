@@ -21,11 +21,11 @@ def read_plink(file_prefix, verbose=True):
 
     Returns
     -------
-    :class:`pandas.DataFrame`
+    alleles : :class:`pandas.DataFrame`
         Alleles.
-    :class:`pandas.DataFrame`
+    samples : :class:`pandas.DataFrame`
         Samples.
-    :class:`numpy.ndarray`
+    genotypes : :class:`numpy.ndarray`
         Genotype.
 
     Examples

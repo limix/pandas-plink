@@ -1,25 +1,39 @@
+from ._filetype import file_type
+
+
 def read_rel(filepath, id_filepath=None):
+    """
+    Read PLINK realized relationship matrix files.
 
-    file_type = _file_type(filepath)
+    It supports plain text, binary, and compressed files.
 
-    if file_type == "zstd":
+    Parameters
+    ----------
+    filepath : str
+        Path to the matrix file.
+    id_filepath : str, optional
+        Path to the file containing family and individual IDs. It defaults to ``None``,
+        in which case it will try to be inferred.
+
+    Returns
+    -------
+    rel : :class:`xarray.DataArray`
+        Realized relationship matrix.
+    """
+
+    ft = file_type(filepath)
+
+    if ft == "zstd":
         return _read_rel_zs(filepath, id_filepath)
-    elif file_type == "bin":
+    elif ft == "bin":
         return _read_rel_bin(filepath, id_filepath)
 
     return _read_rel(filepath, id_filepath)
 
 
 def _read_rel(filepath, id_filepath):
-    from numpy import tril, zeros, tril_indices_from
-
     df = _read_id_file(id_filepath, filepath)
-    n = df.shape[0]
-
-    rows = _read_rel_file(filepath)
-    K = zeros((n, n))
-    K[tril_indices_from(K)] = rows
-    K = K + tril(K, -1).T
+    K = _1d_to_2d(_read_rel_file(filepath), df.shape[0])
 
     return _data_array(K, df)
 
@@ -77,17 +91,9 @@ def _consume_rows(chunks):
 
 
 def _read_rel_zs(filepath, id_filepath):
-    from numpy import zeros, tril_indices_from, tril
-
     df = _read_id_file(id_filepath, filepath)
-    n = df.shape[0]
-
     rows = _read_rel_zs_rows(filepath)
-    flat = [v for r in rows for v in r]
-    K = zeros((n, n))
-    K[tril_indices_from(K)] = flat
-    K = K + tril(K, -1).T
-
+    K = _1d_to_2d([v for r in rows for v in r], df.shape[0])
     return _data_array(K, df)
 
 
@@ -123,38 +129,10 @@ def _read_id_file(id_filepath, filepath):
     return read_csv(id_filepath, sep="\t", header=None, comment="#")
 
 
-def _file_type(filepath):
+def _1d_to_2d(values, n):
+    from numpy import zeros, tril_indices_from, tril
 
-    file_type = "txt"
-    try:
-        import magic
-
-        info = magic.from_file(filepath)
-        if info.startswith("Zstandard"):
-            file_type = "zstd"
-        elif info.startswith("data"):
-            file_type = _binary_zstd(filepath)
-
-    except ImportError:
-        if _is_binary_file(filepath):
-            file_type = _binary_zstd(filepath)
-
-    return file_type
-
-
-def _binary_zstd(filepath):
-    file_type = "bin"
-    with open(filepath, "rb") as f:
-        hdr = f.read(4)
-        if int.from_bytes(hdr, byteorder="little") == 4247762216:
-            file_type = "zstd"
-        else:
-            file_type = "bin"
-    return file_type
-
-
-def _is_binary_file(filepath):
-    with open(filepath, "rb") as f:
-        bytes = f.read(1024)
-    textchars = bytearray({7, 8, 9, 10, 12, 13, 27} | set(range(0x20, 0x100)) - {0x7F})
-    return bool(bytes.translate(None, textchars))
+    K = zeros((n, n))
+    K[tril_indices_from(K)] = values
+    K = K + tril(K, -1).T
+    return K

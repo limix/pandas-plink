@@ -1,7 +1,32 @@
-def read_gcta_grm(filepath, id_filepath=None, n_snps_filepath=None, binary=False):
-    if binary:
-        return _read_gcta_grm_bin(filepath, id_filepath, n_snps_filepath)
+from ._filetype import file_type
 
+
+def read_gcta_grm(filepath, id_filepath=None, n_snps_filepath=None):
+    """
+    Read GCTA realized relationship matrix files.
+
+    It supports plain text and binary.
+
+    Parameters
+    ----------
+    filepath : str
+        Path to the matrix file.
+    id_filepath : str, optional
+        Path to the file containing family and individual IDs. It defaults to ``None``,
+        in which case it will try to be inferred.
+    n_snps_filepath : str, optional
+        Path to the file containing the number of non-missing SNPs. It defaults to
+        ``None``, in which case it will try to be inferred.
+
+    Returns
+    -------
+    grm : :class:`xarray.DataArray`
+        Realized relationship matrix.
+    n_snps : :class:`numpy.ndarray`
+        Number of non-missing SNPs.
+    """
+    if file_type(filepath) == "bin":
+        return _read_gcta_grm_bin(filepath, id_filepath, n_snps_filepath)
     return _read_gcta_grm(filepath, id_filepath)
 
 

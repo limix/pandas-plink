@@ -57,6 +57,10 @@ Functions
 
 .. automodule:: pandas_plink
 
-  .. autofunction:: read_plink
-  .. autofunction:: test
   .. autofunction:: example_file_prefix
+  .. autofunction:: get_data_folder
+  .. autofunction:: read_gcta_grm
+  .. autofunction:: read_plink
+  .. autofunction:: read_plink1_bin
+  .. autofunction:: read_rel
+  .. autofunction:: test

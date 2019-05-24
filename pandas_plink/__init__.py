@@ -2,16 +2,9 @@ from ._read import read_plink, read_plink1_bin
 from ._read_grm import read_gcta_grm
 from ._read_rel import read_rel
 from ._testit import test
+from ._data import example_file_prefix, get_data_folder
 
 __version__ = "2.0.0"
-
-
-def example_file_prefix():
-    r"""Data files prefix."""
-    import os
-
-    p = __import__("pandas_plink").__path__[0]
-    return os.path.join(p, "test", "data_files", "data")
 
 
 __all__ = [
@@ -22,4 +15,5 @@ __all__ = [
     "read_plink1_bin",
     "read_gcta_grm",
     "read_rel",
+    "get_data_folder",
 ]

@@ -44,7 +44,7 @@ def test_read_gcta_grm_bin():
     datafiles = join(dirname(realpath(__file__)), "data_files")
 
     filepath = join(datafiles, "grm-bin", "plink.grm.bin")
-    (K, n_snps) = read_gcta_grm(filepath, binary=True)
+    (K, n_snps) = read_gcta_grm(filepath)
 
     assert_almost_equal([K.data[0, 0], K.data[-2, 5]], [0.78974109888, -0.15841817856])
     assert_equal(K.sample_0[4].data, "NA12489")
@@ -52,7 +52,7 @@ def test_read_gcta_grm_bin():
 
     filepath = join(datafiles, "grm-bin", "plink.grm.bin")
     filepath_id = join(datafiles, "grm-bin", "plink.grm.id")
-    (K, n_snps) = read_gcta_grm(filepath, filepath_id, binary=True)
+    (K, n_snps) = read_gcta_grm(filepath, filepath_id)
 
     assert_almost_equal([K.data[0, 0], K.data[-2, 5]], [0.78974109888, -0.15841817856])
     assert_equal(K.sample_0[4].data, "NA12489")
@@ -61,7 +61,7 @@ def test_read_gcta_grm_bin():
     filepath = join(datafiles, "grm-bin", "plink.grm.bin")
     filepath_id = join(datafiles, "grm-bin", "plink.grm.id")
     filepath_n_snps = join(datafiles, "grm-bin", "plink.grm.N.bin")
-    (K, n_snps) = read_gcta_grm(filepath, filepath_id, filepath_n_snps, binary=True)
+    (K, n_snps) = read_gcta_grm(filepath, filepath_id, filepath_n_snps)
 
     assert_almost_equal([K.data[0, 0], K.data[-2, 5]], [0.78974109888, -0.15841817856])
     assert_equal(K.sample_0[4].data, "NA12489")
