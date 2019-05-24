@@ -13,6 +13,7 @@ def get_version():
 
 
 extensions = [
+    "sphinx.ext.autosummary",
     "sphinx.ext.autodoc",
     "sphinx.ext.doctest",
     "sphinx.ext.viewcode",
@@ -21,6 +22,8 @@ extensions = [
 ]
 
 templates_path = ["_templates"]
+autosummary_generate = True
+napoleon_numpy_docstring = True
 
 source_suffix = ".rst"
 

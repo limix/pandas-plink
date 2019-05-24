@@ -10,7 +10,7 @@ def example_file_prefix():
 
 def get_data_folder():
     """
-    Get the path to the folder containing example files.
+    Path to the folder containing example files.
     """
     import os
 
