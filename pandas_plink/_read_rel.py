@@ -1,5 +1,11 @@
-def read_rel(filepath, id_filepath=None, binary=False):
-    if binary:
+def read_rel(filepath, id_filepath=None):
+    import magic
+
+    info = magic.from_file(filepath)
+    if info.startswith("Zstandard"):
+        return _read_rel_zs(filepath, id_filepath)
+
+    if info.startswith("data"):
         return _read_rel_bin(filepath, id_filepath)
 
     return _read_rel(filepath, id_filepath)
@@ -8,15 +14,7 @@ def read_rel(filepath, id_filepath=None, binary=False):
 def _read_rel(filepath, id_filepath):
     from numpy import tril, zeros, tril_indices_from
 
-    if filepath.endswith(".gz"):
-        basename = filepath[:-3]
-    else:
-        basename = filepath
-
-    if id_filepath is None:
-        id_filepath = basename + ".id"
-
-    df = _read_id_file(id_filepath)
+    df = _read_id_file(id_filepath, filepath)
     n = df.shape[0]
 
     rows = _read_rel_file(filepath)
@@ -30,20 +28,66 @@ def _read_rel(filepath, id_filepath):
 def _read_rel_bin(filepath, id_filepath):
     from numpy import fromfile, float64
 
-    if filepath.endswith(".gz"):
-        basename = filepath[:-3]
-    elif filepath.endswith(".bin"):
-        basename = filepath[:-4]
-    else:
-        basename = filepath
-
-    if id_filepath is None:
-        id_filepath = basename + ".id"
-
-    df = _read_id_file(id_filepath)
+    df = _read_id_file(id_filepath, filepath)
     K = fromfile(filepath, dtype=float64)
     n = df.shape[0]
     K = K.reshape((n, n))
+
+    return _data_array(K, df)
+
+
+def _read_rel_file(filepath):
+    rows = []
+    with open(filepath, "r") as f:
+        for row in f:
+            rows += [float(v) for v in row.strip().split("\t")]
+    return rows
+
+
+def _read_rel_zs_rows(filepath, chunk_size=8 * 1000 * 1000):
+    from zstandard import ZstdDecompressor
+
+    with open(filepath, "rb") as fh:
+        ctx = ZstdDecompressor()
+        with ctx.stream_reader(fh) as reader:
+            over = False
+            chunks = []
+            rows = []
+            while not over:
+                have_row = False
+                while not have_row:
+                    chunk = reader.read(chunk_size)
+                    if not chunk:
+                        over = True
+                        break
+                    if b"\n" in chunk:
+                        have_row = True
+                    chunks.append(chunk)
+                (new_rows, semi_row) = _consume_rows(chunks)
+                rows += new_rows
+                chunks = [semi_row]
+    return rows
+
+
+def _consume_rows(chunks):
+    chunk = b"".join(chunks)
+    rows = chunk.split(b"\n")
+    semi_row = rows[-1]
+    rows = [[float(v) for v in r.split(b"\t")] for r in rows[:-1]]
+    return (rows, semi_row)
+
+
+def _read_rel_zs(filepath, id_filepath):
+    from numpy import zeros, tril_indices_from, tril
+
+    df = _read_id_file(id_filepath, filepath)
+    n = df.shape[0]
+
+    rows = _read_rel_zs_rows(filepath)
+    flat = [v for r in rows for v in r]
+    K = zeros((n, n))
+    K[tril_indices_from(K)] = flat
+    K = K + tril(K, -1).T
 
     return _data_array(K, df)
 
@@ -62,15 +106,19 @@ def _data_array(K, df):
     return K
 
 
-def _read_rel_file(filepath):
-    rows = []
-    with open(filepath, "r") as f:
-        for row in f:
-            rows += [float(v) for v in row.strip().split("\t")]
-    return rows
-
-
-def _read_id_file(filepath):
+def _read_id_file(id_filepath, filepath):
     from pandas import read_csv
 
-    return read_csv(filepath, sep="\t", header=None, comment="#")
+    if filepath.endswith(".gz"):
+        basename = filepath[:-3]
+    elif filepath.endswith(".bin"):
+        basename = filepath[:-4]
+    elif filepath.endswith(".zst"):
+        basename = filepath[:-4]
+    else:
+        basename = filepath
+
+    if id_filepath is None:
+        id_filepath = basename + ".id"
+
+    return read_csv(id_filepath, sep="\t", header=None, comment="#")
