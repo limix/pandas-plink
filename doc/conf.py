@@ -37,7 +37,7 @@ language = None
 
 exclude_patterns = ["_build", "Thumbs.db", ".DS_Store", "conf.py"]
 
-pygments_style = "sphinx"
+pygments_style = "default"
 
 todo_include_todos = False
 
@@ -60,4 +60,5 @@ epub_exclude_files = ["search.html"]
 intersphinx_mapping = {
     "python": ("http://docs.python.org/", None),
     "numpy": ("http://docs.scipy.org/doc/numpy/", None),
+    "xarray": ("http://xarray.pydata.org/en/stable/", None),
 }

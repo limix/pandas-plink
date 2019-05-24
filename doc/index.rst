@@ -2,9 +2,6 @@
 Pandas-plink's documentation
 ============================
 
-:Date: |today|
-:Version: |version|
-
 Read PLINK files into Pandas data frames with support of mapping multiple BED
 files at once.
 
@@ -12,13 +9,13 @@ files at once.
 Install
 *******
 
-The recommended way of installing it is via `conda`_::
-
-  conda install -c conda-forge pandas-plink
-
-An alternative way would be via pip::
+It can be installed via pip::
 
   pip install pandas-plink
+
+Or via `conda`_::
+
+  conda install -c conda-forge pandas-plink
 
 .. _conda: http://conda.pydata.org/docs/index.html
 
