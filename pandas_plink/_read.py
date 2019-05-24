@@ -1,5 +1,3 @@
-from __future__ import division, unicode_literals
-
 import sys
 from collections import OrderedDict as odict
 from glob import glob
@@ -9,17 +7,6 @@ import pandas as pd
 from tqdm import tqdm
 
 from ._bed_read import read_bed
-
-PY3 = sys.version_info >= (3,)
-
-if PY3:
-
-    def _ord(x):
-        return x
-
-
-else:
-    _ord = ord
 
 
 def read_plink(file_prefix, verbose=True):
@@ -281,7 +268,7 @@ def _check_bed_header(fn):
         arr = f.read(2)
         if len(arr) < 2:
             raise ValueError("Couldn't read BED header: %s." % fn)
-        ok = _ord(arr[0]) == 108 and _ord(arr[1]) == 27
+        ok = arr[0] == 108 and arr[1] == 27
         if not ok:
             raise ValueError("Invalid BED file: %s." % fn)
 
@@ -292,9 +279,9 @@ def _major_order(fn):
         arr = f.read(1)
         if len(arr) < 1:
             raise ValueError("Couldn't read column order: %s." % fn)
-        if _ord(arr[0]) == 1:
+        if arr[0] == 1:
             return "snp"
-        elif _ord(arr[0]) == 0:
+        elif arr[0] == 0:
             return "individual"
         raise ValueError("Couldn't understand matrix layout.")
 

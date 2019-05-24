@@ -1,17 +1,9 @@
-from __future__ import unicode_literals
-
 from os.path import dirname, join, realpath
 
 import pytest
 from numpy import array, nan, dtype
 from numpy.testing import assert_array_equal, assert_equal
 from pandas_plink import read_plink, read_plink1_bin
-
-
-def _ascii_airlock(v):
-    if not isinstance(v, bytes):
-        v = v.encode()
-    return v
 
 
 def test_read_plink():

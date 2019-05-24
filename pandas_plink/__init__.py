@@ -1,5 +1,3 @@
-from __future__ import absolute_import as _
-
 from ._read import read_plink, read_plink1_bin
 from ._read_grm import read_gcta_grm
 from ._read_rel import read_rel
