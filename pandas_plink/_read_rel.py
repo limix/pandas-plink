@@ -1,11 +1,10 @@
 def read_rel(filepath, id_filepath=None):
-    import magic
 
-    info = magic.from_file(filepath)
-    if info.startswith("Zstandard"):
+    file_type = _file_type(filepath)
+
+    if file_type == "zstd":
         return _read_rel_zs(filepath, id_filepath)
-
-    if info.startswith("data"):
+    elif file_type == "bin":
         return _read_rel_bin(filepath, id_filepath)
 
     return _read_rel(filepath, id_filepath)
