@@ -176,9 +176,12 @@ def read_plink1_bin(bed, bim, fam, verbose=True):
         Genotype.
 
     """
+    from xarray import DataArray
+
     if verbose:
         print("Reading bim file {}...".format(basename(bim)))
     _bim = _read_bim(bim)
+    del _bim["i"]
     nmarkers = _bim.shape[0]
 
     if verbose:
@@ -188,9 +191,18 @@ def read_plink1_bin(bed, bim, fam, verbose=True):
 
     if verbose:
         print("Reading bed file {}...".format(basename(bed)))
-    _bed = _read_bed(bed, nsamples, nmarkers)
+    G = _read_bed(bed, nsamples, nmarkers).T
 
-    return (_bim, _fam, _bed)
+    sample_ids = _fam["iid"]
+    variant_ids = _bim["chrom"].astype(str) + "_" + _bim["snp"].astype(str)
+
+    G = DataArray(G, dims=["sample", "variant"], coords=[sample_ids, variant_ids])
+    sample = {c: ("sample", _fam[c].tolist()) for c in _fam.columns}
+    variant = {c: ("variant", _bim[c].tolist()) for c in _bim.columns}
+    G = G.assign_coords(**sample)
+    G = G.assign_coords(**variant)
+
+    return G
 
 
 def _read_file(fn, desc, read_func, pbar):
