@@ -14,3 +14,6 @@ include pandas_plink/test/data_files/chr12.fam
 include pandas_plink/test/data_files/chr12.nosex
 include pandas_plink/test/data_files/grm-list/plink2.grm
 include pandas_plink/test/data_files/grm-list/plink2.grm.id
+include pandas_plink/test/data_files/grm-bin/plink.grm.bin
+include pandas_plink/test/data_files/grm-bin/plink.grm.id
+include pandas_plink/test/data_files/grm-bin/plink.grm.N.bin
