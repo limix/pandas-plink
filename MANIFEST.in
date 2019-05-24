@@ -12,3 +12,5 @@ include pandas_plink/test/data_files/chr12.bed
 include pandas_plink/test/data_files/chr12.bim
 include pandas_plink/test/data_files/chr12.fam
 include pandas_plink/test/data_files/chr12.nosex
+include pandas_plink/test/data_files/grm-list/plink2.grm
+include pandas_plink/test/data_files/grm-list/plink2.grm.id

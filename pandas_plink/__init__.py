@@ -1,9 +1,10 @@
 from __future__ import absolute_import as _
 
 from ._read import read_plink, read_plink1_bin
+from ._read_grm import read_gcta_grm
 from ._testit import test
 
-__version__ = "1.3.0"
+__version__ = "2.0.0"
 
 
 def example_file_prefix():
@@ -20,4 +21,5 @@ __all__ = [
     "example_file_prefix",
     "read_plink",
     "read_plink1_bin",
+    "read_gcta_grm",
 ]

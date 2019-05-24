@@ -1,0 +1,21 @@
+from pandas_plink import read_gcta_grm
+from os.path import dirname, join, realpath
+from numpy.testing import assert_almost_equal, assert_equal
+
+
+def test_read_gcta_grm():
+    datafiles = join(dirname(realpath(__file__)), "data_files")
+    filepath = join(datafiles, "grm-list", "plink2.grm")
+    (K, n_snps) = read_gcta_grm(filepath)
+
+    assert_almost_equal([K.data[0, 0], K.data[-2, 5]], [0.885782, -0.0914917])
+    assert_equal(K.sample_0[4].data, "NA12489")
+    assert_equal(n_snps[3], 50)
+
+    filepath = join(datafiles, "grm-list", "plink2.grm")
+    filepath_id = join(datafiles, "grm-list", "plink2.grm.id")
+    (K, n_snps) = read_gcta_grm(filepath, filepath_id)
+
+    assert_almost_equal([K.data[0, 0], K.data[-2, 5]], [0.885782, -0.0914917])
+    assert_equal(K.sample_0[4].data, "NA12489")
+    assert_equal(n_snps[3], 50)
