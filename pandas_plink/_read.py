@@ -1,4 +1,3 @@
-import sys
 from collections import OrderedDict as odict
 from glob import glob
 from os.path import basename, dirname, join

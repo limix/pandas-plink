@@ -137,7 +137,7 @@ def _file_type(filepath):
             file_type = _binary_zstd(filepath)
 
     except ImportError:
-        if _is_binary_string(filepath):
+        if _is_binary_file(filepath):
             file_type = _binary_zstd(filepath)
 
     return file_type
