@@ -2,6 +2,7 @@ from __future__ import absolute_import as _
 
 from ._read import read_plink, read_plink1_bin
 from ._read_grm import read_gcta_grm
+from ._read_rel import read_rel
 from ._testit import test
 
 __version__ = "2.0.0"
@@ -22,4 +23,5 @@ __all__ = [
     "read_plink",
     "read_plink1_bin",
     "read_gcta_grm",
+    "read_rel",
 ]
