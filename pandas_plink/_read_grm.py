@@ -10,8 +10,13 @@ def _read_gcta_grm(filepath, id_filepath):
     from numpy import asarray, tril, zeros
     from xarray import DataArray
 
+    if filepath.endswith(".gz"):
+        basename = filepath[:-3]
+    else:
+        basename = filepath
+
     if id_filepath is None:
-        id_filepath = filepath + ".id"
+        id_filepath = basename + ".id"
 
     df = read_csv(filepath, sep="\t", header=None)
     df_id = read_csv(id_filepath, sep="\t", header=None)

@@ -17,3 +17,5 @@ include pandas_plink/test/data_files/grm-list/plink2.grm.id
 include pandas_plink/test/data_files/grm-bin/plink.grm.bin
 include pandas_plink/test/data_files/grm-bin/plink.grm.id
 include pandas_plink/test/data_files/grm-bin/plink.grm.N.bin
+include pandas_plink/test/data_files/grm-gz/plink.grm.gz
+include pandas_plink/test/data_files/grm-gz/plink.grm.id
