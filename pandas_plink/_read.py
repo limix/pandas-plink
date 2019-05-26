@@ -9,7 +9,8 @@ from ._bed_read import read_bed
 
 
 def read_plink(file_prefix, verbose=True):
-    r"""Read PLINK files into Pandas data frames.
+    """
+    Read PLINK files into data frames.
 
     Parameters
     ----------
@@ -35,32 +36,33 @@ def read_plink(file_prefix, verbose=True):
 
     .. doctest::
 
+        >>> from os.path import join
         >>> from pandas_plink import read_plink
-        >>> from pandas_plink import example_file_prefix
-        >>> (bim, fam, bed) = read_plink(example_file_prefix(), verbose=False)
-        >>> print(bim.head()) #doctest: +NORMALIZE_WHITESPACE
-          chrom         snp   cm    pos a0 a1  i
-        0     1  rs10399749  0.0  45162  G  C  0
-        1     1   rs2949420  0.0  45257  C  T  1
-        2     1   rs2949421  0.0  45413  0  0  2
-        3     1   rs2691310  0.0  46844  A  T  3
-        4     1   rs4030303  0.0  72434  0  G  4
-        >>> print(fam.head()) #doctest: +NORMALIZE_WHITESPACE
+        >>> from pandas_plink import get_data_folder
+        >>> (bim, fam, bed) = read_plink(join(get_data_folder(), "data"), verbose=False)
+        >>> print(bim.head())
+          chrom         snp       cm    pos a0 a1  i
+        0     1  rs10399749     0.00  45162  G  C  0
+        1     1   rs2949420     0.00  45257  C  T  1
+        2     1   rs2949421     0.00  45413  0  0  2
+        3     1   rs2691310     0.00  46844  A  T  3
+        4     1   rs4030303     0.00  72434  0  G  4
+        >>> print(fam.head())
                 fid       iid    father    mother gender trait  i
         0  Sample_1  Sample_1         0         0      1    -9  0
         1  Sample_2  Sample_2         0         0      2    -9  1
         2  Sample_3  Sample_3  Sample_1  Sample_2      2    -9  2
-        >>> print(bed.compute()) #doctest: +NORMALIZE_WHITESPACE
-        [[ 2.  2.  1.]
-         [ 2.  1.  2.]
-         [nan nan nan]
-         [nan nan  1.]
-         [ 2.  2.  2.]
-         [ 2.  2.  2.]
-         [ 2.  1.  0.]
-         [ 2.  2.  2.]
-         [ 1.  2.  2.]
-         [ 2.  1.  2.]]
+        >>> print(bed.compute())
+        [[2.00 2.00 1.00]
+         [2.00 1.00 2.00]
+         [ nan  nan  nan]
+         [ nan  nan 1.00]
+         [2.00 2.00 2.00]
+         [2.00 2.00 2.00]
+         [2.00 1.00 0.00]
+         [2.00 2.00 2.00]
+         [1.00 2.00 2.00]
+         [2.00 1.00 2.00]]
 
     The values of the ``bed`` matrix denote how many alleles ``a1`` (see
     output of data frame ``bim``) are in the corresponding position and
@@ -71,17 +73,17 @@ def read_plink(file_prefix, verbose=True):
 
         >>> chrom1 = bim.query("chrom=='1'")
         >>> X = bed[chrom1.i.values, :].compute()
-        >>> print(X) #doctest: +NORMALIZE_WHITESPACE
-        [[ 2.  2.  1.]
-         [ 2.  1.  2.]
-         [nan nan nan]
-         [nan nan  1.]
-         [ 2.  2.  2.]
-         [ 2.  2.  2.]
-         [ 2.  1.  0.]
-         [ 2.  2.  2.]
-         [ 1.  2.  2.]
-         [ 2.  1.  2.]]
+        >>> print(X)
+        [[2.00 2.00 1.00]
+         [2.00 1.00 2.00]
+         [ nan  nan  nan]
+         [ nan  nan 1.00]
+         [2.00 2.00 2.00]
+         [2.00 2.00 2.00]
+         [2.00 1.00 0.00]
+         [2.00 2.00 2.00]
+         [1.00 2.00 2.00]
+         [2.00 1.00 2.00]]
 
     It also allows the use of the wildcard character ``*`` for mapping
     multiple BED files at
@@ -104,8 +106,7 @@ def read_plink(file_prefix, verbose=True):
 
     pbar = tqdm(desc="Mapping files", total=3 * len(fn), disable=not verbose)
 
-    msg = "Reading bim file(s)..."
-    bim = _read_file(fn, msg, lambda fn: _read_bim(fn["bim"]), pbar)
+    bim = _read_file(fn, lambda fn: _read_bim(fn["bim"]), pbar)
     if len(file_prefixes) > 1:
         if verbose:
             msg = "Multiple files read in this order: {}"
@@ -119,15 +120,11 @@ def read_plink(file_prefix, verbose=True):
         index_offset += bi.shape[0]
     bim = pd.concat(bim, axis=0, ignore_index=True)
 
-    msg = "Reading fam file(s)..."
-    fam = _read_file([fn[0]], msg, lambda fn: _read_fam(fn["fam"]), pbar)[0]
+    fam = _read_file([fn[0]], lambda fn: _read_fam(fn["fam"]), pbar)[0]
     nsamples = fam.shape[0]
 
     bed = _read_file(
-        fn,
-        "Reading bed file(s)...",
-        lambda fn: _read_bed(fn["bed"], nsamples, nmarkers[fn["bed"]]),
-        pbar,
+        fn, lambda fn: _read_bed(fn["bed"], nsamples, nmarkers[fn["bed"]]), pbar
     )
 
     bed = concatenate(bed, axis=0)
@@ -139,7 +136,7 @@ def read_plink(file_prefix, verbose=True):
 
 def read_plink1_bin(bed, bim, fam, verbose=True):
     """
-    Read PLINK1 binary file into Pandas data frames.
+    Read PLINK1 binary file into data frames.
 
     Parameters
     ----------
@@ -154,11 +151,11 @@ def read_plink1_bin(bed, bim, fam, verbose=True):
 
     Returns
     -------
-    :class:`pandas.DataFrame`
+    alleles : :class:`pandas.DataFrame`
         Alleles.
-    :class:`pandas.DataFrame`
+    samples : :class:`pandas.DataFrame`
         Samples.
-    :class:`numpy.ndarray`
+    genotype : :class:`numpy.ndarray`
         Genotype.
 
     """
@@ -191,7 +188,7 @@ def read_plink1_bin(bed, bim, fam, verbose=True):
     return G
 
 
-def _read_file(fn, desc, read_func, pbar):
+def _read_file(fn, read_func, pbar):
     data = []
     for f in fn:
         data.append(read_func(f))
