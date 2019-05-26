@@ -40,7 +40,7 @@ def _read_bed_chunk(filepath, nrows, ncols, row_start, row_end, col_start, col_e
     strides //= 8
 
     e = lib.read_bed_chunk(
-        filepath,
+        filepath.encode(),
         nrows,
         ncols,
         row_start,

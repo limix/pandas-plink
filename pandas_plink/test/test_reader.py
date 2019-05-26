@@ -83,3 +83,38 @@ def test_read_plink1_bin():
         [1.0, 2.0, nan, 1.0, 2.0, 2.0, 0.0, 2.0, 2.0, 2.0],
     ]
     assert_array_equal(G, arr)
+
+
+def test_read_plink1_bin_wildcard_not_found():
+    datafiles = join(dirname(realpath(__file__)), "data_files")
+    bed_files = join(datafiles, "chrr*.bed")
+
+    with pytest.raises(ValueError):
+        read_plink1_bin(bed_files, verbose=False)
+
+    bed_files = join(datafiles, "chr*.bed")
+    with pytest.raises(ValueError):
+        read_plink1_bin(bed_files, "chr11.bim", verbose=False)
+
+    bed_files = join(datafiles, "chr*.bed")
+    bim_files = join(datafiles, "chrr*.bim")
+    with pytest.raises(ValueError):
+        read_plink1_bin(bed_files, bim_files, verbose=False)
+
+    bed_files = join(datafiles, "chr*.bed")
+    bim_files = join(datafiles, "chr*.bim")
+    fam_files = join(datafiles, "chr*.fam")
+    with pytest.warns(UserWarning):
+        read_plink1_bin(bed_files, bim_files, fam_files, verbose=True)
+
+
+def test_read_plink1_bin_wildcard():
+    datafiles = join(dirname(realpath(__file__)), "data_files")
+    bed_files = join(datafiles, "chr*.bed")
+
+    G = read_plink1_bin(bed_files, verbose=False)
+    G.where(G.chrom == "11", drop=True).values
+    assert_equal(G.where(G.chrom == "11", drop=True).shape, (14, 779))
+    assert_equal(G.where(G.chrom == "12", drop=True).shape, (14, 473))
+    x = [[0.00, 0.00], [0.00, 1.00]]
+    assert_equal(G.where(G.chrom == "11", drop=True).values[:2, :2], x)

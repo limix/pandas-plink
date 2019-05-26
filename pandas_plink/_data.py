@@ -1,3 +1,7 @@
+from deprecated import deprecated
+
+
+@deprecated(reason="use function `get_data_folder` instead", version="2.0.0")
 def example_file_prefix():
     """
     Data files prefix.

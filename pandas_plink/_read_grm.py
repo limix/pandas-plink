@@ -1,4 +1,5 @@
 from ._filetype import file_type
+from ._util import last_replace
 
 
 def read_gcta_grm(filepath, id_filepath=None, n_snps_filepath=None):
@@ -71,10 +72,10 @@ def _read_gcta_grm_bin(filepath, id_filepath, n_snps_filepath):
     from xarray import DataArray
 
     if id_filepath is None:
-        id_filepath = _last_replace(filepath, ".bin", ".id")
+        id_filepath = last_replace(filepath, ".bin", ".id")
 
     if n_snps_filepath is None:
-        n_snps_filepath = _last_replace(filepath, ".bin", ".N.bin")
+        n_snps_filepath = last_replace(filepath, ".bin", ".N.bin")
 
     df_id = read_csv(id_filepath, sep="\t", header=None)
     n = df_id.shape[0]
@@ -94,8 +95,3 @@ def _read_gcta_grm_bin(filepath, id_filepath, n_snps_filepath):
     K = K.assign_coords(**{"iid": ("sample_1", df_id.iloc[:, 1])})
 
     return (K, n_snps)
-
-
-def _last_replace(s, old, new):
-    li = s.rsplit(old, 1)
-    return new.join(li)

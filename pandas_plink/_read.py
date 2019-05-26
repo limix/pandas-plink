@@ -1,7 +1,9 @@
+import warnings
 from collections import OrderedDict as odict
 from glob import glob
 from os.path import basename, dirname, join
 
+from ._util import last_replace
 import pandas as pd
 from tqdm import tqdm
 
@@ -15,8 +17,8 @@ def read_plink(file_prefix, verbose=True):
     Parameters
     ----------
     file_prefix : str
-        Path prefix to the set of PLINK files. It supports loading many BED
-        files at once using globstrings wildcard.
+        Path prefix to the set of PLINK files. It supports loading many BED files at
+        once using globstrings wildcard.
     verbose : bool
         ``True`` for progress information; ``False`` otherwise.
 
@@ -31,8 +33,7 @@ def read_plink(file_prefix, verbose=True):
 
     Examples
     --------
-    We have shipped this package with an example so can load and inspect by
-    doing
+    We have shipped this package with an example so can load and inspect by doing
 
     .. doctest::
 
@@ -64,10 +65,10 @@ def read_plink(file_prefix, verbose=True):
          [1.00 2.00 2.00]
          [2.00 1.00 2.00]]
 
-    The values of the ``bed`` matrix denote how many alleles ``a1`` (see
-    output of data frame ``bim``) are in the corresponding position and
-    individual. Notice the column ``i`` in ``bim`` and ``fam`` data frames.
-    It maps to the corresponding position of the bed matrix:
+    The values of the ``bed`` matrix denote how many alleles ``a1`` (see output of data
+    frame ``bim``) are in the corresponding position and individual. Notice the column
+    ``i`` in ``bim`` and ``fam`` data frames. It maps to the corresponding position of
+    the bed matrix:
 
     .. doctest::
 
@@ -134,7 +135,7 @@ def read_plink(file_prefix, verbose=True):
     return (bim, fam, bed)
 
 
-def read_plink1_bin(bed, bim, fam, verbose=True):
+def read_plink1_bin(bed, bim=None, fam=None, verbose=True):
     """
     Read PLINK1 binary file into data frames.
 
@@ -142,46 +143,71 @@ def read_plink1_bin(bed, bim, fam, verbose=True):
     ----------
     bed : str
         Path prefix to the BED file.
-    bim : str
-        Path prefix to the BIM file.
-    fam : str
-        Path prefix to the FAM file.
+    bim : str, optional
+        Path prefix to the BIM file. It defaults to ``None``, in which case it will try
+        to be inferred.
+    fam : str, optional
+        Path prefix to the FAM file. It defaults to ``None``, in which case it will try
+        to be inferred.
     verbose : bool
         ``True`` for progress information; ``False`` otherwise.
 
     Returns
     -------
-    alleles : :class:`pandas.DataFrame`
-        Alleles.
-    samples : :class:`pandas.DataFrame`
-        Samples.
-    genotype : :class:`numpy.ndarray`
-        Genotype.
-
+    G : :class:`xarray.DataArray`
+        Genotype with metadata.
     """
     from xarray import DataArray
+    import pandas as pd
+    import dask.array as da
 
-    if verbose:
-        print("Reading bim file {}...".format(basename(bim)))
-    _bim = _read_bim(bim)
-    del _bim["i"]
-    nmarkers = _bim.shape[0]
+    bed_files = sorted(glob(bed))
+    if len(bed_files) == 0:
+        raise ValueError("No BED file has been found.")
 
-    if verbose:
-        print("Reading fam file {}...".format(basename(fam)))
-    _fam = _read_fam(fam)
-    nsamples = _fam.shape[0]
+    if bim is None:
+        bim_files = [last_replace(f, ".bed", ".bim") for f in bed_files]
+    else:
+        bim_files = sorted(glob(bim))
+    if len(bim_files) == 0:
+        raise ValueError("No BIM file has been found.")
 
-    if verbose:
-        print("Reading bed file {}...".format(basename(bed)))
-    G = _read_bed(bed, nsamples, nmarkers).T
+    if fam is None:
+        fam_files = [last_replace(f, ".bed", ".fam") for f in bed_files]
+    else:
+        fam_files = sorted(glob(fam))
+    if len(fam_files) == 0:
+        raise ValueError("No FAM file has been found.")
 
-    sample_ids = _fam["iid"]
-    variant_ids = _bim["chrom"].astype(str) + "_" + _bim["snp"].astype(str)
+    if len(bed_files) != len(bim_files):
+        raise ValueError("The numbers of BED and BIM files must match.")
+
+    if len(fam_files) > 1:
+        msg = "More than one FAM file has been specified. Only the first one will be "
+        msg += "considered."
+        if verbose:
+            warnings.warn(msg, UserWarning)
+        fam_files = fam_files[:1]
+
+    nfiles = len(bed_files) + len(bim_files) + 1
+    pbar = tqdm(desc="Mapping files", total=nfiles, disable=not verbose)
+
+    bims = _read_file(bim_files, lambda f: _read_bim(f), pbar)
+    nmarkers = {bed_files[i]: b.shape[0] for i, b in enumerate(bims)}
+    bim = pd.concat(bims, axis=0, ignore_index=True)
+    del bim["i"]
+    fam = _read_file(fam_files, lambda f: _read_fam(f), pbar)[0]
+
+    nsamples = fam.shape[0]
+    sample_ids = fam["iid"]
+    variant_ids = bim["chrom"].astype(str) + "_" + bim["snp"].astype(str)
+
+    G = _read_file(bed_files, lambda f: _read_bed(f, nsamples, nmarkers[f]).T, pbar)
+    G = da.concatenate(G, axis=1)
 
     G = DataArray(G, dims=["sample", "variant"], coords=[sample_ids, variant_ids])
-    sample = {c: ("sample", _fam[c].tolist()) for c in _fam.columns}
-    variant = {c: ("variant", _bim[c].tolist()) for c in _bim.columns}
+    sample = {c: ("sample", fam[c].tolist()) for c in fam.columns}
+    variant = {c: ("variant", bim[c].tolist()) for c in bim.columns}
     G = G.assign_coords(**sample)
     G = G.assign_coords(**variant)
 
@@ -248,8 +274,6 @@ def _read_fam(fn):
 
 
 def _read_bed(fn, nsamples, nmarkers):
-    fn = _ascii_airlock(fn)
-
     _check_bed_header(fn)
     major = _major_order(fn)
 
@@ -280,12 +304,6 @@ def _major_order(fn):
         elif arr[0] == 0:
             return "individual"
         raise ValueError("Couldn't understand matrix layout.")
-
-
-def _ascii_airlock(v):
-    if not isinstance(v, bytes):
-        v = v.encode()
-    return v
 
 
 def _clean_prefixes(prefixes):
