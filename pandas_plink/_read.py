@@ -4,8 +4,6 @@ from glob import glob
 from os.path import basename, dirname, join
 
 from ._util import last_replace
-import pandas as pd
-from tqdm import tqdm
 
 from ._bed_read import read_bed
 
@@ -30,6 +28,10 @@ def read_plink(file_prefix, verbose=True):
         Samples.
     genotypes : :class:`numpy.ndarray`
         Genotype.
+
+    Note
+    ----
+    We suggest using :func:`read_plink1_bin` instead as it provides a clearer interface.
 
     Examples
     --------
@@ -93,6 +95,8 @@ def read_plink(file_prefix, verbose=True):
     sample information. Data from BIM and BED files are concatenated to
     provide a single view of the files.
     """
+    from tqdm import tqdm
+    import pandas as pd
     from dask.array import concatenate
 
     file_prefixes = sorted(glob(file_prefix))
@@ -125,7 +129,7 @@ def read_plink(file_prefix, verbose=True):
     nsamples = fam.shape[0]
 
     bed = _read_file(
-        fn, lambda fn: _read_bed(fn["bed"], nsamples, nmarkers[fn["bed"]]), pbar
+        fn, lambda f: _read_bed(f["bed"], nsamples, nmarkers[f["bed"]]), pbar
     )
 
     bed = concatenate(bed, axis=0)
@@ -137,18 +141,19 @@ def read_plink(file_prefix, verbose=True):
 
 def read_plink1_bin(bed, bim=None, fam=None, verbose=True):
     """
-    Read PLINK1 binary file into data frames.
+    Read PLINK 1 binary file [1]_ into data frames.
 
     Parameters
     ----------
     bed : str
-        Path prefix to the BED file.
+        Path to a BED file. It can contain shell-style wildcards to indicate multiple
+        BED files.
     bim : str, optional
-        Path prefix to the BIM file. It defaults to ``None``, in which case it will try
-        to be inferred.
+        Path to a BIM file. It can contain shell-style wildcards to indicate multiple
+        BIM files. It defaults to ``None``, in which case it will try to be inferred.
     fam : str, optional
-        Path prefix to the FAM file. It defaults to ``None``, in which case it will try
-        to be inferred.
+        Path to a FAM file. It defaults to ``None``, in which case it will try to be
+        inferred.
     verbose : bool
         ``True`` for progress information; ``False`` otherwise.
 
@@ -156,7 +161,40 @@ def read_plink1_bin(bed, bim=None, fam=None, verbose=True):
     -------
     G : :class:`xarray.DataArray`
         Genotype with metadata.
+
+    Examples
+    --------
+    .. doctest::
+
+        >>> from os.path import join
+        >>> from pandas_plink import read_plink1_bin
+        >>> from pandas_plink import get_data_folder
+        >>> G = read_plink1_bin(join(get_data_folder(), "chr*.bed"), verbose=False)
+        >>> print(G)
+        <xarray.DataArray 'genotype' (sample: 14, variant: 1252)>
+        dask.array<shape=(14, 1252), dtype=float64, chunksize=(14, 779)>
+        Coordinates:
+          * sample   (sample) object 'B001' 'B002' 'B003' ... 'B012' 'B013' 'B014'
+          * variant  (variant) object '11_316849996' '11_316874359' ... '12_373081507'
+            father   (sample) <U1 '0' '0' '0' '0' '0' '0' ... '0' '0' '0' '0' '0' '0'
+            fid      (sample) <U4 'B001' 'B002' 'B003' 'B004' ... 'B012' 'B013' 'B014'
+            gender   (sample) <U1 '0' '0' '0' '0' '0' '0' ... '0' '0' '0' '0' '0' '0'
+            i        (sample) int64 0 1 2 3 4 5 6 7 8 9 10 11 12 13
+            iid      (sample) <U4 'B001' 'B002' 'B003' 'B004' ... 'B012' 'B013' 'B014'
+            mother   (sample) <U1 '0' '0' '0' '0' '0' '0' ... '0' '0' '0' '0' '0' '0'
+            trait    (sample) <U2 '-9' '-9' '-9' '-9' '-9' ... '-9' '-9' '-9' '-9' '-9'
+            a0       (variant) <U1 'C' 'G' 'G' 'C' 'C' 'T' ... 'A' 'A' 'G' 'A' 'T' 'G'
+            a1       (variant) <U1 'T' 'C' 'C' 'T' 'T' 'A' ... 'T' 'G' 'A' 'T' 'C' 'A'
+            chrom    (variant) <U2 '11' '11' '11' '11' '11' ... '12' '12' '12' '12' '12'
+            cm       (variant) float64 0.0 0.0 0.0 0.0 0.0 0.0 ... 0.0 0.0 0.0 0.0 0.0
+            pos      (variant) int64 157439 181802 248969 ... 27163741 27205125 27367844
+            snp      (variant) <U9 '316849996' '316874359' ... '372918788' '373081507'
+
+    References
+    ----------
+    .. [1] PLINK 1 binary. https://www.cog-genomics.org/plink/2.0/input#bed
     """
+    from tqdm import tqdm
     from xarray import DataArray
     import pandas as pd
     import dask.array as da
@@ -210,6 +248,7 @@ def read_plink1_bin(bed, bim=None, fam=None, verbose=True):
     variant = {c: ("variant", bim[c].tolist()) for c in bim.columns}
     G = G.assign_coords(**sample)
     G = G.assign_coords(**variant)
+    G.name = "genotype"
 
     return G
 
@@ -223,7 +262,9 @@ def _read_file(fn, read_func, pbar):
 
 
 def _read_csv(fn, header):
-    return pd.read_csv(
+    from pandas import read_csv
+
+    return read_csv(
         fn,
         delim_whitespace=True,
         header=None,

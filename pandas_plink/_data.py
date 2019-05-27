@@ -1,4 +1,4 @@
-from deprecated import deprecated
+from deprecated.sphinx import deprecated
 
 
 @deprecated(reason="use function `get_data_folder` instead", version="2.0.0")
