@@ -4,8 +4,8 @@ env:
   global:
   - PKG_NAME=pandas_plink
   - CIBW_SKIP="cp27-* cp34-* cp35-*"
-  - CIBW_TEST_COMMAND="python -c \"import $PKG_NAME; import sys; sys.exit($PKG_NAME.test())\""
   - CIBW_BEFORE_BUILD="python -m pip install numpy && python -m pip install pandas"
+  - CIBW_TEST_COMMAND="python -c \"import $PKG_NAME; import sys; sys.exit($PKG_NAME.test())\""
 matrix:
   include:
     - sudo: required
@@ -15,21 +15,29 @@ matrix:
       language: generic
       before_install:
         - HOMEBREW_NO_AUTO_UPDATE=1 brew unlink python2
-        - HOMEBREW_NO_AUTO_UPDATE=1 brew install python3
+        - HOMEBREW_NO_AUTO_UPDATE=1 brew install python3 zlib
         - export PATH=$(brew --prefix)/bin:$(brew --prefix)/sbin:$PATH
+        - export PATH="/usr/local/opt/python/libexec/bin:$PATH"
         - ln -s $(brew --prefix)/bin/python3 $(brew --prefix)/bin/python
         - ln -s $(brew --prefix)/bin/pip3 $(brew --prefix)/bin/pip
         - hash -r
         - python -m pip install --upgrade pip setuptools wheel
+addons:
+  apt:
+    packages:
+    - libffi-dev
+    - libffi6
+    - cmake
 script:
 - |
   if [ "${TRAVIS_OS_NAME}" == "osx" ]; then
     sudo mkdir -p /usr/local/man
     sudo chown -R "${USER}:admin" /usr/local/man
   fi
-- python -m pip install numpy pandas
-- bash <(curl -fsSL https://raw.githubusercontent.com/horta/ci/master/travis.sh) || exit 1
-- pip install cibuildwheel>=0.9.1
+- git clean -xdf
+- python -c "import docutils; print(docutils.__version__); import docutils.parsers.rst.languages.en; print(docutils.parsers.rst.languages.en.roles)"
+- bash <(curl -fsSL https://raw.githubusercontent.com/horta/ci/master/travis.sh)
+- python -m pip install cibuildwheel>=0.10.0
 - cibuildwheel --output-dir wheelhouse
 - |
   if [ "${TRAVIS_TAG:-}" != "" ]; then
@@ -48,7 +56,7 @@ deploy:
   password:
     secure:     UCQ8qCXJOJnGUxVHsj+m1NAcGrS02TAK9mS86HzOnpuzcyomw1RrP02f6qgsAYJNPozlm5eQh0puKFAfAvhU1G8Na/pe1SzSXrKlo3OuaaZNp/MQqKj/SVHZt2OHB05YfvkmPStTUSlcwlinMqKiYv4M9oBbyRhE9tJhOOmxcilsY77my3EApPzmp8A6UJftENz5VEs+/e/SDZni+h/skme+7n4TyFUkosDCksyjxq+ShHwr+VxQfDnd7PlLJSTxMFqlIIgTwotVZsGI8kPHuiz/M740kKx7ORGxhqqxSN57AQEEDEPwBta954SO0j/ot+1rhIRatKesDkFw4RnIqW2idVY2WNOkca2KaCN+76H/TKNPMt7ZctS1hZbKWCC7e8xFtnARpsdRnJxe1n7MlZM80vCy0trzsC4ibhU68XkjGiwxQ8QPsuM+NvxieiT71W0N2II4lDEG4f+ZfNapVWb1g3R1RjCZzbrdqyAo/BZMvhBRYj4zfDiQ4xb7RBg0YAIr2Q2f+dttnBF5KL420RTgT6XtxYW55bv2gTKusifao/48Pd/OvHOmth8sv1At4cQUj/drPoChOcZcVGOWwT+Hl8/ZHXy+EASTNOLFRv7+iNjSl6vycN18Ny6ZlqiUirme7ztxqFf47XhZBPeIJYgaj88Gclv5ND7KLytSp7A=
   on:
-    tags:       true
-    repo:       limix/pandas-plink
-    banch:      master
+    tags: true
+    repo: limix/pandas-plink
+    banch: master
     python: 3.6
