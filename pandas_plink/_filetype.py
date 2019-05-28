@@ -17,6 +17,8 @@ def file_type(filepath):
     except ImportError:
         if _is_binary_file(filepath):
             file_type = _binary_zstd(filepath)
+        else:
+            file_type = "txt"
 
     return file_type
 
