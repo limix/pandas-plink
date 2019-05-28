@@ -1,6 +1,8 @@
-from pandas_plink import read_grm
 from os.path import dirname, join, realpath
+
 from numpy.testing import assert_almost_equal, assert_equal
+
+from pandas_plink import read_grm
 
 
 def test_read_grm():

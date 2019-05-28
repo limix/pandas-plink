@@ -1,4 +1,4 @@
-from numpy import ascontiguousarray, empty, int64, nan, zeros, float64
+from numpy import ascontiguousarray, empty, float64, int64, nan, zeros
 
 
 def read_bed(filepath, nrows, ncols):

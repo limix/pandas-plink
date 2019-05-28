@@ -1,5 +1,6 @@
-from ._filetype import file_type
 from deprecated.sphinx import versionadded
+
+from ._filetype import file_type
 
 
 @versionadded(version="2.0.0")

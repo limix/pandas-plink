@@ -1,9 +1,10 @@
 from os.path import dirname, join, realpath
 
 import pytest
-from numpy import array, nan, dtype
+from numpy import array, dtype, nan
 from numpy.testing import assert_array_equal, assert_equal
-from pandas_plink import read_plink, read_plink1_bin, example_file_prefix
+
+from pandas_plink import example_file_prefix, read_plink, read_plink1_bin
 
 
 def test_read_plink():

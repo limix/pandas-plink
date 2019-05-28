@@ -3,9 +3,8 @@ from collections import OrderedDict as odict
 from glob import glob
 from os.path import basename, dirname, join
 
-from ._util import last_replace
-
 from ._bed_read import read_bed
+from ._util import last_replace
 
 
 def read_plink(file_prefix, verbose=True):
