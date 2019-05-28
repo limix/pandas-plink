@@ -251,6 +251,7 @@ def read_plink1_bin(bed, bim=None, fam=None, verbose=True):
     ----------
     .. [1] PLINK 1 binary. https://www.cog-genomics.org/plink/2.0/input#bed
     """
+    from numpy import int64, float64
     from tqdm import tqdm
     from xarray import DataArray
     import pandas as pd
@@ -307,6 +308,9 @@ def read_plink1_bin(bed, bim=None, fam=None, verbose=True):
     G = G.assign_coords(**sample)
     G = G.assign_coords(**variant)
     G.name = "genotype"
+    G["pos"] = G["pos"].astype(int64)
+    G["cm"] = G["cm"].astype(float64)
+    G["trait"] = G["trait"].astype(float64)
 
     return G
 
