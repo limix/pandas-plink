@@ -1,14 +1,18 @@
 def file_type(filepath):
 
-    file_type = "txt"
+    file_type = "bin"
     try:
         import magic
 
         info = magic.from_file(filepath)
         if info.startswith("Zstandard"):
             file_type = "zstd"
+        elif info.startswith("gzip"):
+            file_type = "gzip"
         elif info.startswith("data"):
             file_type = _binary_zstd(filepath)
+        elif info.endswith(" text"):
+            file_type = "txt"
 
     except ImportError:
         if _is_binary_file(filepath):
