@@ -141,29 +141,30 @@ def read_plink(file_prefix, verbose=True):
 
 def read_plink1_bin(bed, bim=None, fam=None, verbose=True):
     """
-    Read PLINK 1 binary file [1]_ into data frames.
+    Read PLINK 1 binary files [1]_ into a data array.
 
-    Parameters
-    ----------
-    bed : str
-        Path to a BED file. It can contain shell-style wildcards to indicate multiple
-        BED files.
-    bim : str, optional
-        Path to a BIM file. It can contain shell-style wildcards to indicate multiple
-        BIM files. It defaults to ``None``, in which case it will try to be inferred.
-    fam : str, optional
-        Path to a FAM file. It defaults to ``None``, in which case it will try to be
-        inferred.
-    verbose : bool
-        ``True`` for progress information; ``False`` otherwise.
+    A PLINK 1 binary file set consists of three files:
 
-    Returns
-    -------
-    G : :class:`xarray.DataArray`
-        Genotype with metadata.
+    - BED: containing the genotype.
+    - BIM: containing variant information.
+    - FAM: containing sample information.
+
+    The user might provide a single file path to a BED file, from which this function
+    will try to infer the file path of the other two files.
+    This function also allows the user to provide file path to multiple BED and
+    FAM files, as it is common to have a data set split into multiple files, one per
+    chromosome.
+
+    This function returns a samples-by-variants matrix. This is a special kind of matrix
+    with rows and columns having multiple coordinates each. Those coordinates have the
+    metainformation contained in the BIM and FAM files.
 
     Examples
     --------
+    The following example reads two BED files and two BIM files correspondig to
+    chromosomes 11 and 12, and read a single FAM file whose filename is inferred from
+    the BED filenames.
+
     .. doctest::
 
         >>> from os.path import join
@@ -189,6 +190,65 @@ def read_plink1_bin(bed, bim=None, fam=None, verbose=True):
             cm       (variant) float64 0.0 0.0 0.0 0.0 0.0 0.0 ... 0.0 0.0 0.0 0.0 0.0
             pos      (variant) int64 157439 181802 248969 ... 27163741 27205125 27367844
             snp      (variant) <U9 '316849996' '316874359' ... '372918788' '373081507'
+        >>> print(G.shape)
+        (14, 1252)
+
+    Suppose we want the genotypes of the chromosome 11 only:
+
+    .. doctest::
+
+        >>> G = G.where(G.chrom == "11", drop=True)
+        >>> print(G)
+        <xarray.DataArray 'genotype' (sample: 14, variant: 779)>
+        dask.array<shape=(14, 779), dtype=float64, chunksize=(14, 779)>
+        Coordinates:
+          * sample   (sample) object 'B001' 'B002' 'B003' ... 'B012' 'B013' 'B014'
+          * variant  (variant) object '11_316849996' '11_316874359' ... '11_345698259'
+            father   (sample) <U1 '0' '0' '0' '0' '0' '0' ... '0' '0' '0' '0' '0' '0'
+            fid      (sample) <U4 'B001' 'B002' 'B003' 'B004' ... 'B012' 'B013' 'B014'
+            gender   (sample) <U1 '0' '0' '0' '0' '0' '0' ... '0' '0' '0' '0' '0' '0'
+            i        (sample) int64 0 1 2 3 4 5 6 7 8 9 10 11 12 13
+            iid      (sample) <U4 'B001' 'B002' 'B003' 'B004' ... 'B012' 'B013' 'B014'
+            mother   (sample) <U1 '0' '0' '0' '0' '0' '0' ... '0' '0' '0' '0' '0' '0'
+            trait    (sample) <U2 '-9' '-9' '-9' '-9' '-9' ... '-9' '-9' '-9' '-9' '-9'
+            a0       (variant) <U1 'C' 'G' 'G' 'C' 'C' 'T' ... 'T' 'A' 'C' 'A' 'A' 'T'
+            a1       (variant) <U1 'T' 'C' 'C' 'T' 'T' 'A' ... 'C' 'G' 'T' 'G' 'C' 'C'
+            chrom    (variant) <U2 '11' '11' '11' '11' '11' ... '11' '11' '11' '11' '11'
+            cm       (variant) float64 0.0 0.0 0.0 0.0 0.0 0.0 ... 0.0 0.0 0.0 0.0 0.0
+            pos      (variant) int64 157439 181802 248969 ... 28937375 28961091 29005702
+            snp      (variant) <U9 '316849996' '316874359' ... '345653648' '345698259'
+        >>> print(G.shape)
+        (14, 779)
+
+    Lets now print the genotype value of the sample `B003` for variant `11_316874359`:
+
+    .. doctest::
+
+        >>> print(G.sel(sample="B003", variant="11_316874359").values)
+        0.0
+
+    The special matrix we return is of type :class:`xarray.DataArray`. More information
+    about it can be found at the `xarray documentation <http://xarray.pydata.org>`_.
+
+
+    Parameters
+    ----------
+    bed : str
+        Path to a BED file. It can contain shell-style wildcards to indicate multiple
+        BED files.
+    bim : str, optional
+        Path to a BIM file. It can contain shell-style wildcards to indicate multiple
+        BIM files. It defaults to ``None``, in which case it will try to be inferred.
+    fam : str, optional
+        Path to a FAM file. It defaults to ``None``, in which case it will try to be
+        inferred.
+    verbose : bool
+        ``True`` for progress information; ``False`` otherwise.
+
+    Returns
+    -------
+    G : :class:`xarray.DataArray`
+        Genotype with metadata.
 
     References
     ----------

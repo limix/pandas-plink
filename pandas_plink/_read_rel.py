@@ -3,9 +3,49 @@ from ._filetype import file_type
 
 def read_rel(filepath, id_filepath=None):
     """
-    Read PLINK realized relationship matrix files.
+    Read PLINK realized relationship matrix files [1]_.
 
     It supports plain text, binary, and compressed files.
+    The usual file extensions for those types are `.rel`, `.rel.bin`, and `.rel.zst`,
+    respectively.
+
+    Example
+    -------
+    .. doctest::
+
+        >>> from os.path import join
+        >>> from pandas_plink import read_rel
+        >>> from pandas_plink import get_data_folder
+        >>> filepath = join(get_data_folder(), "rel-bin", "plink2.rel.bin")
+        >>> id_filepath = join(get_data_folder(), "rel-bin", "plink2.rel.id")
+        >>> K = read_rel(filepath, id_filepath)
+        >>> print(K)
+        <xarray.DataArray (sample_0: 10, sample_1: 10)>
+        array([[ 0.885782,  0.233846, -0.186339, -0.009789, -0.138897,  0.287779,
+                 0.269977, -0.231279, -0.095472, -0.213979],
+               [ 0.233846,  1.077493, -0.452858,  0.192877, -0.186027,  0.171027,
+                 0.406056, -0.013149, -0.131477, -0.134314],
+               [-0.186339, -0.452858,  1.183312, -0.040948, -0.146034, -0.204510,
+                -0.314808, -0.042503,  0.296828, -0.011661],
+               [-0.009789,  0.192877, -0.040948,  0.895360, -0.068605,  0.012023,
+                 0.057827, -0.192152, -0.089094,  0.174269],
+               [-0.138897, -0.186027, -0.146034, -0.068605,  1.183237,  0.085104,
+                -0.032974,  0.103608,  0.215769,  0.166648],
+               [ 0.287779,  0.171027, -0.204510,  0.012023,  0.085104,  0.956921,
+                 0.065427, -0.043752, -0.091492, -0.227673],
+               [ 0.269977,  0.406056, -0.314808,  0.057827, -0.032974,  0.065427,
+                 0.714746, -0.101254, -0.088171, -0.063964],
+               [-0.231279, -0.013149, -0.042503, -0.192152,  0.103608, -0.043752,
+                -0.101254,  1.423033, -0.298255, -0.074334],
+               [-0.095472, -0.131477,  0.296828, -0.089094,  0.215769, -0.091492,
+                -0.088171, -0.298255,  0.910274, -0.024663],
+               [-0.213979, -0.134314, -0.011661,  0.174269,  0.166648, -0.227673,
+                -0.063964, -0.074334, -0.024663,  0.914586]])
+        Coordinates:
+          * sample_0  (sample_0) object 'HG00419' 'HG00650' ... 'NA20508' 'NA20753'
+          * sample_1  (sample_1) object 'HG00419' 'HG00650' ... 'NA20508' 'NA20753'
+            fid       (sample_1) object 'HG00419' 'HG00650' ... 'NA20508' 'NA20753'
+            iid       (sample_1) object 'HG00419' 'HG00650' ... 'NA20508' 'NA20753'
 
     Parameters
     ----------
@@ -19,6 +59,11 @@ def read_rel(filepath, id_filepath=None):
     -------
     rel : :class:`xarray.DataArray`
         Realized relationship matrix.
+
+    References
+    ----------
+    .. [1] Read PLINK realized relationship matrix files.
+           https://www.cog-genomics.org/plink/2.0/distance
     """
 
     ft = file_type(filepath)
