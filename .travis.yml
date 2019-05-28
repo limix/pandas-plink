@@ -35,7 +35,6 @@ script:
     sudo chown -R "${USER}:admin" /usr/local/man
   fi
 - git clean -xdf
-- python -c "import docutils; print(docutils.__version__); import docutils.parsers.rst.languages.en; print(docutils.parsers.rst.languages.en.roles)"
 - bash <(curl -fsSL https://raw.githubusercontent.com/horta/ci/master/travis.sh)
 - python -m pip install cibuildwheel>=0.10.0
 - cibuildwheel --output-dir wheelhouse
