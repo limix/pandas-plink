@@ -42,8 +42,8 @@ def _is_zstd(filepath):
 
 def _is_gzip(filepath):
     with open(filepath, "rb") as f:
-        hdr = f.read(4)
-        if int.from_bytes(hdr, byteorder="little") == 2470249216:
+        hdr = f.read(2)
+        if int.from_bytes(hdr, byteorder="little") == 35615:
             return True
     return False
 
