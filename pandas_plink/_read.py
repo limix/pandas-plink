@@ -179,7 +179,6 @@ def read_plink1_bin(bed, bim=None, fam=None, verbose=True):
             father   (sample) <U1 '0' '0' '0' '0' '0' '0' ... '0' '0' '0' '0' '0' '0'
             fid      (sample) <U4 'B001' 'B002' 'B003' 'B004' ... 'B012' 'B013' 'B014'
             gender   (sample) <U1 '0' '0' '0' '0' '0' '0' ... '0' '0' '0' '0' '0' '0'
-            i        (sample) int64 0 1 2 3 4 5 6 7 8 9 10 11 12 13
             iid      (sample) <U4 'B001' 'B002' 'B003' 'B004' ... 'B012' 'B013' 'B014'
             mother   (sample) <U1 '0' '0' '0' '0' '0' '0' ... '0' '0' '0' '0' '0' '0'
             trait    (sample) <U2 '-9' '-9' '-9' '-9' '-9' ... '-9' '-9' '-9' '-9' '-9'
@@ -206,7 +205,6 @@ def read_plink1_bin(bed, bim=None, fam=None, verbose=True):
             father   (sample) <U1 '0' '0' '0' '0' '0' '0' ... '0' '0' '0' '0' '0' '0'
             fid      (sample) <U4 'B001' 'B002' 'B003' 'B004' ... 'B012' 'B013' 'B014'
             gender   (sample) <U1 '0' '0' '0' '0' '0' '0' ... '0' '0' '0' '0' '0' '0'
-            i        (sample) int64 0 1 2 3 4 5 6 7 8 9 10 11 12 13
             iid      (sample) <U4 'B001' 'B002' 'B003' 'B004' ... 'B012' 'B013' 'B014'
             mother   (sample) <U1 '0' '0' '0' '0' '0' '0' ... '0' '0' '0' '0' '0' '0'
             trait    (sample) <U2 '-9' '-9' '-9' '-9' '-9' ... '-9' '-9' '-9' '-9' '-9'
@@ -294,6 +292,7 @@ def read_plink1_bin(bed, bim=None, fam=None, verbose=True):
     bim = pd.concat(bims, axis=0, ignore_index=True)
     del bim["i"]
     fam = _read_file(fam_files, lambda f: _read_fam(f), pbar)[0]
+    del fam["i"]
 
     nsamples = fam.shape[0]
     sample_ids = fam["iid"]
