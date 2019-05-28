@@ -1,24 +1,22 @@
-build: off
-clone_depth: 4
-configuration: Release
-
 environment:
   PKG_NAME: pandas_plink
+  PYTHON: C:\Python37
   CIBW_TEST_COMMAND: "python -c \"import %PKG_NAME%; import sys; sys.exit(%PKG_NAME%.test())\""
-  matrix:
-    - platform: x64
-      ARCH: x64
-      PYTHON: C:\\Python36-x64
-      CIBW_SKIP: cp27-* cp33-* cp34-* cp35-* *-win32
+  CIBW_SKIP: cp27-* cp33-* cp34-* cp35-*
 
 install:
-    - "%PYTHON%\\python.exe -m pip install cibuildwheel>=0.9.2"
+  - set PATH=%PYTHON%;%PATH%
+  - cmd: python -m pip install cibuildwheel --upgrade
 
 build_script:
-    - cd %APPVEYOR_BUILD_FOLDER%
-    - powershell -Command "(New-Object Net.WebClient).DownloadFile('https://raw.githubusercontent.com/horta/ci/master/appveyor.bat', 'appveyor.bat')" && appveyor.bat
-    - cibuildwheel --output-dir wheelhouse
-    - if [%APPVEYOR_REPO_TAG%]==[true] (%PYTHON%\python.exe -m pip install twine && %PYTHON%\python.exe -m twine upload --skip-existing wheelhouse/*)
+  - cd %APPVEYOR_BUILD_FOLDER%
+  - powershell -Command "(New-Object Net.WebClient).DownloadFile('https://raw.githubusercontent.com/horta/ci/master/appveyor.bat', 'appveyor.bat')" && appveyor.bat
+  - cmd: python -m cibuildwheel --output-dir wheelhouse
+  - ps: >-
+      if ($env:APPVEYOR_REPO_TAG -eq "true") {
+        Invoke-Expression "python -m pip install twine"
+        Invoke-Expression "python -m twine upload --skip-existing wheelhouse/*.whl"
+      }
 
 artifacts:
   - path: "wheelhouse\\*.whl"
