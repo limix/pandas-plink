@@ -10,28 +10,42 @@ def file_type(filepath):
         elif info.startswith("gzip"):
             file_type = "gzip"
         elif info.startswith("data"):
-            file_type = _binary_zstd(filepath)
-        elif info.endswith(" text"):
+            if _is_zstd(filepath):
+                file_type = "zstd"
+            elif _is_gzip(filepath):
+                file_type = "gzip"
+            else:
+                file_type = "bin"
+        elif info.endswith("text"):
             file_type = "txt"
 
     except ImportError:
-        if _is_binary_file(filepath):
-            file_type = _binary_zstd(filepath)
+        if _is_gzip(filepath):
+            file_type = "gzip"
+        elif _is_zstd(filepath):
+            file_type = "zstd"
+        elif _is_binary_file(filepath):
+            file_type = "bin"
         else:
             file_type = "txt"
 
     return file_type
 
 
-def _binary_zstd(filepath):
-    file_type = "bin"
+def _is_zstd(filepath):
     with open(filepath, "rb") as f:
         hdr = f.read(4)
         if int.from_bytes(hdr, byteorder="little") == 4247762216:
-            file_type = "zstd"
-        else:
-            file_type = "bin"
-    return file_type
+            return True
+    return False
+
+
+def _is_gzip(filepath):
+    with open(filepath, "rb") as f:
+        hdr = f.read(4)
+        if int.from_bytes(hdr, byteorder="little") == 2470249216:
+            return True
+    return False
 
 
 def _is_binary_file(filepath):
