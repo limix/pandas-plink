@@ -8,7 +8,7 @@ environment:
   matrix:
     - platform: x64
       ARCH: x64
-      PYTHON: C:\Python36-x64
+      PYTHON: C:\\Python36-x64
       CIBW_SKIP: cp27-* cp33-* cp34-* cp35-* *-win32
 
 install:
@@ -17,7 +17,7 @@ install:
 build_script:
     - cd %APPVEYOR_BUILD_FOLDER%
     - powershell -Command "(New-Object Net.WebClient).DownloadFile('https://raw.githubusercontent.com/horta/ci/master/appveyor.bat', 'appveyor.bat')" && appveyor.bat
-    - "%PYTHON%\\python.exe -m cibuildwheel --output-dir wheelhouse"
+    - cibuildwheel --output-dir wheelhouse
     - if [%APPVEYOR_REPO_TAG%]==[true] (%PYTHON%\python.exe -m pip install twine && %PYTHON%\python.exe -m twine upload --skip-existing wheelhouse/*)
 
 artifacts:
