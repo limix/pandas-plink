@@ -11,7 +11,7 @@ def read_grm(filepath, id_filepath=None, n_snps_filepath=None):
     the number of non-missing SNPs.
 
     It supports plain text, binary, and compressed files. The usual file extensions for
-    those types are `.grm`, and `.grm.gz`, respectively.
+    those types are `.grm`, `grm.bin`, and `.grm.gz`, respectively.
 
     Example
     -------
