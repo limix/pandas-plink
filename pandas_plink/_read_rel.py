@@ -98,10 +98,12 @@ def _read_rel_bin(filepath, id_filepath):
 
 
 def _read_rel_file(filepath):
+    from numpy import float64
+
     rows = []
     with open(filepath, "r") as f:
         for row in f:
-            rows += [float(v) for v in row.strip().split("\t")]
+            rows += [float64(v) for v in row.strip().split("\t")]
     return rows
 
 
@@ -131,10 +133,12 @@ def _read_rel_zs_rows(filepath, chunk_size=8 * 1000 * 1000):
 
 
 def _consume_rows(chunks):
+    from numpy import float64
+
     chunk = b"".join(chunks)
     rows = chunk.split(b"\n")
     semi_row = rows[-1]
-    rows = [[float(v) for v in r.split(b"\t")] for r in rows[:-1]]
+    rows = [[float64(v) for v in r.split(b"\t")] for r in rows[:-1]]
     return (rows, semi_row)
 
 
