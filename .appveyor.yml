@@ -1,11 +1,10 @@
 environment:
   PKG_NAME: pandas_plink
-  PYTHON: C:\Python37
   CIBW_TEST_COMMAND: "python -c \"import %PKG_NAME%; import sys; sys.exit(%PKG_NAME%.test())\""
   CIBW_SKIP: cp27-* cp33-* cp34-* cp35-*
 
 install:
-  - set PATH=%PYTHON%;%PATH%
+  - set PATH=C:\Python37;C:\Python37\Scripts;%PATH%
   - cmd: python -m pip install cibuildwheel --upgrade
 
 build_script:
