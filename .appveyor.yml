@@ -1,6 +1,4 @@
 environment:
-  PKG_NAME: pandas_plink
-  CIBW_TEST_COMMAND: "python -c \"import %PKG_NAME%; import sys; sys.exit(%PKG_NAME%.test())\""
   CIBW_SKIP: cp27-* cp33-* cp34-* cp35-*
 
 install:
@@ -9,9 +7,6 @@ install:
 
 build_script:
   - cd %APPVEYOR_BUILD_FOLDER%
-  - powershell -Command "(New-Object Net.WebClient).DownloadFile('https://raw.githubusercontent.com/horta/ci/master/appveyor.bat', 'appveyor.bat')" && appveyor.bat
-  - cd %APPVEYOR_BUILD_FOLDER%
-  - cmd: git clean -xdf
   - cmd: python -m cibuildwheel --output-dir wheelhouse
   - ps: >-
       if ($env:APPVEYOR_REPO_TAG -eq "true") {
