@@ -334,12 +334,14 @@ def _read_csv(fn, header):
 
 
 def _read_bim(fn):
+    from numpy import int64, float64
+
     header = odict(
         [
             ("chrom", bytes),
             ("snp", bytes),
-            ("cm", float),
-            ("pos", int),
+            ("cm", float64),
+            ("pos", int64),
             ("a0", bytes),
             ("a1", bytes),
         ]
@@ -350,12 +352,14 @@ def _read_bim(fn):
     df["a0"] = df["a0"].astype("category")
     df["a1"] = df["a1"].astype("category")
     df["i"] = range(df.shape[0])
-    df["pos"] = df["pos"].astype(int)
-    df["cm"] = df["cm"].astype(float)
+    df["pos"] = df["pos"].astype(int64)
+    df["cm"] = df["cm"].astype(float64)
     return df
 
 
 def _read_fam(fn):
+    from numpy import float64
+
     header = odict(
         [
             ("fid", str),
@@ -363,7 +367,7 @@ def _read_fam(fn):
             ("father", str),
             ("mother", str),
             ("gender", bytes),
-            ("trait", str),
+            ("trait", float64),
         ]
     )
 
@@ -371,7 +375,7 @@ def _read_fam(fn):
 
     df["gender"] = df["gender"].astype("category")
     df["i"] = range(df.shape[0])
-    df["trait"] = df["trait"].astype(float)
+    df["trait"] = df["trait"].astype(float64)
     return df
 
 
