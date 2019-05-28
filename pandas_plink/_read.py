@@ -50,10 +50,10 @@ def read_plink(file_prefix, verbose=True):
         3     1   rs2691310     0.00  46844  A  T  3
         4     1   rs4030303     0.00  72434  0  G  4
         >>> print(fam.head())
-                fid       iid    father    mother gender trait  i
-        0  Sample_1  Sample_1         0         0      1    -9  0
-        1  Sample_2  Sample_2         0         0      2    -9  1
-        2  Sample_3  Sample_3  Sample_1  Sample_2      2    -9  2
+                fid       iid    father    mother gender    trait  i
+        0  Sample_1  Sample_1         0         0      1    -9.00  0
+        1  Sample_2  Sample_2         0         0      2    -9.00  1
+        2  Sample_3  Sample_3  Sample_1  Sample_2      2    -9.00  2
         >>> print(bed.compute())
         [[2.00 2.00 1.00]
          [2.00 1.00 2.00]
@@ -181,7 +181,7 @@ def read_plink1_bin(bed, bim=None, fam=None, verbose=True):
             gender   (sample) <U1 '0' '0' '0' '0' '0' '0' ... '0' '0' '0' '0' '0' '0'
             iid      (sample) <U4 'B001' 'B002' 'B003' 'B004' ... 'B012' 'B013' 'B014'
             mother   (sample) <U1 '0' '0' '0' '0' '0' '0' ... '0' '0' '0' '0' '0' '0'
-            trait    (sample) <U2 '-9' '-9' '-9' '-9' '-9' ... '-9' '-9' '-9' '-9' '-9'
+            trait    (sample) float64 -9.0 -9.0 -9.0 -9.0 -9.0 ... -9.0 -9.0 -9.0 -9.0
             a0       (variant) <U1 'C' 'G' 'G' 'C' 'C' 'T' ... 'A' 'A' 'G' 'A' 'T' 'G'
             a1       (variant) <U1 'T' 'C' 'C' 'T' 'T' 'A' ... 'T' 'G' 'A' 'T' 'C' 'A'
             chrom    (variant) <U2 '11' '11' '11' '11' '11' ... '12' '12' '12' '12' '12'
@@ -207,7 +207,7 @@ def read_plink1_bin(bed, bim=None, fam=None, verbose=True):
             gender   (sample) <U1 '0' '0' '0' '0' '0' '0' ... '0' '0' '0' '0' '0' '0'
             iid      (sample) <U4 'B001' 'B002' 'B003' 'B004' ... 'B012' 'B013' 'B014'
             mother   (sample) <U1 '0' '0' '0' '0' '0' '0' ... '0' '0' '0' '0' '0' '0'
-            trait    (sample) <U2 '-9' '-9' '-9' '-9' '-9' ... '-9' '-9' '-9' '-9' '-9'
+            trait    (sample) float64 -9.0 -9.0 -9.0 -9.0 -9.0 ... -9.0 -9.0 -9.0 -9.0
             a0       (variant) <U1 'C' 'G' 'G' 'C' 'C' 'T' ... 'T' 'A' 'C' 'A' 'A' 'T'
             a1       (variant) <U1 'T' 'C' 'C' 'T' 'T' 'A' ... 'C' 'G' 'T' 'G' 'C' 'C'
             chrom    (variant) <U2 '11' '11' '11' '11' '11' ... '11' '11' '11' '11' '11'
@@ -350,6 +350,8 @@ def _read_bim(fn):
     df["a0"] = df["a0"].astype("category")
     df["a1"] = df["a1"].astype("category")
     df["i"] = range(df.shape[0])
+    df["pos"] = df["pos"].astype(int)
+    df["cm"] = df["cm"].astype(float)
     return df
 
 
@@ -369,6 +371,7 @@ def _read_fam(fn):
 
     df["gender"] = df["gender"].astype("category")
     df["i"] = range(df.shape[0])
+    df["trait"] = df["trait"].astype(float)
     return df
 
 
