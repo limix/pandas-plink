@@ -2,61 +2,22 @@
 Pandas-plink's documentation
 ============================
 
-:Date: |today|
-:Version: |version|
+Read PLINK genotype and kinship files into data arrays with support of automatic merge
+of multiple BED files at once.
 
-Read PLINK files into Pandas data frames with support of mapping multiple BED
-files at once.
+.. toctree::
+    :caption: Table of contents
+    :name: mastertoc
+    :maxdepth: 4
 
-*******
-Install
-*******
+    install
+    usage
+    api
 
-The recommended way of installing it is via `conda`_::
+*****************
+Comments and bugs
+*****************
 
-  conda install -c conda-forge pandas-plink
+You can get the source code and open issues `on Github.`_
 
-An alternative way would be via pip::
-
-  pip install pandas-plink
-
-.. _conda: http://conda.pydata.org/docs/index.html
-
-*****
-Usage
-*****
-
-It is as simple as::
-
-  from pandas_plink import read_plink
-  (bim, fam, G) = read_plink('/path/to/data')
-
-assuming that you have the files
-
-  - `/path/to/data.bim`
-  - `/path/to/data.fam`
-  - `/path/to/data.bed`
-
-The returned matrix ``G`` contains ``0``, ``1``, ``2``, or ``NaN``:
-
-- ``0`` Homozygous having the first allele (column ``a0`` of ``bim``)
-- ``1`` Heterozygous
-- ``2`` Homozygous having the second allele (column ``a1`` of ``bim``)
-- ``NaN`` Missing genotype
-
-The matrix ``G`` is a `Dask`_ array instead of an usual `NumPy`_ array.
-It allows for lazy-loading large datasets that would not be able to fit
-in memory.
-
-.. _Dask: https://dask.pydata.org/
-.. _NumPy: http://www.numpy.org
-
-*********
-Functions
-*********
-
-.. automodule:: pandas_plink
-
-  .. autofunction:: read_plink
-  .. autofunction:: test
-  .. autofunction:: example_file_prefix
+.. _on Github.: https://github.com/limix/pandas-plink

@@ -1,5 +1,6 @@
 def test(verbose=True):
-    r"""Run tests to verify this package's integrity.
+    """
+    Run tests to verify this package's integrity.
 
     Parameters
     ----------
@@ -11,12 +12,9 @@ def test(verbose=True):
     int
         Exit code: ``0`` for success.
     """
-    import pandas as pd
+    from .conftest import pandas_format
 
-    pd.set_option("display.width", 160)
-    pd.set_option("display.max_columns", 79)
-    pd.set_option("display.max_rows", 60)
-    pd.set_option("display.large_repr", "truncate")
+    pandas_format()
 
     args = ["--doctest-modules"]
     if not verbose:

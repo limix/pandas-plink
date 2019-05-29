@@ -12,3 +12,16 @@ include pandas_plink/test/data_files/chr12.bed
 include pandas_plink/test/data_files/chr12.bim
 include pandas_plink/test/data_files/chr12.fam
 include pandas_plink/test/data_files/chr12.nosex
+include pandas_plink/test/data_files/grm-list/plink2.grm
+include pandas_plink/test/data_files/grm-list/plink2.grm.id
+include pandas_plink/test/data_files/grm-bin/plink.grm.bin
+include pandas_plink/test/data_files/grm-bin/plink.grm.id
+include pandas_plink/test/data_files/grm-bin/plink.grm.N.bin
+include pandas_plink/test/data_files/grm-gz/plink.grm.gz
+include pandas_plink/test/data_files/grm-gz/plink.grm.id
+include pandas_plink/test/data_files/rel-bin/plink2.rel.bin
+include pandas_plink/test/data_files/rel-bin/plink2.rel.id
+include pandas_plink/test/data_files/rel-zs/plink2.rel.id
+include pandas_plink/test/data_files/rel-zs/plink2.rel.zst
+include pandas_plink/test/data_files/rel/plink.rel
+include pandas_plink/test/data_files/rel/plink.rel.id
