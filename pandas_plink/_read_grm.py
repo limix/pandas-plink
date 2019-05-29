@@ -10,7 +10,7 @@ def read_grm(filepath, id_filepath=None, n_snps_filepath=None):
     Read GCTA realized relationship matrix files.
 
     A GRM file set consists of two or three files: (i) one containing the covariance
-    matrix; (ii) one contaning sample IDs; and (iii) possibility another one containing
+    matrix; (ii) one contaning sample IDs; and (iii) possibly another one containing
     the number of non-missing SNPs.
 
     It supports plain text, binary, and compressed files. The usual file extensions for

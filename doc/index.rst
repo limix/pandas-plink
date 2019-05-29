@@ -2,8 +2,8 @@
 Pandas-plink's documentation
 ============================
 
-Read PLINK files into Pandas data frames with support of mapping multiple BED
-files at once.
+Read PLINK genotype and kinship files into data arrays with support of automatic merge
+of multiple BED files at once.
 
 .. toctree::
     :caption: Table of contents

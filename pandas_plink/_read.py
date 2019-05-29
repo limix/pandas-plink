@@ -1,4 +1,5 @@
 import warnings
+from deprecated.sphinx import versionadded
 from collections import OrderedDict as odict
 from glob import glob
 from os.path import basename, dirname, join
@@ -10,23 +11,6 @@ from ._util import last_replace
 def read_plink(file_prefix, verbose=True):
     """
     Read PLINK files into data frames.
-
-    Parameters
-    ----------
-    file_prefix : str
-        Path prefix to the set of PLINK files. It supports loading many BED files at
-        once using globstrings wildcard.
-    verbose : bool
-        ``True`` for progress information; ``False`` otherwise.
-
-    Returns
-    -------
-    alleles : :class:`pandas.DataFrame`
-        Alleles.
-    samples : :class:`pandas.DataFrame`
-        Samples.
-    genotypes : :class:`numpy.ndarray`
-        Genotype.
 
     Note
     ----
@@ -93,6 +77,23 @@ def read_plink(file_prefix, verbose=True):
     In this case, only one of the FAM files will be used to define
     sample information. Data from BIM and BED files are concatenated to
     provide a single view of the files.
+
+    Parameters
+    ----------
+    file_prefix : str
+        Path prefix to the set of PLINK files. It supports loading many BED files at
+        once using globstrings wildcard.
+    verbose : bool
+        ``True`` for progress information; ``False`` otherwise.
+
+    Returns
+    -------
+    alleles : :class:`pandas.DataFrame`
+        Alleles.
+    samples : :class:`pandas.DataFrame`
+        Samples.
+    genotypes : :class:`numpy.ndarray`
+        Genotype.
     """
     from tqdm import tqdm
     import pandas as pd
@@ -138,6 +139,7 @@ def read_plink(file_prefix, verbose=True):
     return (bim, fam, bed)
 
 
+@versionadded(version="2.0.0")
 def read_plink1_bin(bed, bim=None, fam=None, verbose=True):
     """
     Read PLINK 1 binary files [1]_ into a data array.
@@ -151,7 +153,7 @@ def read_plink1_bin(bed, bim=None, fam=None, verbose=True):
     The user might provide a single file path to a BED file, from which this function
     will try to infer the file path of the other two files.
     This function also allows the user to provide file path to multiple BED and
-    FAM files, as it is common to have a data set split into multiple files, one per
+    BIM files, as it is common to have a data set split into multiple files, one per
     chromosome.
 
     This function returns a samples-by-variants matrix. This is a special kind of matrix
