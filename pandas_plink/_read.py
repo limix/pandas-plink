@@ -1,8 +1,9 @@
 import warnings
-from deprecated.sphinx import versionadded
 from collections import OrderedDict as odict
 from glob import glob
 from os.path import basename, dirname, join
+
+from deprecated.sphinx import versionadded
 
 from ._bed_read import read_bed
 from ._util import last_replace
