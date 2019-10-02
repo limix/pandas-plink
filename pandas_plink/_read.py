@@ -177,8 +177,8 @@ def read_plink1_bin(bed, bim=None, fam=None, verbose=True):
         <xarray.DataArray 'genotype' (sample: 14, variant: 1252)>
         dask.array<concatenate, shape=(14, 1252), dtype=float64, chunksize=(14, 779), chunktype=numpy.ndarray>
         Coordinates:
-        * sample   (sample) object 'B001' 'B002' 'B003' ... 'B012' 'B013' 'B014'
-        * variant  (variant) object '11_316849996' '11_316874359' ... '12_373081507'
+          * sample   (sample) object 'B001' 'B002' 'B003' ... 'B012' 'B013' 'B014'
+          * variant  (variant) object '11_316849996' '11_316874359' ... '12_373081507'
             father   (sample) <U1 '0' '0' '0' '0' '0' '0' ... '0' '0' '0' '0' '0' '0'
             fid      (sample) <U4 'B001' 'B002' 'B003' 'B004' ... 'B012' 'B013' 'B014'
             gender   (sample) <U1 '0' '0' '0' '0' '0' '0' ... '0' '0' '0' '0' '0' '0'
@@ -203,8 +203,8 @@ def read_plink1_bin(bed, bim=None, fam=None, verbose=True):
         <xarray.DataArray 'genotype' (sample: 14, variant: 779)>
         dask.array<where, shape=(14, 779), dtype=float64, chunksize=(14, 779), chunktype=numpy.ndarray>
         Coordinates:
-        * sample   (sample) object 'B001' 'B002' 'B003' ... 'B012' 'B013' 'B014'
-        * variant  (variant) object '11_316849996' '11_316874359' ... '11_345698259'
+          * sample   (sample) object 'B001' 'B002' 'B003' ... 'B012' 'B013' 'B014'
+          * variant  (variant) object '11_316849996' '11_316874359' ... '11_345698259'
             father   (sample) <U1 '0' '0' '0' '0' '0' '0' ... '0' '0' '0' '0' '0' '0'
             fid      (sample) <U4 'B001' 'B002' 'B003' 'B004' ... 'B012' 'B013' 'B014'
             gender   (sample) <U1 '0' '0' '0' '0' '0' '0' ... '0' '0' '0' '0' '0' '0'
