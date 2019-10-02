@@ -10,9 +10,6 @@ def setup_tests_baseline():
     _compatibility()
     import doctest
     import numpy as np
-    import matplotlib as mpl
-
-    mpl.use("agg")
 
     _pandas_format()
     doctest.ELLIPSIS_MARKER = "-ignore-"
