@@ -1,12 +1,25 @@
 def pytest_configure(*_):
-    _compatibility()
-    import numpy as np
+    setup_tests_baseline()
 
-    pandas_format()
+
+def pytest_runtest_setup():
+    setup_tests_baseline()
+
+
+def setup_tests_baseline():
+    _compatibility()
+    import doctest
+    import numpy as np
+    import matplotlib as mpl
+
+    mpl.use("agg")
+
+    _pandas_format()
+    doctest.ELLIPSIS_MARKER = "-ignore-"
     np.set_printoptions(precision=2, floatmode="fixed")
 
 
-def pandas_format():
+def _pandas_format():
     import pandas as pd
 
     pd.set_option("display.width", 88)
