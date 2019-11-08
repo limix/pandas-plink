@@ -33,6 +33,7 @@ addons:
       - libffi-dev
       - cmake
 install:
+  - bash
   - bash <(curl -fsSL $URL/travis-check-readme.sh)
   - bash <(curl -fsSL $URL/travis-py-min-deps.sh)
   - bash <(curl -fsSL $URL/travis-py-check-style.sh)
