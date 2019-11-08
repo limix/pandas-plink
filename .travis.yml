@@ -51,6 +51,7 @@ script:
       python -m pip install twine
       python -m twine upload --skip-existing wheelhouse/*
     fi
+  - git clean -xdf
 notifications:
   email:
     recipients:
