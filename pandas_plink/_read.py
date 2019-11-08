@@ -179,18 +179,18 @@ def read_plink1_bin(bed, bim=None, fam=None, verbose=True):
         Coordinates:
           * sample   (sample) object 'B001' 'B002' 'B003' ... 'B012' 'B013' 'B014'
           * variant  (variant) object '11_316849996' '11_316874359' ... '12_373081507'
-            father   (sample) <U1 '0' '0' '0' '0' '0' '0' ... '0' '0' '0' '0' '0' '0'
             fid      (sample) <U4 'B001' 'B002' 'B003' 'B004' ... 'B012' 'B013' 'B014'
-            gender   (sample) <U1 '0' '0' '0' '0' '0' '0' ... '0' '0' '0' '0' '0' '0'
             iid      (sample) <U4 'B001' 'B002' 'B003' 'B004' ... 'B012' 'B013' 'B014'
+            father   (sample) <U1 '0' '0' '0' '0' '0' '0' ... '0' '0' '0' '0' '0' '0'
             mother   (sample) <U1 '0' '0' '0' '0' '0' '0' ... '0' '0' '0' '0' '0' '0'
+            gender   (sample) <U1 '0' '0' '0' '0' '0' '0' ... '0' '0' '0' '0' '0' '0'
             trait    (sample) float64 -9.0 -9.0 -9.0 -9.0 -9.0 ... -9.0 -9.0 -9.0 -9.0
-            a0       (variant) <U1 'C' 'G' 'G' 'C' 'C' 'T' ... 'A' 'A' 'G' 'A' 'T' 'G'
-            a1       (variant) <U1 'T' 'C' 'C' 'T' 'T' 'A' ... 'T' 'G' 'A' 'T' 'C' 'A'
             chrom    (variant) <U2 '11' '11' '11' '11' '11' ... '12' '12' '12' '12' '12'
+            snp      (variant) <U9 '316849996' '316874359' ... '372918788' '373081507'
             cm       (variant) float64 0.0 0.0 0.0 0.0 0.0 0.0 ... 0.0 0.0 0.0 0.0 0.0
             pos      (variant) int64 157439 181802 248969 ... 27163741 27205125 27367844
-            snp      (variant) <U9 '316849996' '316874359' ... '372918788' '373081507'
+            a0       (variant) <U1 'C' 'G' 'G' 'C' 'C' 'T' ... 'A' 'A' 'G' 'A' 'T' 'G'
+            a1       (variant) <U1 'T' 'C' 'C' 'T' 'T' 'A' ... 'T' 'G' 'A' 'T' 'C' 'A'
         >>> print(G.shape)
         (14, 1252)
 
@@ -205,18 +205,18 @@ def read_plink1_bin(bed, bim=None, fam=None, verbose=True):
         Coordinates:
           * sample   (sample) object 'B001' 'B002' 'B003' ... 'B012' 'B013' 'B014'
           * variant  (variant) object '11_316849996' '11_316874359' ... '11_345698259'
-            father   (sample) <U1 '0' '0' '0' '0' '0' '0' ... '0' '0' '0' '0' '0' '0'
             fid      (sample) <U4 'B001' 'B002' 'B003' 'B004' ... 'B012' 'B013' 'B014'
-            gender   (sample) <U1 '0' '0' '0' '0' '0' '0' ... '0' '0' '0' '0' '0' '0'
             iid      (sample) <U4 'B001' 'B002' 'B003' 'B004' ... 'B012' 'B013' 'B014'
+            father   (sample) <U1 '0' '0' '0' '0' '0' '0' ... '0' '0' '0' '0' '0' '0'
             mother   (sample) <U1 '0' '0' '0' '0' '0' '0' ... '0' '0' '0' '0' '0' '0'
+            gender   (sample) <U1 '0' '0' '0' '0' '0' '0' ... '0' '0' '0' '0' '0' '0'
             trait    (sample) float64 -9.0 -9.0 -9.0 -9.0 -9.0 ... -9.0 -9.0 -9.0 -9.0
-            a0       (variant) <U1 'C' 'G' 'G' 'C' 'C' 'T' ... 'T' 'A' 'C' 'A' 'A' 'T'
-            a1       (variant) <U1 'T' 'C' 'C' 'T' 'T' 'A' ... 'C' 'G' 'T' 'G' 'C' 'C'
             chrom    (variant) <U2 '11' '11' '11' '11' '11' ... '11' '11' '11' '11' '11'
+            snp      (variant) <U9 '316849996' '316874359' ... '345653648' '345698259'
             cm       (variant) float64 0.0 0.0 0.0 0.0 0.0 0.0 ... 0.0 0.0 0.0 0.0 0.0
             pos      (variant) int64 157439 181802 248969 ... 28937375 28961091 29005702
-            snp      (variant) <U9 '316849996' '316874359' ... '345653648' '345698259'
+            a0       (variant) <U1 'C' 'G' 'G' 'C' 'C' 'T' ... 'T' 'A' 'C' 'A' 'A' 'T'
+            a1       (variant) <U1 'T' 'C' 'C' 'T' 'T' 'A' ... 'C' 'G' 'T' 'G' 'C' 'C'
         >>> print(G.shape)
         (14, 779)
 
