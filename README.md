@@ -1,6 +1,6 @@
 # pandas-plink
 
-[![Travis](https://img.shields.io/travis/com/limix/pandas-plink.svg?style=flat-square&label=linux%20%2F%20macos%20%2F%20win%20builds)](https://travis-ci.com/limix/pandas-plink) [![Documentation](https://img.shields.io/readthedocs/pandas-plink.svg?style=flat-square&version=stable)](https://pandas-plink.readthedocs.io/)
+[![Travis](https://img.shields.io/travis/com/limix/pandas-plink.svg?style=flat-square&label=builds)](https://travis-ci.com/limix/pandas-plink) [![Documentation](https://img.shields.io/readthedocs/pandas-plink.svg?style=flat-square&version=stable)](https://pandas-plink.readthedocs.io/)
 
 Pandas-plink is a Python package for reading [PLINK binary file format](https://www.cog-genomics.org/plink2/formats) and (since version 2.0.0) PLINK and GCTA realized relationship matrices.
 The file reading is taken place via [lazy loading](https://en.wikipedia.org/wiki/Lazy_loading), meaning that it saves up memory by actually reading only the genotypes that are actually accessed by the user.
