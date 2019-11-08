@@ -28,6 +28,7 @@ matrix:
         - choco install make --no-progress -y
       env:
         - PATH=/c/Python36:/c/Python36/Scripts:$PATH
+        - CIBW_PLATFORM=windows
 addons:
   apt:
     packages:
@@ -45,9 +46,6 @@ script:
   - curl -fsSL $URL/travis-py-sdist-test.sh | bash
   - git clean -xdf
   - python -m pip install cibuildwheel>=0.12.0
-  - pwd
-  - python oi.py
-  - echo $TRAVIS_OS_NAME
   - cibuildwheel --output-dir wheelhouse
   - |
     if [ "${TRAVIS_TAG:-}" != "" ]; then
