@@ -33,21 +33,15 @@ addons:
       - libffi-dev
       - cmake
 install:
-  - bash -c "which env"
-  - bash -c "which bash"
-  - bash -c "which curl"
-  - which env
-  - which bash
-  - which curl
   - curl -fsSL $URL/travis-check-readme.sh | bash
-  - bash -c "bash <(curl -fsSL $URL/travis-py-min-deps.sh)"
-  - bash -c "bash <(curl -fsSL $URL/travis-py-check-style.sh)"
-  - bash -c "bash <(curl -fsSL $URL/travis-py-check-black.sh)"
-  - bash -c "bash <(curl -fsSL $URL/travis-py-dev-test.sh)"
-  - bash -c "bash <(curl -fsSL $URL/travis-py-install-test.sh)"
-  - bash -c "bash <(curl -fsSL $URL/travis-py-doctest.sh)"
+  - curl -fsSL $URL/travis-py-min-deps.sh | bash
+  - curl -fsSL $URL/travis-py-check-style.sh | bash
+  - curl -fsSL $URL/travis-py-check-black.sh | bash
+  - curl -fsSL $URL/travis-py-dev-test.sh | bash
+  - curl -fsSL $URL/travis-py-install-test.sh | bash
+  - curl -fsSL $URL/travis-py-doctest.sh | bash
 script:
-  - bash -c "bash <(curl -fsSL $URL/travis-py-sdist-test.sh)"
+  - curl -fsSL $URL/travis-py-sdist-test.sh | bash
   - git clean -xdf
   - python -m pip install cibuildwheel>=0.12.0
   - cibuildwheel --output-dir wheelhouse
