@@ -33,6 +33,10 @@ addons:
       - libffi-dev
       - cmake
 install:
+  - echo $URL
+  - bash -c "echo $URL"
+  - which curl
+  - bash -c "which curl"
   - bash -c "bash <(curl -fsSL $URL/travis-check-readme.sh)"
   - bash -c "bash <(curl -fsSL $URL/travis-py-min-deps.sh)"
   - bash -c "bash <(curl -fsSL $URL/travis-py-check-style.sh)"
