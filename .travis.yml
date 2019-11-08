@@ -46,7 +46,7 @@ script:
   - curl -fsSL $URL/travis-py-sdist-test.sh | bash
   - git clean -xdf
   # - python -m pip install cibuildwheel>=0.12.0
-  - python -m pip install+https://github.com/joerick/cibuildwheel.git
+  - python -m pip install git+https://github.com/joerick/cibuildwheel.git
   - cibuildwheel --output-dir wheelhouse
   - |
     if [ "${TRAVIS_TAG:-}" != "" ]; then
