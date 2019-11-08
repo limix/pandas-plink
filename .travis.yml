@@ -45,6 +45,8 @@ script:
   - curl -fsSL $URL/travis-py-sdist-test.sh | bash
   - git clean -xdf
   - python -m pip install cibuildwheel>=0.12.0
+  - pwd
+  - python oi.py
   - echo $TRAVIS_OS_NAME
   - cibuildwheel --output-dir wheelhouse
   - |
