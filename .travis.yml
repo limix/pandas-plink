@@ -36,13 +36,10 @@ install:
   - bash -c "which env"
   - bash -c "which bash"
   - bash -c "which curl"
-  - bash -c "echo $URL"
   - which env
   - which bash
   - which curl
-  - bash -c "curl -fsSL $URL/travis-check-readme.sh"
-  - bash -c "curl $URL/travis-check-readme.sh"
-  - bash -c "bash <(curl -fsSL $URL/travis-check-readme.sh)"
+  - curl -fsSL $URL/travis-check-readme.sh | bash
   - bash -c "bash <(curl -fsSL $URL/travis-py-min-deps.sh)"
   - bash -c "bash <(curl -fsSL $URL/travis-py-check-style.sh)"
   - bash -c "bash <(curl -fsSL $URL/travis-py-check-black.sh)"
