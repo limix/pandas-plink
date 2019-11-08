@@ -33,10 +33,15 @@ addons:
       - libffi-dev
       - cmake
 install:
-  - echo $URL
-  - bash -c "echo $URL"
-  - which curl
+  - bash -c "which env"
+  - bash -c "which bash"
   - bash -c "which curl"
+  - bash -c "echo $URL"
+  - which env
+  - which bash
+  - which curl
+  - echo $URL
+  - bash -c "set -e"
   - bash -c "curl -fsSL $URL/travis-check-readme.sh"
   - bash -c "curl $URL/travis-check-readme.sh"
   - bash -c "bash <(curl -fsSL $URL/travis-check-readme.sh)"
