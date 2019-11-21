@@ -9,7 +9,7 @@ Notable changes can be found at the [CHANGELOG.md](CHANGELOG.md).
 
 ## Install
 
-It be installed using [pip](https://pypi.python.org/pypi/pip):
+It can be installed using [pip](https://pypi.python.org/pypi/pip):
 
 ```bash
 pip install pandas-plink
