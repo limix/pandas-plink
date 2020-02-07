@@ -315,6 +315,8 @@ def read_plink1_bin(bed, bim=None, fam=None, verbose=True):
     G["cm"] = G["cm"].astype(float64)
     G["trait"] = G["trait"].astype(float64)
 
+    pbar.close()
+
     return G
 
 

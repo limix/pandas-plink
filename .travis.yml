@@ -1,12 +1,11 @@
 language: python
-python: 3.6
+python: 3.7
 env:
   global:
-    - PKG_NAME=pandas_plink
+    - URL=https://raw.githubusercontent.com/horta/ci/master
     - CIBW_SKIP="cp27-* cp34-* cp35-*"
     - CIBW_BEFORE_BUILD="python -m pip install numpy && python -m pip install pandas"
-    - CIBW_TEST_COMMAND="python -c \"import $PKG_NAME; import sys; sys.exit($PKG_NAME.test())\""
-    - URL=https://raw.githubusercontent.com/horta/ci/master
+    - CIBW_TEST_COMMAND="python -c \"import pandas_plink; import sys; sys.exit(pandas_plink.test())\""
 matrix:
   include:
     - os: linux
@@ -14,13 +13,10 @@ matrix:
       services:
         - docker
     - os: osx
-      osx_image: xcode11.2 # Python 3.7.4 running on macOS 10.14.4
-      language: shell # 'language: python' is an error on Travis CI macOS
+      osx_image: xcode11.2 # python 3.7.4 running on macos 10.14.4
+      language: shell
       before_install:
-        - pip3 install --upgrade pip
-        - pip3 install --upgrade virtualenv
-        - virtualenv $HOME/venv # virtualenv will use Python 3
-        - source $HOME/venv/bin/activate
+        - python3 -m pip install --upgrade pip setuptools
     - os: windows
       language: shell
       before_install:
@@ -32,26 +28,24 @@ addons:
   apt:
     packages:
       - libffi-dev
+      - libffi6
       - cmake
 install:
-  - curl -fsSL $URL/travis-check-readme.sh | bash
-  - curl -fsSL $URL/travis-py-min-deps.sh | bash
-  - curl -fsSL $URL/travis-py-check-style.sh | bash
-  - curl -fsSL $URL/travis-py-check-black.sh | bash
-  - curl -fsSL $URL/travis-py-dev-test.sh | bash
-  - curl -fsSL $URL/travis-py-install-test.sh | bash
-  - curl -fsSL $URL/travis-py-doctest.sh | bash
+  - curl -fsSL $URL/check-readme.sh | bash
+  - curl -fsSL $URL/py-min-deps.sh | bash -s -- --numpy
+  - curl -fsSL $URL/py-check-style.sh | bash
+  - curl -fsSL $URL/py-dev-test.sh | bash
+  - curl -fsSL $URL/py-sdist-test.sh | bash
+  - python3 -m pip install cibuildwheel
 script:
-  - curl -fsSL $URL/travis-py-sdist-test.sh | bash
-  - git clean -xdf
-  - python -m pip install git+https://github.com/joerick/cibuildwheel.git
-  - cibuildwheel --output-dir wheelhouse
+  - python3 -m cibuildwheel --output-dir wheelhouse
+after_success:
   - |
     if [ "${TRAVIS_TAG:-}" != "" ]; then
-      python -m pip install twine
-      python -m twine upload --skip-existing wheelhouse/*
+      python3 -m pip install twine -U
+      python3 -m twine upload --skip-existing wheelhouse/*
     fi
-  - git clean -xdf
+  - git clean -xdfq
 notifications:
   email:
     recipients:
