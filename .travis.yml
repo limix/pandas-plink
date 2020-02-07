@@ -20,10 +20,9 @@ matrix:
     - os: windows
       language: shell
       before_install:
-        - choco install python3 --version 3.6.8 --no-progress -y
-        - choco install make --no-progress -y
-      env:
-        - PATH=/c/Python36:/c/Python36/Scripts:$PATH
+        - choco install python --version 3.8.1
+        - export PATH="/c/Python38:/c/Python38/Scripts:$PATH"
+        - cp /c/Python38/python.exe /c/Python38/python3.exe
 addons:
   apt:
     packages:
