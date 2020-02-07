@@ -54,10 +54,12 @@ notifications:
 deploy:
   provider: pypi
   user: dhorta
+  skip_existing: true
+  distributions: sdist
   password:
     secure: UCQ8qCXJOJnGUxVHsj+m1NAcGrS02TAK9mS86HzOnpuzcyomw1RrP02f6qgsAYJNPozlm5eQh0puKFAfAvhU1G8Na/pe1SzSXrKlo3OuaaZNp/MQqKj/SVHZt2OHB05YfvkmPStTUSlcwlinMqKiYv4M9oBbyRhE9tJhOOmxcilsY77my3EApPzmp8A6UJftENz5VEs+/e/SDZni+h/skme+7n4TyFUkosDCksyjxq+ShHwr+VxQfDnd7PlLJSTxMFqlIIgTwotVZsGI8kPHuiz/M740kKx7ORGxhqqxSN57AQEEDEPwBta954SO0j/ot+1rhIRatKesDkFw4RnIqW2idVY2WNOkca2KaCN+76H/TKNPMt7ZctS1hZbKWCC7e8xFtnARpsdRnJxe1n7MlZM80vCy0trzsC4ibhU68XkjGiwxQ8QPsuM+NvxieiT71W0N2II4lDEG4f+ZfNapVWb1g3R1RjCZzbrdqyAo/BZMvhBRYj4zfDiQ4xb7RBg0YAIr2Q2f+dttnBF5KL420RTgT6XtxYW55bv2gTKusifao/48Pd/OvHOmth8sv1At4cQUj/drPoChOcZcVGOWwT+Hl8/ZHXy+EASTNOLFRv7+iNjSl6vycN18Ny6ZlqiUirme7ztxqFf47XhZBPeIJYgaj88Gclv5ND7KLytSp7A=
   on:
     tags: true
     repo: limix/pandas-plink
-    banch: master
-    skip_existing: true
+    branch: master
+    condition: $TRAVIS_OS_NAME = linux
