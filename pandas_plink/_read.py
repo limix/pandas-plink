@@ -335,7 +335,7 @@ def _read_csv(fn, header):
         fn,
         delim_whitespace=True,
         header=None,
-        names=header.keys(),
+        names=list(header.keys()),
         dtype=header,
         compression=None,
         engine="c",
