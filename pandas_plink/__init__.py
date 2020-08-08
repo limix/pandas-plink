@@ -4,7 +4,7 @@ from ._read_grm import read_grm
 from ._read_rel import read_rel
 from ._testit import test
 
-__version__ = "2.0.4"
+__version__ = "2.0.5"
 
 
 __all__ = [

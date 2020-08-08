@@ -88,7 +88,7 @@ def _read_rel(filepath, id_filepath):
 
 
 def _read_rel_bin(filepath, id_filepath):
-    from numpy import fromfile, float64
+    from numpy import float64, fromfile
 
     df = _read_id_file(id_filepath, filepath)
     K = fromfile(filepath, dtype=float64)
@@ -183,7 +183,7 @@ def _read_id_file(id_filepath, filepath):
 
 
 def _1d_to_2d(values, n):
-    from numpy import zeros, tril_indices_from, tril
+    from numpy import tril, tril_indices_from, zeros
 
     K = zeros((n, n))
     K[tril_indices_from(K)] = values

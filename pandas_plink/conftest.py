@@ -9,6 +9,7 @@ def pytest_runtest_setup():
 def setup_tests_baseline():
     _compatibility()
     import doctest
+
     import numpy as np
 
     _pandas_format()

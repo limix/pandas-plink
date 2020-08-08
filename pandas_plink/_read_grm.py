@@ -117,8 +117,8 @@ def read_grm(filepath, id_filepath=None, n_snps_filepath=None):
 
 
 def _read_gcta_grm(filepath, id_filepath):
+    from numpy import asarray, int64, tril, zeros
     from pandas import read_csv
-    from numpy import asarray, tril, zeros, int64
     from xarray import DataArray
 
     if filepath.endswith(".gz"):
@@ -152,17 +152,17 @@ def _read_gcta_grm(filepath, id_filepath):
 
 
 def _read_gcta_grm_bin(filepath, id_filepath, n_snps_filepath):
-    from pandas import read_csv
     from numpy import (
         asarray,
-        tril,
-        zeros,
         float32,
-        fromfile,
-        tril_indices_from,
-        int64,
         float64,
+        fromfile,
+        int64,
+        tril,
+        tril_indices_from,
+        zeros,
     )
+    from pandas import read_csv
     from xarray import DataArray
 
     if id_filepath is None:

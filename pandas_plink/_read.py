@@ -96,9 +96,9 @@ def read_plink(file_prefix, verbose=True):
     genotypes : :class:`numpy.ndarray`
         Genotype.
     """
-    from tqdm import tqdm
     import pandas as pd
     from dask.array import concatenate
+    from tqdm import tqdm
 
     file_prefixes = sorted(glob(file_prefix))
     if len(file_prefixes) == 0:
@@ -254,11 +254,11 @@ def read_plink1_bin(bed, bim=None, fam=None, verbose=True):
     ----------
     .. [1] PLINK 1 binary. https://www.cog-genomics.org/plink/2.0/input#bed
     """
-    from numpy import int64, float64
+    import dask.array as da
+    import pandas as pd
+    from numpy import float64, int64
     from tqdm import tqdm
     from xarray import DataArray
-    import pandas as pd
-    import dask.array as da
 
     bed_files = sorted(glob(bed))
     if len(bed_files) == 0:
@@ -343,7 +343,7 @@ def _read_csv(fn, header):
 
 
 def _read_bim(fn):
-    from numpy import int64, float64
+    from numpy import float64, int64
 
     header = odict(
         [
