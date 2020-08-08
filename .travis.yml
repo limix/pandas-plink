@@ -35,7 +35,7 @@ install:
   - python3 -m pip install --upgrade isort
   - flake8 pandas_plink
   - black --check pandas_plink
-  - isort --check-only
+  - isort --check-only pandas_plink
   - python3 -m pip install --upgrade imm
   - curl -fsSL $URL/py-dev-test.sh | bash
   - curl -fsSL $URL/py-sdist-test.sh | bash
