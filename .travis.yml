@@ -3,7 +3,7 @@ python: 3.7
 env:
   global:
     - URL=https://raw.githubusercontent.com/horta/ci/master
-    - CIBW_SKIP="cp27-* cp34-* cp35-*"
+    - CIBW_SKIP="pp* cp27-* cp34-* cp35-* cp36-* *i686* *-win32"
     - CIBW_BEFORE_BUILD="python -m pip install numpy && python -m pip install pandas"
     - CIBW_TEST_COMMAND="python -c \"import pandas_plink; import sys; sys.exit(pandas_plink.test())\""
 matrix:
@@ -13,7 +13,7 @@ matrix:
       services:
         - docker
     - os: osx
-      osx_image: xcode11.2 # python 3.7.4 running on macos 10.14.4
+      osx_image: xcode11.2
       language: shell
       before_install:
         - python3 -m pip install --upgrade pip setuptools
@@ -31,8 +31,12 @@ addons:
       - cmake
 install:
   - curl -fsSL $URL/check-readme.sh | bash
-  - curl -fsSL $URL/py-min-deps.sh | bash -s -- --numpy
   - curl -fsSL $URL/py-check-style.sh | bash
+  - python3 -m pip install --upgrade isort
+  - flake8 pandas_plink
+  - black --check pandas_plink
+  - isort --check-only
+  - python3 -m pip install --upgrade imm
   - curl -fsSL $URL/py-dev-test.sh | bash
   - curl -fsSL $URL/py-sdist-test.sh | bash
   - python3 -m pip install cibuildwheel
