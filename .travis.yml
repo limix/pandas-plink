@@ -36,7 +36,6 @@ install:
   - flake8 pandas_plink
   - black --check pandas_plink
   - isort --check-only pandas_plink
-  - python3 -m pip install --upgrade imm
   - curl -fsSL $URL/py-dev-test.sh | bash
   - curl -fsSL $URL/py-sdist-test.sh | bash
   - python3 -m pip install cibuildwheel
