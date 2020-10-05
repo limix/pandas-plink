@@ -3,8 +3,6 @@ from collections import OrderedDict as odict
 from glob import glob
 from os.path import basename, dirname, join
 
-from deprecated.sphinx import versionadded
-
 from ._bed_read import read_bed
 from ._util import last_replace
 
@@ -140,7 +138,6 @@ def read_plink(file_prefix, verbose=True):
     return (bim, fam, bed)
 
 
-@versionadded(version="2.0.0")
 def read_plink1_bin(bed, bim=None, fam=None, verbose=True):
     """
     Read PLINK 1 binary files [1]_ into a data array.

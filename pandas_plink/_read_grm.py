@@ -1,10 +1,7 @@
-from deprecated.sphinx import versionadded
-
 from ._filetype import file_type
 from ._util import last_replace
 
 
-@versionadded(version="2.0.0")
 def read_grm(filepath, id_filepath=None, n_snps_filepath=None):
     """
     Read GCTA realized relationship matrix files.

@@ -4,7 +4,7 @@ import pytest
 from numpy import array, dtype, nan
 from numpy.testing import assert_array_equal, assert_equal
 
-from pandas_plink import example_file_prefix, read_plink, read_plink1_bin
+from pandas_plink import read_plink, read_plink1_bin
 
 
 def test_read_plink():
@@ -117,8 +117,3 @@ def test_read_plink1_bin_wildcard():
     assert_equal(G.where(G.chrom == "12", drop=True).shape, (14, 473))
     x = [[0.00, 0.00], [0.00, 1.00]]
     assert_equal(G.where(G.chrom == "11", drop=True).values[:2, :2], x)
-
-
-def test_example_file_prefix():
-    with pytest.warns(DeprecationWarning):
-        example_file_prefix()

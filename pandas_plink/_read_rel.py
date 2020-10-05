@@ -1,9 +1,6 @@
-from deprecated.sphinx import versionadded
-
 from ._filetype import file_type
 
 
-@versionadded(version="2.0.0")
 def read_rel(filepath, id_filepath=None):
     """
     Read PLINK realized relationship matrix files [1]_.

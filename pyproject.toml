@@ -1,9 +1,8 @@
 [build-system]
-requires = ["setuptools >= 47.1.1", "wheel >= 0.34.2"]
+requires = ["setuptools>=49.3.0", "wheel>=0.34.2",
+            "cffi>=1.14.2", "pytest-runner>=5.2"]
 build-backend = "setuptools.build_meta"
 
 [tool.isort]
 profile = "black"
 src_paths = ["pandas_plink"]
-known_third_party = ["cffi", "Deprecated", "dask", "numpy", "pandas", "pytest",
-                     "tqdm", "xarray", "zstandard"]
