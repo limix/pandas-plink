@@ -18,7 +18,9 @@ def test_read_plink():
 
     assert_array_equal(bim.query("chrom=='1' and pos==72515")["snp"], ["rs4030300"])
     assert_array_equal(bim.query("chrom=='1'").shape, [10, 7])
-    assert_array_equal(fam.query("fid=='Sample_2' and iid=='Sample_2'")["trait"], [-9])
+    assert_array_equal(
+        fam.query("fid=='Sample_2' and iid=='Sample_2'")["trait"], ["-9"]
+    )
 
     assert_array_equal(
         bed,
@@ -77,7 +79,7 @@ def test_read_plink1_bin():
     assert_array_equal(shape, [3, 0])
 
     g = G.where((G.fid == "Sample_2") & (G.iid == "Sample_2"), drop=True)
-    assert_array_equal(g["trait"].values, -9)
+    assert_array_equal(g["trait"].values, ["-9"])
 
     arr = [
         [2.0, 2.0, nan, nan, 2.0, 2.0, 2.0, 2.0, 1.0, 2.0],
@@ -108,7 +110,7 @@ def test_read_plink1_bin_a0():
     assert_array_equal(shape, [3, 0])
 
     g = G.where((G.fid == "Sample_2") & (G.iid == "Sample_2"), drop=True)
-    assert_array_equal(g["trait"].values, -9)
+    assert_array_equal(g["trait"].values, ["-9"])
 
     arr = [
         [0.0, 0.0, nan, nan, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0],

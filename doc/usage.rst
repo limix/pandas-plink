@@ -30,18 +30,18 @@ It is as simple as:
     Coordinates:
       * sample   (sample) object 'B001' 'B002' 'B003' ... 'B012' 'B013' 'B014'
       * variant  (variant) object '11_316849996' '11_316874359' ... '11_345698259'
-        fid      (sample) <U4 'B001' 'B002' 'B003' 'B004' ... 'B012' 'B013' 'B014'
-        iid      (sample) <U4 'B001' 'B002' 'B003' 'B004' ... 'B012' 'B013' 'B014'
-        father   (sample) <U1 '0' '0' '0' '0' '0' '0' ... '0' '0' '0' '0' '0' '0'
-        mother   (sample) <U1 '0' '0' '0' '0' '0' '0' ... '0' '0' '0' '0' '0' '0'
-        gender   (sample) <U1 '0' '0' '0' '0' '0' '0' ... '0' '0' '0' '0' '0' '0'
-        trait    (sample) float64 -9.0 -9.0 -9.0 -9.0 -9.0 ... -9.0 -9.0 -9.0 -9.0
-        chrom    (variant) <U2 '11' '11' '11' '11' '11' ... '11' '11' '11' '11' '11'
-        snp      (variant) <U9 '316849996' '316874359' ... '345653648' '345698259'
+        fid      (sample) object 'B001' 'B002' 'B003' ... 'B012' 'B013' 'B014'
+        iid      (sample) object 'B001' 'B002' 'B003' ... 'B012' 'B013' 'B014'
+        father   (sample) object '0' '0' '0' '0' '0' '0' ... '0' '0' '0' '0' '0' '0'
+        mother   (sample) object '0' '0' '0' '0' '0' '0' ... '0' '0' '0' '0' '0' '0'
+        gender   (sample) object '0' '0' '0' '0' '0' '0' ... '0' '0' '0' '0' '0' '0'
+        trait    (sample) object '-9' '-9' '-9' '-9' '-9' ... '-9' '-9' '-9' '-9'
+        chrom    (variant) object '11' '11' '11' '11' '11' ... '11' '11' '11' '11'
+        snp      (variant) object '316849996' '316874359' ... '345698259'
         cm       (variant) float64 0.0 0.0 0.0 0.0 0.0 0.0 ... 0.0 0.0 0.0 0.0 0.0
-        pos      (variant) int64 157439 181802 248969 ... 28937375 28961091 29005702
-        a0       (variant) <U1 'C' 'G' 'G' 'C' 'C' 'T' ... 'T' 'A' 'C' 'A' 'A' 'T'
-        a1       (variant) <U1 'T' 'C' 'C' 'T' 'T' 'A' ... 'C' 'G' 'T' 'G' 'C' 'C'
+        pos      (variant) int32 157439 181802 248969 ... 28937375 28961091 29005702
+        a0       (variant) object 'C' 'G' 'G' 'C' 'C' 'T' ... 'A' 'C' 'A' 'A' 'T'
+        a1       (variant) object 'T' 'C' 'C' 'T' 'T' 'A' ... 'G' 'T' 'G' 'C' 'C'
 
 The matrix `G` is a special matrix: :class:`xarray.DataArray`. It provides labes for its
 dimensions (`sample` for rows and `variant` for columns) and additional metadata for

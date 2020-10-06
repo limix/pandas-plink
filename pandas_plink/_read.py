@@ -35,10 +35,10 @@ def read_plink(file_prefix, verbose=True):
         3     1   rs2691310     0.00  46844  A  T  3
         4     1   rs4030303     0.00  72434  0  G  4
         >>> print(fam.head())
-                fid       iid    father    mother gender    trait  i
-        0  Sample_1  Sample_1         0         0      1    -9.00  0
-        1  Sample_2  Sample_2         0         0      2    -9.00  1
-        2  Sample_3  Sample_3  Sample_1  Sample_2      2    -9.00  2
+                fid       iid    father    mother gender trait  i
+        0  Sample_1  Sample_1         0         0      1    -9  0
+        1  Sample_2  Sample_2         0         0      2    -9  1
+        2  Sample_3  Sample_3  Sample_1  Sample_2      2    -9  2
         >>> print(bed.compute())
         [[2.00 2.00 1.00]
          [2.00 1.00 2.00]
@@ -179,18 +179,18 @@ def read_plink1_bin(bed, bim=None, fam=None, verbose=True, ref="a1"):
         Coordinates:
           * sample   (sample) object 'B001' 'B002' 'B003' ... 'B012' 'B013' 'B014'
           * variant  (variant) object '11_316849996' '11_316874359' ... '12_373081507'
-            fid      (sample) <U4 'B001' 'B002' 'B003' 'B004' ... 'B012' 'B013' 'B014'
-            iid      (sample) <U4 'B001' 'B002' 'B003' 'B004' ... 'B012' 'B013' 'B014'
-            father   (sample) <U1 '0' '0' '0' '0' '0' '0' ... '0' '0' '0' '0' '0' '0'
-            mother   (sample) <U1 '0' '0' '0' '0' '0' '0' ... '0' '0' '0' '0' '0' '0'
-            gender   (sample) <U1 '0' '0' '0' '0' '0' '0' ... '0' '0' '0' '0' '0' '0'
-            trait    (sample) float64 -9.0 -9.0 -9.0 -9.0 -9.0 ... -9.0 -9.0 -9.0 -9.0
-            chrom    (variant) <U2 '11' '11' '11' '11' '11' ... '12' '12' '12' '12' '12'
-            snp      (variant) <U9 '316849996' '316874359' ... '372918788' '373081507'
+            fid      (sample) object 'B001' 'B002' 'B003' ... 'B012' 'B013' 'B014'
+            iid      (sample) object 'B001' 'B002' 'B003' ... 'B012' 'B013' 'B014'
+            father   (sample) object '0' '0' '0' '0' '0' '0' ... '0' '0' '0' '0' '0' '0'
+            mother   (sample) object '0' '0' '0' '0' '0' '0' ... '0' '0' '0' '0' '0' '0'
+            gender   (sample) object '0' '0' '0' '0' '0' '0' ... '0' '0' '0' '0' '0' '0'
+            trait    (sample) object '-9' '-9' '-9' '-9' '-9' ... '-9' '-9' '-9' '-9'
+            chrom    (variant) object '11' '11' '11' '11' '11' ... '12' '12' '12' '12'
+            snp      (variant) object '316849996' '316874359' ... '373081507'
             cm       (variant) float64 0.0 0.0 0.0 0.0 0.0 0.0 ... 0.0 0.0 0.0 0.0 0.0
-            pos      (variant) int64 157439 181802 248969 ... 27163741 27205125 27367844
-            a0       (variant) <U1 'C' 'G' 'G' 'C' 'C' 'T' ... 'A' 'A' 'G' 'A' 'T' 'G'
-            a1       (variant) <U1 'T' 'C' 'C' 'T' 'T' 'A' ... 'T' 'G' 'A' 'T' 'C' 'A'
+            pos      (variant) int32 157439 181802 248969 ... 27163741 27205125 27367844
+            a0       (variant) object 'C' 'G' 'G' 'C' 'C' 'T' ... 'A' 'G' 'A' 'T' 'G'
+            a1       (variant) object 'T' 'C' 'C' 'T' 'T' 'A' ... 'G' 'A' 'T' 'C' 'A'
         >>> print(G.shape)
         (14, 1252)
 
@@ -205,18 +205,18 @@ def read_plink1_bin(bed, bim=None, fam=None, verbose=True, ref="a1"):
         Coordinates:
           * sample   (sample) object 'B001' 'B002' 'B003' ... 'B012' 'B013' 'B014'
           * variant  (variant) object '11_316849996' '11_316874359' ... '11_345698259'
-            fid      (sample) <U4 'B001' 'B002' 'B003' 'B004' ... 'B012' 'B013' 'B014'
-            iid      (sample) <U4 'B001' 'B002' 'B003' 'B004' ... 'B012' 'B013' 'B014'
-            father   (sample) <U1 '0' '0' '0' '0' '0' '0' ... '0' '0' '0' '0' '0' '0'
-            mother   (sample) <U1 '0' '0' '0' '0' '0' '0' ... '0' '0' '0' '0' '0' '0'
-            gender   (sample) <U1 '0' '0' '0' '0' '0' '0' ... '0' '0' '0' '0' '0' '0'
-            trait    (sample) float64 -9.0 -9.0 -9.0 -9.0 -9.0 ... -9.0 -9.0 -9.0 -9.0
-            chrom    (variant) <U2 '11' '11' '11' '11' '11' ... '11' '11' '11' '11' '11'
-            snp      (variant) <U9 '316849996' '316874359' ... '345653648' '345698259'
+            fid      (sample) object 'B001' 'B002' 'B003' ... 'B012' 'B013' 'B014'
+            iid      (sample) object 'B001' 'B002' 'B003' ... 'B012' 'B013' 'B014'
+            father   (sample) object '0' '0' '0' '0' '0' '0' ... '0' '0' '0' '0' '0' '0'
+            mother   (sample) object '0' '0' '0' '0' '0' '0' ... '0' '0' '0' '0' '0' '0'
+            gender   (sample) object '0' '0' '0' '0' '0' '0' ... '0' '0' '0' '0' '0' '0'
+            trait    (sample) object '-9' '-9' '-9' '-9' '-9' ... '-9' '-9' '-9' '-9'
+            chrom    (variant) object '11' '11' '11' '11' '11' ... '11' '11' '11' '11'
+            snp      (variant) object '316849996' '316874359' ... '345698259'
             cm       (variant) float64 0.0 0.0 0.0 0.0 0.0 0.0 ... 0.0 0.0 0.0 0.0 0.0
-            pos      (variant) int64 157439 181802 248969 ... 28937375 28961091 29005702
-            a0       (variant) <U1 'C' 'G' 'G' 'C' 'C' 'T' ... 'T' 'A' 'C' 'A' 'A' 'T'
-            a1       (variant) <U1 'T' 'C' 'C' 'T' 'T' 'A' ... 'C' 'G' 'T' 'G' 'C' 'C'
+            pos      (variant) int32 157439 181802 248969 ... 28937375 28961091 29005702
+            a0       (variant) object 'C' 'G' 'G' 'C' 'C' 'T' ... 'A' 'C' 'A' 'A' 'T'
+            a1       (variant) object 'T' 'C' 'C' 'T' 'T' 'A' ... 'G' 'T' 'G' 'C' 'C'
         >>> print(G.shape)
         (14, 779)
 
@@ -259,7 +259,6 @@ def read_plink1_bin(bed, bim=None, fam=None, verbose=True, ref="a1"):
     """
     import dask.array as da
     import pandas as pd
-    from numpy import float64, int64
     from tqdm import tqdm
     from xarray import DataArray
 
@@ -303,7 +302,7 @@ def read_plink1_bin(bed, bim=None, fam=None, verbose=True, ref="a1"):
 
     nsamples = fam.shape[0]
     sample_ids = fam["iid"]
-    variant_ids = bim["chrom"].astype(str) + "_" + bim["snp"].astype(str)
+    variant_ids = bim["chrom"] + "_" + bim["snp"]
 
     if ref == "a1":
         ref = Allele.a1
@@ -318,14 +317,11 @@ def read_plink1_bin(bed, bim=None, fam=None, verbose=True, ref="a1"):
     G = da.concatenate(G, axis=1)
 
     G = DataArray(G, dims=["sample", "variant"], coords=[sample_ids, variant_ids])
-    sample = {c: ("sample", fam[c].tolist()) for c in fam.columns}
-    variant = {c: ("variant", bim[c].tolist()) for c in bim.columns}
+    sample = {c: ("sample", fam[c]) for c in fam.columns}
+    variant = {c: ("variant", bim[c]) for c in bim.columns}
     G = G.assign_coords(**sample)
     G = G.assign_coords(**variant)
     G.name = "genotype"
-    G["pos"] = G["pos"].astype(int64)
-    G["cm"] = G["cm"].astype(float64)
-    G["trait"] = G["trait"].astype(float64)
 
     pbar.close()
 
@@ -355,48 +351,39 @@ def _read_csv(fn, header):
 
 
 def _read_bim(fn):
-    from numpy import float64, int64
+    from numpy import float64, int32
 
     header = odict(
         [
-            ("chrom", bytes),
-            ("snp", bytes),
+            ("chrom", object),
+            ("snp", object),
             ("cm", float64),
-            ("pos", int64),
-            ("a0", bytes),
-            ("a1", bytes),
+            ("pos", int32),
+            ("a0", object),
+            ("a1", object),
         ]
     )
     df = _read_csv(fn, header)
 
-    df["chrom"] = df["chrom"].astype("category")
-    df["a0"] = df["a0"].astype("category")
-    df["a1"] = df["a1"].astype("category")
     df["i"] = range(df.shape[0])
-    df["pos"] = df["pos"].astype(int64)
-    df["cm"] = df["cm"].astype(float64)
     return df
 
 
 def _read_fam(fn):
-    from numpy import float64
-
     header = odict(
         [
-            ("fid", str),
-            ("iid", str),
-            ("father", str),
-            ("mother", str),
-            ("gender", bytes),
-            ("trait", float64),
+            ("fid", object),
+            ("iid", object),
+            ("father", object),
+            ("mother", object),
+            ("gender", object),
+            ("trait", object),
         ]
     )
 
     df = _read_csv(fn, header)
 
-    df["gender"] = df["gender"].astype("category")
     df["i"] = range(df.shape[0])
-    df["trait"] = df["trait"].astype(float64)
     return df
 
 
