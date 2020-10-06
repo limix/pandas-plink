@@ -26,7 +26,7 @@ It is as simple as:
     >>> G = read_plink1_bin("chr11.bed", "chr11.bim", "chr11.fam", verbose=False)
     >>> print(G)
     <xarray.DataArray 'genotype' (sample: 14, variant: 779)>
-    dask.array<transpose, shape=(14, 779), dtype=float64, chunksize=(14, 779), chunktype=numpy.ndarray>
+    dask.array<transpose, shape=(14, 779), dtype=float32, chunksize=(14, 779), chunktype=numpy.ndarray>
     Coordinates:
       * sample   (sample) object 'B001' 'B002' 'B003' ... 'B012' 'B013' 'B014'
       * variant  (variant) object '11_316849996' '11_316874359' ... '11_345698259'

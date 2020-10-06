@@ -1,4 +1,4 @@
-from numpy import absolute, ascontiguousarray, empty, float64, int64, nan, zeros
+from numpy import absolute, ascontiguousarray, empty, float32, nan, uint8, uint64, zeros
 
 from ._allele import Allele
 
@@ -32,7 +32,7 @@ def read_bed(filepath, nrows, ncols, ref: Allele):
             )
 
             shape = (row_end - row_start, col_end - col_start)
-            row_xs += [from_delayed(x, shape, float64)]
+            row_xs += [from_delayed(x, shape, float32)]
             col_start = col_end
         col_xs += [concatenate(row_xs, axis=1)]
         row_start = row_end
@@ -40,17 +40,22 @@ def read_bed(filepath, nrows, ncols, ref: Allele):
     return X
 
 
+_base_type = uint8
+_base_size = _base_type().nbytes
+_base_repr = "uint8_t"
+
+
 def _read_bed_chunk(
     filepath, nrows, ncols, row_start, row_end, col_start, col_end, ref: Allele
 ):
     from .bed_reader import ffi, lib
 
-    X = zeros((row_end - row_start, col_end - col_start), int64)
+    X = zeros((row_end - row_start, col_end - col_start), _base_type)
+    assert X.flags.aligned
 
-    ptr = ffi.cast("uint64_t *", X.ctypes.data)
-    strides = empty(2, int64)
+    strides = empty(2, uint64)
     strides[:] = X.strides
-    strides //= 8
+    strides //= _base_size
 
     e = lib.read_bed_chunk(
         filepath.encode(),
@@ -60,13 +65,13 @@ def _read_bed_chunk(
         col_start,
         row_end,
         col_end,
-        ptr,
+        ffi.cast(f"{_base_repr} *", X.ctypes.data),
         ffi.cast("uint64_t *", strides.ctypes.data),
     )
     if e != 0:
         raise RuntimeError("Failure while reading BED file %s." % filepath)
 
-    X = ascontiguousarray(X, float)
+    X = ascontiguousarray(X, float32)
     X[X == 3] = nan
     if ref == Allele.a0:
         X -= 2

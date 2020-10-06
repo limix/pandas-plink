@@ -175,7 +175,7 @@ def read_plink1_bin(bed, bim=None, fam=None, verbose=True, ref="a1"):
         >>> G = read_plink1_bin(join(get_data_folder(), "chr*.bed"), verbose=False)
         >>> print(G)
         <xarray.DataArray 'genotype' (sample: 14, variant: 1252)>
-        dask.array<concatenate, shape=(14, 1252), dtype=float64, chunksize=(14, 779), chunktype=numpy.ndarray>
+        dask.array<concatenate, shape=(14, 1252), dtype=float32, chunksize=(14, 779), chunktype=numpy.ndarray>
         Coordinates:
           * sample   (sample) object 'B001' 'B002' 'B003' ... 'B012' 'B013' 'B014'
           * variant  (variant) object '11_316849996' '11_316874359' ... '12_373081507'
@@ -201,7 +201,7 @@ def read_plink1_bin(bed, bim=None, fam=None, verbose=True, ref="a1"):
         >>> G = G.where(G.chrom == "11", drop=True)
         >>> print(G)
         <xarray.DataArray 'genotype' (sample: 14, variant: 779)>
-        dask.array<where, shape=(14, 779), dtype=float64, chunksize=(14, 779), chunktype=numpy.ndarray>
+        dask.array<where, shape=(14, 779), dtype=float32, chunksize=(14, 779), chunktype=numpy.ndarray>
         Coordinates:
           * sample   (sample) object 'B001' 'B002' 'B003' ... 'B012' 'B013' 'B014'
           * variant  (variant) object '11_316849996' '11_316874359' ... '11_345698259'
@@ -417,7 +417,9 @@ def _major_order(fn):
             return "snp"
         elif arr[0] == 0:
             return "individual"
-        raise ValueError("Couldn't understand matrix layout.")
+        msg = "Invalid matrix layout. Maybe it is a PLINK2 file?"
+        msg += " PLINK2 is not supported yet."
+        raise ValueError(msg)
 
 
 def _clean_prefixes(prefixes):

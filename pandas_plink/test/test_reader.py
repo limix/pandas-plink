@@ -14,7 +14,7 @@ def test_read_plink():
 
     with pytest.warns(DeprecationWarning):
         (bim, fam, bed) = read_plink(file_prefix, verbose=False)
-    assert_equal(bed.dtype, dtype("float64"))
+    assert_equal(bed.dtype, dtype("float32"))
 
     assert_array_equal(bim.query("chrom=='1' and pos==72515")["snp"], ["rs4030300"])
     assert_array_equal(bim.query("chrom=='1'").shape, [10, 7])
@@ -67,7 +67,7 @@ def test_read_plink1_bin():
     fam = file_prefix + ".fam"
 
     G = read_plink1_bin(bed, bim, fam, verbose=False)
-    assert_equal(G.data.dtype, dtype("float64"))
+    assert_equal(G.data.dtype, dtype("float32"))
 
     snp = G.where((G.chrom == "1") & (G.pos == 72515), drop=True)["snp"].values
     assert_array_equal(snp, ["rs4030300"])
@@ -98,7 +98,7 @@ def test_read_plink1_bin_a0():
     fam = file_prefix + ".fam"
 
     G = read_plink1_bin(bed, bim, fam, verbose=False, ref="a0")
-    assert_equal(G.data.dtype, dtype("float64"))
+    assert_equal(G.data.dtype, dtype("float32"))
 
     snp = G.where((G.chrom == "1") & (G.pos == 72515), drop=True)["snp"].values
     assert_array_equal(snp, ["rs4030300"])
