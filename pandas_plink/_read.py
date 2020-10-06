@@ -3,17 +3,16 @@ from collections import OrderedDict as odict
 from glob import glob
 from os.path import basename, dirname, join
 
+from deprecated.sphinx import deprecated
+
 from ._bed_read import read_bed
 from ._util import last_replace
 
 
+@deprecated(reason="use function :func:`read_plink1_bin` instead.", version="2.1.0")
 def read_plink(file_prefix, verbose=True):
     """
     Read PLINK files into data frames.
-
-    Note
-    ----
-    We suggest using :func:`read_plink1_bin` instead as it provides a clearer interface.
 
     Examples
     --------
