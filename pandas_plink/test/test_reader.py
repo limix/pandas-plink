@@ -12,7 +12,8 @@ def test_read_plink():
     datafiles = join(dirname(realpath(__file__)), "data_files")
     file_prefix = join(datafiles, "data")
 
-    (bim, fam, bed) = read_plink(file_prefix, verbose=False)
+    with pytest.warns(DeprecationWarning):
+        (bim, fam, bed) = read_plink(file_prefix, verbose=False)
     assert_equal(bed.dtype, dtype("float64"))
 
     assert_array_equal(bim.query("chrom=='1' and pos==72515")["snp"], ["rs4030300"])
@@ -41,14 +42,16 @@ def test_read_plink():
 def test_read_plink_prefix_dot():
 
     with pytest.raises(IOError):
-        read_plink("/home/joao/84757.genotypes.norm.renamed")
+        with pytest.warns(DeprecationWarning):
+            read_plink("/home/joao/84757.genotypes.norm.renamed")
 
 
 def test_read_plink_wildcard():
     datafiles = join(dirname(realpath(__file__)), "data_files")
     file_prefix = join(datafiles, "chr*")
 
-    (bim, fam, bed) = read_plink(file_prefix, verbose=False)
+    with pytest.warns(DeprecationWarning):
+        (bim, fam, bed) = read_plink(file_prefix, verbose=False)
     assert_array_equal(bim[bim["chrom"] == "11"]["i"].values[:2], [0, 1])
     assert_array_equal(bim[bim["chrom"] == "12"]["i"].values[:2], [779, 780])
 
@@ -80,6 +83,37 @@ def test_read_plink1_bin():
         [2.0, 2.0, nan, nan, 2.0, 2.0, 2.0, 2.0, 1.0, 2.0],
         [2.0, 1.0, nan, nan, 2.0, 2.0, 1.0, 2.0, 2.0, 1.0],
         [1.0, 2.0, nan, 1.0, 2.0, 2.0, 0.0, 2.0, 2.0, 2.0],
+    ]
+    assert_array_equal(G, arr)
+
+
+def test_read_plink1_bin_a0():
+
+    datafiles = join(dirname(realpath(__file__)), "data_files")
+    file_prefix = join(datafiles, "data")
+    bim = file_prefix + ".bim"
+    bed = file_prefix + ".bed"
+    fam = file_prefix + ".fam"
+
+    G = read_plink1_bin(bed, bim, fam, verbose=False, ref="a0")
+    assert_equal(G.data.dtype, dtype("float64"))
+
+    snp = G.where((G.chrom == "1") & (G.pos == 72515), drop=True)["snp"].values
+    assert_array_equal(snp, ["rs4030300"])
+
+    shape = G.where(G.chrom == "1", drop=True).shape
+    assert_array_equal(shape, [3, 10])
+
+    shape = G.where(G.chrom == "2", drop=True).shape
+    assert_array_equal(shape, [3, 0])
+
+    g = G.where((G.fid == "Sample_2") & (G.iid == "Sample_2"), drop=True)
+    assert_array_equal(g["trait"].values, -9)
+
+    arr = [
+        [0.0, 0.0, nan, nan, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0],
+        [0.0, 1.0, nan, nan, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0],
+        [1.0, 0.0, nan, 1.0, 0.0, 0.0, 2.0, 0.0, 0.0, 0.0],
     ]
     assert_array_equal(G, arr)
 

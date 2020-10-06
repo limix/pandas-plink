@@ -1,7 +1,11 @@
-from numpy import ascontiguousarray, empty, float64, int64, nan, zeros
+from numpy import absolute, ascontiguousarray, empty, float64, int64, nan, zeros
+
+from ._allele import Allele
+
+__all__ = ["read_bed"]
 
 
-def read_bed(filepath, nrows, ncols):
+def read_bed(filepath, nrows, ncols, ref: Allele):
     from dask.array import concatenate, from_delayed
     from dask.delayed import delayed
 
@@ -17,7 +21,14 @@ def read_bed(filepath, nrows, ncols):
             col_end = min(col_start + chunk_size, ncols)
 
             x = delayed(_read_bed_chunk)(
-                filepath, nrows, ncols, row_start, row_end, col_start, col_end
+                filepath,
+                nrows,
+                ncols,
+                row_start,
+                row_end,
+                col_start,
+                col_end,
+                ref,
             )
 
             shape = (row_end - row_start, col_end - col_start)
@@ -29,7 +40,9 @@ def read_bed(filepath, nrows, ncols):
     return X
 
 
-def _read_bed_chunk(filepath, nrows, ncols, row_start, row_end, col_start, col_end):
+def _read_bed_chunk(
+    filepath, nrows, ncols, row_start, row_end, col_start, col_end, ref: Allele
+):
     from .bed_reader import ffi, lib
 
     X = zeros((row_end - row_start, col_end - col_start), int64)
@@ -55,4 +68,8 @@ def _read_bed_chunk(filepath, nrows, ncols, row_start, row_end, col_start, col_e
 
     X = ascontiguousarray(X, float)
     X[X == 3] = nan
+    if ref == Allele.a0:
+        X -= 2
+        absolute(X, out=X)
+
     return X

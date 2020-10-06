@@ -5,8 +5,11 @@ from os.path import basename, dirname, join
 
 from deprecated.sphinx import deprecated
 
+from ._allele import Allele
 from ._bed_read import read_bed
 from ._util import last_replace
+
+__all__ = ["read_plink", "read_plink1_bin"]
 
 
 @deprecated(reason="use function :func:`read_plink1_bin` instead.", version="2.1.0")
@@ -126,8 +129,9 @@ def read_plink(file_prefix, verbose=True):
     fam = _read_file([fn[0]], lambda fn: _read_fam(fn["fam"]), pbar)[0]
     nsamples = fam.shape[0]
 
+    ref = Allele.a1
     bed = _read_file(
-        fn, lambda f: _read_bed(f["bed"], nsamples, nmarkers[f["bed"]]), pbar
+        fn, lambda f: _read_bed(f["bed"], nsamples, nmarkers[f["bed"]], ref), pbar
     )
 
     bed = concatenate(bed, axis=0)
@@ -137,7 +141,7 @@ def read_plink(file_prefix, verbose=True):
     return (bim, fam, bed)
 
 
-def read_plink1_bin(bed, bim=None, fam=None, verbose=True):
+def read_plink1_bin(bed, bim=None, fam=None, verbose=True, ref="a1"):
     """
     Read PLINK 1 binary files [1]_ into a data array.
 
@@ -240,6 +244,9 @@ def read_plink1_bin(bed, bim=None, fam=None, verbose=True):
         inferred.
     verbose : bool
         ``True`` for progress information; ``False`` otherwise.
+    ref: str, optional
+        Reference allele. Specify which allele the dosage matrix will count. It can
+        be either ``"a1"`` (default) or ``"a0"``.
 
     Returns
     -------
@@ -298,7 +305,16 @@ def read_plink1_bin(bed, bim=None, fam=None, verbose=True):
     sample_ids = fam["iid"]
     variant_ids = bim["chrom"].astype(str) + "_" + bim["snp"].astype(str)
 
-    G = _read_file(bed_files, lambda f: _read_bed(f, nsamples, nmarkers[f]).T, pbar)
+    if ref == "a1":
+        ref = Allele.a1
+    elif ref == "a0":
+        ref = Allele.a0
+    else:
+        raise ValueError("Unknown reference allele.")
+
+    G = _read_file(
+        bed_files, lambda f: _read_bed(f, nsamples, nmarkers[f], ref).T, pbar
+    )
     G = da.concatenate(G, axis=1)
 
     G = DataArray(G, dims=["sample", "variant"], coords=[sample_ids, variant_ids])
@@ -384,14 +400,14 @@ def _read_fam(fn):
     return df
 
 
-def _read_bed(fn, nsamples, nmarkers):
+def _read_bed(fn, nsamples, nmarkers, ref: Allele):
     _check_bed_header(fn)
     major = _major_order(fn)
 
     ncols = nmarkers if major == "individual" else nsamples
     nrows = nmarkers if major == "snp" else nsamples
 
-    return read_bed(fn, nrows, ncols)
+    return read_bed(fn, nrows, ncols, ref)
 
 
 def _check_bed_header(fn):
