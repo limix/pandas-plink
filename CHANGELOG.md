@@ -3,9 +3,10 @@ All notable changes to this project will be documented in this file.
 
 ## [Released]
 
-## [2.0.6] - 2020-10-06
+## [2.1.0] - 2020-10-07
 ### Added
 - User can specify reference allele.
+- IO optimization.
 
 ## [2.0.4] - 2020-02-07
 ### Fixed
