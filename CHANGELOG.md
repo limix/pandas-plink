@@ -3,9 +3,16 @@ All notable changes to this project will be documented in this file.
 
 ## [Released]
 
-## [2.1.0] - 2020-10-07
+## [2.2.0] - 2020-10-07
+### Added
+- Added PLINK writer.
+### Fixed
+- Proper support for sample major layout.
+
+## [2.1.0] - 2020-10-06
 ### Added
 - User can specify reference allele.
+### Changed
 - IO optimization.
 
 ## [2.0.4] - 2020-02-07
