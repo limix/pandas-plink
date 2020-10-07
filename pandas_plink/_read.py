@@ -2,8 +2,10 @@ import warnings
 from collections import OrderedDict as odict
 from glob import glob
 from os.path import basename, dirname, join
+from typing import Optional
 
 from deprecated.sphinx import deprecated
+from xarray import DataArray
 
 from ._allele import Allele
 from ._bed_read import read_bed
@@ -17,68 +19,6 @@ __all__ = ["read_plink", "read_plink1_bin"]
 def read_plink(file_prefix, verbose=True):
     """
     Read PLINK files into data frames.
-
-    Examples
-    --------
-    We have shipped this package with an example so can load and inspect by doing
-
-    .. doctest::
-
-        >>> from os.path import join
-        >>> from pandas_plink import read_plink
-        >>> from pandas_plink import get_data_folder
-        >>> (bim, fam, bed) = read_plink(join(get_data_folder(), "data"), verbose=False)
-        >>> print(bim.head())
-          chrom         snp       cm    pos a0 a1  i
-        0     1  rs10399749     0.00  45162  G  C  0
-        1     1   rs2949420     0.00  45257  C  T  1
-        2     1   rs2949421     0.00  45413  0  0  2
-        3     1   rs2691310     0.00  46844  A  T  3
-        4     1   rs4030303     0.00  72434  0  G  4
-        >>> print(fam.head())
-                fid       iid    father    mother gender trait  i
-        0  Sample_1  Sample_1         0         0      1    -9  0
-        1  Sample_2  Sample_2         0         0      2    -9  1
-        2  Sample_3  Sample_3  Sample_1  Sample_2      2    -9  2
-        >>> print(bed.compute())
-        [[2.00 2.00 1.00]
-         [2.00 1.00 2.00]
-         [ nan  nan  nan]
-         [ nan  nan 1.00]
-         [2.00 2.00 2.00]
-         [2.00 2.00 2.00]
-         [2.00 1.00 0.00]
-         [2.00 2.00 2.00]
-         [1.00 2.00 2.00]
-         [2.00 1.00 2.00]]
-
-    The values of the ``bed`` matrix denote how many alleles ``a1`` (see output of data
-    frame ``bim``) are in the corresponding position and individual. Notice the column
-    ``i`` in ``bim`` and ``fam`` data frames. It maps to the corresponding position of
-    the bed matrix:
-
-    .. doctest::
-
-        >>> chrom1 = bim.query("chrom=='1'")
-        >>> X = bed[chrom1.i.values, :].compute()
-        >>> print(X)
-        [[2.00 2.00 1.00]
-         [2.00 1.00 2.00]
-         [ nan  nan  nan]
-         [ nan  nan 1.00]
-         [2.00 2.00 2.00]
-         [2.00 2.00 2.00]
-         [2.00 1.00 0.00]
-         [2.00 2.00 2.00]
-         [1.00 2.00 2.00]
-         [2.00 1.00 2.00]]
-
-    It also allows the use of the wildcard character ``*`` for mapping
-    multiple BED files at
-    once: ``(bim, fam, bed) = read_plink("chrom*")``.
-    In this case, only one of the FAM files will be used to define
-    sample information. Data from BIM and BED files are concatenated to
-    provide a single view of the files.
 
     Parameters
     ----------
@@ -145,10 +85,15 @@ def read_plink(file_prefix, verbose=True):
 
 
 def read_plink1_bin(
-    bed, bim=None, fam=None, verbose=True, ref="a1", chunk: Chunk = Chunk()
-):
+    bed: str,
+    bim: Optional[str] = None,
+    fam: Optional[str] = None,
+    verbose: bool = True,
+    ref: str = "a1",
+    chunk: Chunk = Chunk(),
+) -> DataArray:
     """
-    Read PLINK 1 binary files [1]_ into a data array.
+    Read PLINK 1 binary files [a]_ into a data array.
 
     A PLINK 1 binary file set consists of three files:
 
@@ -238,34 +183,36 @@ def read_plink1_bin(
 
     Parameters
     ----------
-    bed : str
+    bed
         Path to a BED file. It can contain shell-style wildcards to indicate multiple
         BED files.
-    bim : str, optional
+    bim
         Path to a BIM file. It can contain shell-style wildcards to indicate multiple
         BIM files. It defaults to ``None``, in which case it will try to be inferred.
-    fam : str, optional
+    fam
         Path to a FAM file. It defaults to ``None``, in which case it will try to be
         inferred.
-    verbose : bool
+    verbose
         ``True`` for progress information; ``False`` otherwise.
-    ref: str, optional
+    ref
         Reference allele. Specify which allele the dosage matrix will count. It can
         be either ``"a1"`` (default) or ``"a0"``.
+    chunk
+        Data chunk specification. Useful to adjust the trade-off between computational
+        overhead and IO usage. See :class:`pandas_plink.Chunk`.
 
     Returns
     -------
-    G : :class:`xarray.DataArray`
+    :class:`xarray.DataArray`
         Genotype with metadata.
 
     References
     ----------
-    .. [1] PLINK 1 binary. https://www.cog-genomics.org/plink/2.0/input#bed
+    .. [a] PLINK 1 binary. https://www.cog-genomics.org/plink/2.0/input#bed
     """
     import dask.array as da
     import pandas as pd
     from tqdm import tqdm
-    from xarray import DataArray
 
     bed_files = sorted(glob(bed))
     if len(bed_files) == 0:
@@ -300,30 +247,30 @@ def read_plink1_bin(
 
     bims = _read_file(bim_files, lambda f: _read_bim(f), pbar)
     nmarkers = {bed_files[i]: b.shape[0] for i, b in enumerate(bims)}
-    bim = pd.concat(bims, axis=0, ignore_index=True)
-    del bim["i"]
-    fam = _read_file(fam_files, lambda f: _read_fam(f), pbar)[0]
-    del fam["i"]
+    bim_df = pd.concat(bims, axis=0, ignore_index=True)
+    del bim_df["i"]
+    fam_df = _read_file(fam_files, lambda f: _read_fam(f), pbar)[0]
+    del fam_df["i"]
 
-    nsamples = fam.shape[0]
-    sample_ids = fam["iid"]
-    variant_ids = bim["chrom"] + "_" + bim["snp"]
+    nsamples = fam_df.shape[0]
+    sample_ids = fam_df["iid"]
+    variant_ids = bim_df["chrom"] + "_" + bim_df["snp"]
 
     if ref == "a1":
-        ref = Allele.a1
+        ref_al = Allele.a1
     elif ref == "a0":
-        ref = Allele.a0
+        ref_al = Allele.a0
     else:
         raise ValueError("Unknown reference allele.")
 
     G = _read_file(
-        bed_files, lambda f: _read_bed(f, nsamples, nmarkers[f], ref, chunk).T, pbar
+        bed_files, lambda f: _read_bed(f, nsamples, nmarkers[f], ref_al, chunk).T, pbar
     )
     G = da.concatenate(G, axis=1)
 
     G = DataArray(G, dims=["sample", "variant"], coords=[sample_ids, variant_ids])
-    sample = {c: ("sample", fam[c]) for c in fam.columns}
-    variant = {c: ("variant", bim[c]) for c in bim.columns}
+    sample = {c: ("sample", fam_df[c]) for c in fam_df.columns}
+    variant = {c: ("variant", bim_df[c]) for c in bim_df.columns}
     G = G.assign_coords(**sample)
     G = G.assign_coords(**variant)
     G.name = "genotype"

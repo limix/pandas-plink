@@ -1,9 +1,4 @@
-import os
-import sys
-
 import sphinx_rtd_theme
-
-sys.path.insert(0, os.path.abspath(".."))
 
 
 def get_version():
@@ -20,10 +15,13 @@ extensions = [
     "sphinx.ext.napoleon",
     "sphinx.ext.viewcode",
     "sphinx_autodoc_typehints",
+    "sphinx.ext.autosectionlabel",
 ]
 
 templates_path = ["_templates"]
-autosummary_generate = True
+# Change to True when developing it.
+autosummary_generate = False
+autosectionlabel_prefix_document = True
 napoleon_numpy_docstring = True
 
 source_suffix = ".rst"

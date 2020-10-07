@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Union
+from typing import Optional
 
 __all__ = ["Chunk"]
 
@@ -9,8 +9,7 @@ class Chunk:
     """
     Chunk specification.
 
-    Chunk is effectively a contiguous matrix block of the dosage
-    matrix.
+    It is effectively a contiguous submatrix of the dosage matrix.
 
     Parameters
     ----------
@@ -23,13 +22,25 @@ class Chunk:
         number of variants. Set to ``None`` to include all variants.
         Default to ``1024``.
 
-    .. note::
-        Small chunks might increase computation time while large chunks
-        might increase IO usage. If you have a small data set, try setting
-        both ``nsamples`` and ``nvariants`` to ``None``. If the data set
-        is too large but your application will use every sample, try to set
-        ``nsamples=None`` and choose a small value for ``nvariants``.
+    Note
+    ----
+    Small chunks might increase computation time while large chunks
+    might increase IO usage. If you have a small data set, try setting
+    both ``nsamples`` and ``nvariants`` to ``None``. If the data set
+    is too large but your application will use every sample, try to set
+    ``nsamples=None`` and choose a small value for ``nvariants``.
+
+    Examples
+    --------
+    .. doctest::
+
+        >>> from pandas_plink import Chunk
+        >>>
+        >>> Chunk()
+        Chunk(nsamples=1024, nvariants=1024)
+        >>> Chunk(nsamples=None)
+        Chunk(nsamples=None, nvariants=1024)
     """
 
-    nsamples: Union[int] = 1024
-    nvariants: Union[int] = 1024
+    nsamples: Optional[int] = 1024
+    nvariants: Optional[int] = 1024

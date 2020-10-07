@@ -3,7 +3,7 @@ from ._filetype import file_type
 
 def read_rel(filepath, id_filepath=None):
     """
-    Read PLINK realized relationship matrix files [1]_.
+    Read PLINK realized relationship matrix files [b]_.
 
     It supports plain text, binary, and compressed files.
     The usual file extensions for those types are `.rel`, `.rel.bin`, and `.rel.zst`,
@@ -63,7 +63,7 @@ def read_rel(filepath, id_filepath=None):
 
     References
     ----------
-    .. [1] Read PLINK realized relationship matrix files.
+    .. [b] Read PLINK realized relationship matrix files.
            https://www.cog-genomics.org/plink/2.0/distance
     """
 
