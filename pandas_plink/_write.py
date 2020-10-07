@@ -214,7 +214,14 @@ def _write_fam(filepath: Path, G: DataArray):
     for col, col_type in cols:
         df[col] = G.sample[col].values.astype(col_type)
 
-    df.to_csv(filepath, index=False, sep="\t", header=None, encoding="ascii")
+    df.to_csv(
+        filepath,
+        index=False,
+        sep="\t",
+        header=None,
+        encoding="ascii",
+        line_terminator="\n",
+    )
 
 
 def _write_bim(filepath: Path, G: DataArray):
@@ -233,4 +240,11 @@ def _write_bim(filepath: Path, G: DataArray):
     for col, col_type in cols:
         df[col] = G.variant[col].values.astype(col_type)
 
-    df.to_csv(filepath, index=False, sep="\t", header=None, encoding="ascii")
+    df.to_csv(
+        filepath,
+        index=False,
+        sep="\t",
+        header=None,
+        encoding="ascii",
+        line_terminator="\n",
+    )
