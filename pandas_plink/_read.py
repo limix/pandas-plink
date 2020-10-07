@@ -7,6 +7,7 @@ from deprecated.sphinx import deprecated
 
 from ._allele import Allele
 from ._bed_read import read_bed
+from ._chunk import Chunk
 from ._util import last_replace
 
 __all__ = ["read_plink", "read_plink1_bin"]
@@ -131,7 +132,9 @@ def read_plink(file_prefix, verbose=True):
 
     ref = Allele.a1
     bed = _read_file(
-        fn, lambda f: _read_bed(f["bed"], nsamples, nmarkers[f["bed"]], ref), pbar
+        fn,
+        lambda f: _read_bed(f["bed"], nsamples, nmarkers[f["bed"]], ref, Chunk()),
+        pbar,
     )
 
     bed = concatenate(bed, axis=0)
@@ -141,7 +144,9 @@ def read_plink(file_prefix, verbose=True):
     return (bim, fam, bed)
 
 
-def read_plink1_bin(bed, bim=None, fam=None, verbose=True, ref="a1"):
+def read_plink1_bin(
+    bed, bim=None, fam=None, verbose=True, ref="a1", chunk: Chunk = Chunk()
+):
     """
     Read PLINK 1 binary files [1]_ into a data array.
 
@@ -312,7 +317,7 @@ def read_plink1_bin(bed, bim=None, fam=None, verbose=True, ref="a1"):
         raise ValueError("Unknown reference allele.")
 
     G = _read_file(
-        bed_files, lambda f: _read_bed(f, nsamples, nmarkers[f], ref).T, pbar
+        bed_files, lambda f: _read_bed(f, nsamples, nmarkers[f], ref, chunk).T, pbar
     )
     G = da.concatenate(G, axis=1)
 
@@ -387,14 +392,20 @@ def _read_fam(fn):
     return df
 
 
-def _read_bed(fn, nsamples, nmarkers, ref: Allele):
+def _read_bed(fn, nsamples, nvariants, ref: Allele, chunk: Chunk):
     _check_bed_header(fn)
     major = _major_order(fn)
 
-    ncols = nmarkers if major == "individual" else nsamples
-    nrows = nmarkers if major == "snp" else nsamples
+    ncols = nvariants
+    nrows = nsamples
+    row_chunk = nrows if chunk.nsamples is None else min(nrows, chunk.nsamples)
+    col_chunk = ncols if chunk.nvariants is None else min(ncols, chunk.nvariants)
 
-    return read_bed(fn, nrows, ncols, ref)
+    if major == "variant":
+        nrows, ncols = ncols, nrows
+        row_chunk, col_chunk = col_chunk, row_chunk
+
+    return read_bed(fn, nrows, ncols, row_chunk, col_chunk, ref)
 
 
 def _check_bed_header(fn):
@@ -414,9 +425,9 @@ def _major_order(fn):
         if len(arr) < 1:
             raise ValueError("Couldn't read column order: %s." % fn)
         if arr[0] == 1:
-            return "snp"
+            return "variant"
         elif arr[0] == 0:
-            return "individual"
+            return "sample"
         msg = "Invalid matrix layout. Maybe it is a PLINK2 file?"
         msg += " PLINK2 is not supported yet."
         raise ValueError(msg)

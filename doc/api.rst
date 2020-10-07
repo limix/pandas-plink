@@ -7,6 +7,7 @@ API
 .. autosummary::
   :toctree: api/
 
+  Chunk
   get_data_folder
   read_grm
   read_plink

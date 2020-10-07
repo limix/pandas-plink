@@ -13,12 +13,13 @@ def get_version():
 
 
 extensions = [
-    "sphinx.ext.autosummary",
     "sphinx.ext.autodoc",
+    "sphinx.ext.autosummary",
     "sphinx.ext.doctest",
-    "sphinx.ext.viewcode",
     "sphinx.ext.intersphinx",
     "sphinx.ext.napoleon",
+    "sphinx.ext.viewcode",
+    "sphinx_autodoc_typehints",
 ]
 
 templates_path = ["_templates"]
