@@ -27,9 +27,9 @@ def write_plink1_bin(
     - FAM: containing sample information.
 
     The user must provide the genotype (dosage) via a :class:`xarray.DataArray` matrix
-    with data type :class:`numpy.float32` or :class:`numpy.float64`. That matrix must
+    with data type :const:`numpy.float32` or :const:`numpy.float64`. That matrix must
     have two named dimensions: ``sample`` and ``variant``. The only allowed values for
-    the genotype are: ``0``, ``1``, ``2``, and ``math.nan``.
+    the genotype are: :data:`0`, :data:`1`, :data:`2`, and :data:`math.nan`.
 
     Examples
     --------
@@ -101,11 +101,10 @@ def write_plink1_bin(
     G
         Genotype matrix with metainformation about samples and variants.
     bed
-        Path to a BED file. It can contain shell-style wildcards to indicate multiple
-        BED files.
+        Path to a BED file.
     bim
-        Path to a BIM file. It can contain shell-style wildcards to indicate multiple
-        BIM files. It defaults to ``None``, in which case it will try to be inferred.
+        Path to a BIM file.It defaults to ``None``, in which case it will try to be
+        inferred.
     fam
         Path to a FAM file. It defaults to ``None``, in which case it will try to be
         inferred.

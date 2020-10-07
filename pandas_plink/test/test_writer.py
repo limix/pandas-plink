@@ -122,6 +122,39 @@ def test_write_plink1_bin_transpose(tmp_path: Path):
     assert fam_content == fam_desired
 
 
+def test_write_plink1_bin_sample_major(tmp_path: Path):
+
+    datafiles = join(dirname(realpath(__file__)), "data_files")
+    file_prefix = join(datafiles, "data")
+    bim = file_prefix + ".bim"
+    bed = file_prefix + ".bed"
+    fam = file_prefix + ".fam"
+
+    G = read_plink1_bin(bed, bim, fam, verbose=False)
+    write_plink1_bin(G, tmp_path / "tmp.bed", major="sample", verbose=False)
+
+    G = read_plink1_bin(str(tmp_path / "tmp.bed"), verbose=False)
+    write_plink1_bin(G, tmp_path / "out.bed", verbose=False)
+
+    with open(bed, "rb") as f:
+        bed_desired = md5(f.read()).hexdigest()
+
+    with open(tmp_path / "out.bed", "rb") as f:
+        bed_content = md5(f.read()).hexdigest()
+
+    assert bed_content == bed_desired
+
+    bim_desired = "88475a9ea7a52e056716e612f44ccb62"
+    with open(tmp_path / "out.bim", "rb") as f:
+        bim_content = md5(f.read()).hexdigest()
+    assert bim_content == bim_desired
+
+    fam_desired = "2df7b9a70ab70e95f8b1c774b9022404"
+    with open(tmp_path / "out.fam", "rb") as f:
+        fam_content = md5(f.read()).hexdigest()
+    assert fam_content == fam_desired
+
+
 def test_write_plink1_bin_empty_metadata(tmp_path: Path):
 
     datafiles = join(dirname(realpath(__file__)), "data_files")

@@ -61,6 +61,6 @@ epub_exclude_files = ["search.html"]
 
 intersphinx_mapping = {
     "python": ("http://docs.python.org/", None),
-    "numpy": ("http://docs.scipy.org/doc/numpy/", None),
+    "numpy": ("https://numpy.org/doc/stable/", None),
     "xarray": ("http://xarray.pydata.org/en/stable/", None),
 }

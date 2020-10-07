@@ -352,7 +352,11 @@ def _read_bed(fn, nsamples, nvariants, ref: Allele, chunk: Chunk):
         nrows, ncols = ncols, nrows
         row_chunk, col_chunk = col_chunk, row_chunk
 
-    return read_bed(fn, nrows, ncols, row_chunk, col_chunk, ref)
+    G = read_bed(fn, nrows, ncols, row_chunk, col_chunk, ref)
+    if major == "sample":
+        G = G.T
+
+    return G
 
 
 def _check_bed_header(fn):
