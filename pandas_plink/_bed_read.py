@@ -66,7 +66,7 @@ def _read_bed_chunk(
         ffi.cast("uint64_t *", strides.ctypes.data),
     )
     if e != 0:
-        raise RuntimeError("Failure while reading BED file %s." % filepath)
+        raise RuntimeError(f"Failure while reading BED file {filepath}.")
 
     X = ascontiguousarray(X, float32)
     X[X == 3] = nan

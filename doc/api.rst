@@ -13,4 +13,5 @@ API
   read_plink
   read_plink1_bin
   read_rel
+  write_plink1_bin
   test

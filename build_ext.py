@@ -12,9 +12,16 @@ with open(join(folder, "pandas_plink", "_bed_reader.h"), "r") as f:
     ffibuilder.cdef(f.read())
 
 with open(join(folder, "pandas_plink", "_bed_reader.c"), "r") as f:
-    c_file = f.read()
+    reader_file = f.read()
 
-ffibuilder.set_source("pandas_plink.bed_reader", c_file, language="c")
+with open(join(folder, "pandas_plink", "_bed_writer.h"), "r") as f:
+    ffibuilder.cdef(f.read())
+
+with open(join(folder, "pandas_plink", "_bed_writer.c"), "r") as f:
+    writer_file = f.read()
+
+c_content = f"{reader_file}\n{writer_file}"
+ffibuilder.set_source("pandas_plink.bed_reader", c_content, language="c")
 
 if __name__ == "__main__":
     ffibuilder.compile(verbose=True)
