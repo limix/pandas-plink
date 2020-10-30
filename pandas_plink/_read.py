@@ -5,6 +5,7 @@ from os.path import basename, dirname, join
 from typing import Optional
 
 from deprecated.sphinx import deprecated
+from pandas import StringDtype
 from xarray import DataArray
 
 from ._allele import Allele
@@ -254,7 +255,7 @@ def read_plink1_bin(
 
     nsamples = fam_df.shape[0]
     sample_ids = fam_df["iid"]
-    variant_ids = bim_df["chrom"] + "_" + bim_df["snp"]
+    variant_ids = bim_df[["chrom", "snp"]].agg("_".join, axis=1)
 
     if ref == "a1":
         ref_al = Allele.a1
@@ -307,12 +308,12 @@ def _read_bim(fn):
 
     header = odict(
         [
-            ("chrom", object),
-            ("snp", object),
+            ("chrom", StringDtype()),
+            ("snp", StringDtype()),
             ("cm", float64),
             ("pos", int32),
-            ("a0", object),
-            ("a1", object),
+            ("a0", StringDtype()),
+            ("a1", StringDtype()),
         ]
     )
     df = _read_csv(fn, header)
@@ -324,12 +325,12 @@ def _read_bim(fn):
 def _read_fam(fn):
     header = odict(
         [
-            ("fid", object),
-            ("iid", object),
-            ("father", object),
-            ("mother", object),
-            ("gender", object),
-            ("trait", object),
+            ("fid", StringDtype()),
+            ("iid", StringDtype()),
+            ("father", StringDtype()),
+            ("mother", StringDtype()),
+            ("gender", StringDtype()),
+            ("trait", StringDtype()),
         ]
     )
 
