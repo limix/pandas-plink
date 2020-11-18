@@ -3,7 +3,7 @@ python: 3.7
 env:
   global:
     - URL=https://raw.githubusercontent.com/horta/ci/master
-    - CIBW_SKIP="pp* cp27-* cp34-* cp35-* cp36-* cp39-* *i686* *-win32"
+    - CIBW_SKIP="pp* cp27-* cp34-* cp35-* cp36-* *i686* *-win32"
     - CIBW_BEFORE_BUILD="python -m pip install numpy && python -m pip install pandas"
     - CIBW_TEST_COMMAND="python -c \"import pandas_plink; import sys; sys.exit(pandas_plink.test())\""
 matrix:
