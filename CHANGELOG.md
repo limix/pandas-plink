@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 
 ## Released
 
+## 2.2.3 - 2020-11-18
+
+### Changed
+- Removed read_plink deprecation.
+- Updated Example.ipynb
+- Improved read_plink documentation.
+
+### Added
+- Support for Python 3.9.
+
 ## 2.2.1 - 2020-10-07
 
 ### Fixed
