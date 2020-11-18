@@ -12,8 +12,7 @@ def test_read_plink():
     datafiles = join(dirname(realpath(__file__)), "data_files")
     file_prefix = join(datafiles, "data")
 
-    with pytest.warns(DeprecationWarning):
-        (bim, fam, bed) = read_plink(file_prefix, verbose=False)
+    (bim, fam, bed) = read_plink(file_prefix, verbose=False)
     assert_equal(bed.dtype, dtype("float32"))
 
     assert_array_equal(bim.query("chrom=='1' and pos==72515")["snp"], ["rs4030300"])
@@ -42,18 +41,15 @@ def test_read_plink():
 
 
 def test_read_plink_prefix_dot():
-
     with pytest.raises(IOError):
-        with pytest.warns(DeprecationWarning):
-            read_plink("/home/joao/84757.genotypes.norm.renamed")
+        read_plink("/home/joao/84757.genotypes.norm.renamed")
 
 
 def test_read_plink_wildcard():
     datafiles = join(dirname(realpath(__file__)), "data_files")
     file_prefix = join(datafiles, "chr*")
 
-    with pytest.warns(DeprecationWarning):
-        (bim, fam, bed) = read_plink(file_prefix, verbose=False)
+    (bim, fam, bed) = read_plink(file_prefix, verbose=False)
     assert_array_equal(bim[bim["chrom"] == "11"]["i"].values[:2], [0, 1])
     assert_array_equal(bim[bim["chrom"] == "12"]["i"].values[:2], [779, 780])
 
@@ -158,11 +154,3 @@ def test_read_plink1_bin_wildcard():
 def test_example_file_prefix():
     with pytest.warns(DeprecationWarning):
         example_file_prefix()
-
-
-def test_read_deprecated():
-    datafiles = join(dirname(realpath(__file__)), "data_files")
-    file_prefix = join(datafiles, "data")
-
-    with pytest.warns(DeprecationWarning):
-        read_plink(file_prefix)

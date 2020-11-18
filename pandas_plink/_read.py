@@ -4,7 +4,6 @@ from glob import glob
 from os.path import basename, dirname, join
 from typing import Optional
 
-from deprecated.sphinx import deprecated
 from pandas import StringDtype
 from xarray import DataArray
 
@@ -16,10 +15,56 @@ from ._util import last_replace
 __all__ = ["read_plink", "read_plink1_bin"]
 
 
-@deprecated(reason="use function :func:`read_plink1_bin` instead.", version="2.1.0")
 def read_plink(file_prefix, verbose=True):
     """
     Read PLINK files into data frames.
+
+    .. note::
+
+        The function :func:`pandas_plink.read_plink1_bin` provides an alternative
+        interface to read the same files.
+
+    The genotype values can be either ``0``, ``1``, ``2``, or ``NaN``:
+
+    - ``0`` Homozygous having the first allele (given by coordinate ``a0``)
+    - ``1`` Heterozygous
+    - ``2`` Homozygous having the second allele (given by coordinate ``a1``)
+    - ``NaN`` Missing genotype
+
+    Examples
+    --------
+    The following example reads two BED files and two BIM files correspondig to
+    chromosomes 11 and 12, and read a single FAM file whose filename is inferred from
+    the BED filenames.
+
+    .. doctest::
+
+        >>> from os.path import join
+        >>> from pandas_plink import read_plink
+        >>> from pandas_plink import get_data_folder
+        >>> (bim, fam, bed) = read_plink(join(get_data_folder(), "chr*.bed"), verbose=False)
+        >>> print(bim.head())
+          chrom        snp       cm     pos a0 a1  i
+        0    11  316849996     0.00  157439  C  T  0
+        1    11  316874359     0.00  181802  G  C  1
+        2    11  316941526     0.00  248969  G  C  2
+        3    11  317137620     0.00  445063  C  T  3
+        4    11  317534352     0.00  841795  C  T  4
+        >>> print(fam.head())
+            fid   iid father mother gender trait  i
+        0  B001  B001      0      0      0    -9  0
+        1  B002  B002      0      0      0    -9  1
+        2  B003  B003      0      0      0    -9  2
+        3  B004  B004      0      0      0    -9  3
+        4  B005  B005      0      0      0    -9  4
+        >>> print(bed.compute())
+        [[0.00 0.00 0.00 ... 2.00 2.00 0.00]
+         [0.00 1.00 0.00 ... 2.00 1.00 0.00]
+         [2.00 2.00 2.00 ... 0.00 0.00 2.00]
+         ...
+         [2.00 0.00 0.00 ... 2.00 2.00 1.00]
+         [2.00 0.00 0.00 ... 2.00 2.00 0.00]
+         [0.00  nan 0.00 ... 1.00 2.00 0.00]]
 
     Parameters
     ----------
@@ -35,7 +80,7 @@ def read_plink(file_prefix, verbose=True):
         Alleles.
     samples : :class:`pandas.DataFrame`
         Samples.
-    genotypes : :class:`numpy.ndarray`
+    genotypes : :class:`dask.array.Array`
         Genotype.
     """
     import pandas as pd
