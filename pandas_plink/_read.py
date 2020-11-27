@@ -24,12 +24,13 @@ def read_plink(file_prefix, verbose=True):
         The function :func:`pandas_plink.read_plink1_bin` provides an alternative
         interface to read the same files.
 
-    The genotype values can be either ``0``, ``1``, ``2``, or ``NaN``:
+    The genotype values can be either :const:`0`, :const:`1`, :const:`2`, or
+    :data:`math.nan`:
 
-    - ``0`` Homozygous having the first allele (given by coordinate ``a0``)
-    - ``1`` Heterozygous
-    - ``2`` Homozygous having the second allele (given by coordinate ``a1``)
-    - ``NaN`` Missing genotype
+    - :const:`0` Homozygous having the first allele (given by coordinate **a0**)
+    - :const:`1` Heterozygous
+    - :const:`2` Homozygous having the second allele (given by coordinate **a1**)
+    - :data:`math.nan` Missing genotype
 
     Examples
     --------
@@ -42,7 +43,8 @@ def read_plink(file_prefix, verbose=True):
         >>> from os.path import join
         >>> from pandas_plink import read_plink
         >>> from pandas_plink import get_data_folder
-        >>> (bim, fam, bed) = read_plink(join(get_data_folder(), "chr*.bed"), verbose=False)
+        >>> (bim, fam, bed) = read_plink(join(get_data_folder(), "chr*.bed"),
+        ...                              verbose=False)
         >>> print(bim.head())
           chrom        snp       cm     pos a0 a1  i
         0    11  316849996     0.00  157439  C  T  0
@@ -72,7 +74,7 @@ def read_plink(file_prefix, verbose=True):
         Path prefix to the set of PLINK files. It supports loading many BED files at
         once using globstrings wildcard.
     verbose : bool
-        ``True`` for progress information; ``False`` otherwise.
+        :const:`True` for progress information; :const:`False` otherwise.
 
     Returns
     -------
@@ -234,15 +236,15 @@ def read_plink1_bin(
         BED files.
     bim
         Path to a BIM file. It can contain shell-style wildcards to indicate multiple
-        BIM files. It defaults to ``None``, in which case it will try to be inferred.
+        BIM files. It defaults to :const:`None`, in which case it will try to be inferred.
     fam
-        Path to a FAM file. It defaults to ``None``, in which case it will try to be
+        Path to a FAM file. It defaults to :const:`None`, in which case it will try to be
         inferred.
     verbose
-        ``True`` for progress information; ``False`` otherwise.
+        :const:`True` for progress information; :const:`False` otherwise.
     ref
         Reference allele. Specify which allele the dosage matrix will count. It can
-        be either ``"a1"`` (default) or ``"a0"``.
+        be either :const:`"a1"` (default) or :const:`"a0"`.
     chunk
         Data chunk specification. Useful to adjust the trade-off between computational
         overhead and IO usage. See :class:`pandas_plink.Chunk`.

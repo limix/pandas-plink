@@ -53,8 +53,8 @@ def read_rel(filepath, id_filepath=None):
     filepath : str
         Path to the matrix file.
     id_filepath : str, optional
-        Path to the file containing family and individual IDs. It defaults to ``None``,
-        in which case it will try to be inferred.
+        Path to the file containing family and individual IDs. It defaults to
+        :const:`None`, in which case it will try to be inferred.
 
     Returns
     -------

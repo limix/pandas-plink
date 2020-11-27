@@ -60,7 +60,7 @@ epub_copyright = copyright
 epub_exclude_files = ["search.html"]
 
 intersphinx_mapping = {
-    "python": ("http://docs.python.org/", None),
+    "python": ("https://docs.python.org/3/", None),
     "numpy": ("https://numpy.org/doc/stable/", None),
     "xarray": ("http://xarray.pydata.org/en/stable/", None),
     "pandas": ("http://pandas.pydata.org/pandas-docs/stable/", None),

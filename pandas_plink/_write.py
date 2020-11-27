@@ -28,8 +28,8 @@ def write_plink1_bin(
 
     The user must provide the genotype (dosage) via a :class:`xarray.DataArray` matrix
     with data type :const:`numpy.float32` or :const:`numpy.float64`. That matrix must
-    have two named dimensions: ``sample`` and ``variant``. The only allowed values for
-    the genotype are: :data:`0`, :data:`1`, :data:`2`, and :data:`math.nan`.
+    have two named dimensions: **sample** and **variant**. The only allowed values for
+    the genotype are: :const:`0`, :const:`1`, :const:`2`, and :data:`math.nan`.
 
     Examples
     --------
@@ -118,16 +118,16 @@ def write_plink1_bin(
     bed
         Path to a BED file.
     bim
-        Path to a BIM file.It defaults to ``None``, in which case it will try to be
+        Path to a BIM file.It defaults to :const:`None`, in which case it will try to be
         inferred.
     fam
-        Path to a FAM file. It defaults to ``None``, in which case it will try to be
-        inferred.
+        Path to a FAM file. It defaults to :const:`None`, in which case it will try to
+        be inferred.
     major
-        It can be either ``"sample"`` or ``"variant"`` (recommended and default).
-        Specify the matrix layout on the BED file.
+        It can be either :const:`"sample"` or :const:`"variant"` (recommended and
+        default). Specify the matrix layout on the BED file.
     verbose
-        ``True`` for progress information; ``False`` otherwise.
+        :const:`True` for progress information; :const:`False` otherwise.
     """
     if G.ndim != 2:
         raise ValueError("G has to be bidimensional")

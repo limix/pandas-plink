@@ -15,20 +15,20 @@ class Chunk:
     ----------
     nsamples
         Number of samples in a single chunk, thresholded by the total
-        number of samples. Set to ``None`` to include all samples.
-        Default to ``1024``.
+        number of samples. Set to :const:`None` to include all samples.
+        Default to :const:`1024`.
     nvariants
         Number of variants in a single chunk, thresholded by the total
-        number of variants. Set to ``None`` to include all variants.
-        Default to ``1024``.
+        number of variants. Set to :const:`None` to include all variants.
+        Default to :const:`1024`.
 
     Note
     ----
     Small chunks might increase computation time while large chunks
     might increase IO usage. If you have a small data set, try setting
-    both ``nsamples`` and ``nvariants`` to ``None``. If the data set
+    both :data:`nsamples` and :data:`nvariants` to :const:`None`. If the data set
     is too large but your application will use every sample, try to set
-    ``nsamples=None`` and choose a small value for ``nvariants``.
+    :data:`nsamples = None` and choose a small value for :data:`nvariants`.
 
     Examples
     --------

@@ -50,10 +50,10 @@ It is as simple as:
         a0       (variant) object 'C' 'G' 'G' 'C' 'C' 'T' ... 'A' 'C' 'A' 'A' 'T'
         a1       (variant) object 'T' 'C' 'C' 'T' 'T' 'A' ... 'G' 'T' 'G' 'C' 'C'
 
-The matrix :py:`G` is a special matrix: :class:`xarray.DataArray`. It provides labes for its
-dimensions (`"sample"` for rows and `"variant"` for columns) and additional metadata for
-those dimensions.
-Lets print the genotype value of sample `B003` and variant `variant5`:
+The matrix :data:`G` is a special matrix: :class:`xarray.DataArray`. It provides labes
+for its dimensions (:const:`"sample"` for rows and :const:`"variant"` for columns) and
+additional metadata for those dimensions.
+Lets print the genotype value of sample :const:`"B003"` and variant :const:`"variant5"`:
 
 .. doctest::
 
@@ -63,8 +63,10 @@ Lets print the genotype value of sample `B003` and variant `variant5`:
     >>> print(G.a0.sel(variant=variant).values)
     T
 
-It means that sample `B003` has two alleles `T` at the variant `variant5`.
-Likewise, sample `B003` has two alleles `C` at the variant `variant135`:
+It means that sample :data:`"B003"` has two alleles **T** at the variant
+:data:`"variant5"`.
+Likewise, sample :data:`"B003"` has two alleles **C** at the variant
+:data:`"variant135"`:
 
 .. doctest::
 
@@ -88,12 +90,13 @@ Now lets print a summary of the genotype values:
      [0.00 0.00 2.00 ... 0.00 0.00  nan]]
 
 
-The genotype values can be either ``0``, ``1``, ``2``, or ``NaN``:
+The genotype values can be either :const:`0`, :const:`1`, :const:`2`, or
+:data:`math.nan`:
 
-- ``0`` Homozygous having the first allele (given by coordinate ``a0``)
-- ``1`` Heterozygous
-- ``2`` Homozygous having the second allele (given by coordinate ``a1``)
-- ``NaN`` Missing genotype
+- :const:`0` Homozygous having the first allele (given by coordinate **a0**)
+- :const:`1` Heterozygous
+- :const:`2` Homozygous having the second allele (given by coordinate **a1**)
+- :data:`math.nan` Missing genotype
 
 
 Kinship matrix

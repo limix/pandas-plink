@@ -5,12 +5,12 @@ def test(verbose=True):
     Parameters
     ----------
     verbose : bool
-        ``True`` to show diagnostic. Defaults to ``True``.
+        :const:`True` to show diagnostic. Defaults to :const:`True`.
 
     Returns
     -------
     int
-        Exit code: ``0`` for success.
+        Exit code: :const:`0` for success.
     """
     from .conftest import setup_tests_baseline
 
