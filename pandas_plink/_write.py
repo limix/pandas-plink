@@ -33,6 +33,16 @@ def write_plink1_bin(
 
     Examples
     --------
+    .. testsetup:
+
+        >>> import os
+        >>> import shutil
+        >>> import tempfile
+        >>>
+        >>> old_path = os.getcwd()
+        >>> tmp_path = tempfile.mkdtemp()
+        >>> os.chdir(tmp_path)
+
     .. doctest::
 
         >>> from xarray import DataArray
@@ -95,6 +105,11 @@ def write_plink1_bin(
             pos      (variant) int32 157439 181802 248969 ... 27163741 27205125 27367844
             a0       (variant) object 'C' 'G' 'G' 'C' 'C' 'T' ... 'A' 'G' 'A' 'T' 'G'
             a1       (variant) object 'T' 'C' 'C' 'T' 'T' 'A' ... 'G' 'A' 'T' 'C' 'A'
+
+    .. testcleanup::
+
+        >>> os.chdir(old_path)
+        >>> shutil.rmtree(tmp_path)
 
     Parameters
     ----------

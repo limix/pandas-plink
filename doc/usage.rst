@@ -5,20 +5,27 @@ Usage
 Genotype
 ========
 
-It is as simple as:
-
 .. testsetup::
 
+    >>> import os
     >>> from os.path import join
     >>> from pandas_plink import get_data_folder
-    >>> from shutil import copy
+    >>> import shutil
+    >>> import tempfile
+    >>>
+    >>> old_path = os.getcwd()
+    >>> tmp_path = tempfile.mkdtemp()
+    >>> os.chdir(tmp_path)
+    >>>
     >>> filenames = ["chr11.bed", "chr11.bim", "chr11.fam", "chr12.bed", "chr12.bim",
     ...              "chr12.fam"]
     >>> for f in filenames:
-    ...     _ = copy(join(get_data_folder(), f), ".")
+    ...     _ = shutil.copy(join(get_data_folder(), f), ".")
     >>> rel_filenames = ["plink2.rel.bin", "plink2.rel.id"]
     >>> for f in rel_filenames:
-    ...     _ = copy(join(get_data_folder(), "rel-bin", f), ".")
+    ...     _ = shutil.copy(join(get_data_folder(), "rel-bin", f), ".")
+
+It is as simple as:
 
 .. doctest::
 
@@ -140,13 +147,8 @@ formats since version 2.0.0.
 
 .. testcleanup::
 
-    >>> import os
-    >>> if os.path.basename(os.getcwd()) != "data_files":
-    ...     for f in filenames:
-    ...         os.remove(f)
-    >>> if os.path.basename(os.getcwd()) != "data_files":
-    ...     for f in rel_filenames:
-    ...         os.remove(f)
+    >>> os.chdir(old_path)
+    >>> shutil.rmtree(tmp_path)
 
 Please, refer to the functions :func:`pandas_plink.read_rel` and
 :func:`pandas_plink.read_grm` for more details.
