@@ -50,7 +50,7 @@ def write_plink1_bin(
         dask.array<transpose, shape=(1, 1), dtype=float32, chunksize=(1, 1), chunktype=numpy.ndarray>
         Coordinates:
           * sample   (sample) object '0'
-          * variant  (variant) object '?_0'
+          * variant  (variant) <U8 'variant0'
             fid      (sample) object '0'
             iid      (sample) object '0'
             father   (sample) object '?'
@@ -82,7 +82,7 @@ def write_plink1_bin(
         dask.array<transpose, shape=(14, 1252), dtype=float32, chunksize=(14, 1024), chunktype=numpy.ndarray>
         Coordinates:
           * sample   (sample) object 'B001' 'B002' 'B003' ... 'B012' 'B013' 'B014'
-          * variant  (variant) object '11_316849996' '11_316874359' ... '12_373081507'
+          * variant  (variant) <U11 'variant0' 'variant1' ... 'variant1251'
             fid      (sample) object 'B001' 'B002' 'B003' ... 'B012' 'B013' 'B014'
             iid      (sample) object 'B001' 'B002' 'B003' ... 'B012' 'B013' 'B014'
             father   (sample) object '0' '0' '0' '0' '0' '0' ... '0' '0' '0' '0' '0' '0'

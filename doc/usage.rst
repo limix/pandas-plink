@@ -29,7 +29,7 @@ It is as simple as:
     dask.array<transpose, shape=(14, 779), dtype=float32, chunksize=(14, 779), chunktype=numpy.ndarray>
     Coordinates:
       * sample   (sample) object 'B001' 'B002' 'B003' ... 'B012' 'B013' 'B014'
-      * variant  (variant) object '11_316849996' '11_316874359' ... '11_345698259'
+      * variant  (variant) <U10 'variant0' 'variant1' ... 'variant777' 'variant778'
         fid      (sample) object 'B001' 'B002' 'B003' ... 'B012' 'B013' 'B014'
         iid      (sample) object 'B001' 'B002' 'B003' ... 'B012' 'B013' 'B014'
         father   (sample) object '0' '0' '0' '0' '0' '0' ... '0' '0' '0' '0' '0' '0'
@@ -43,26 +43,28 @@ It is as simple as:
         a0       (variant) object 'C' 'G' 'G' 'C' 'C' 'T' ... 'A' 'C' 'A' 'A' 'T'
         a1       (variant) object 'T' 'C' 'C' 'T' 'T' 'A' ... 'G' 'T' 'G' 'C' 'C'
 
-The matrix `G` is a special matrix: :class:`xarray.DataArray`. It provides labes for its
-dimensions (`sample` for rows and `variant` for columns) and additional metadata for
+The matrix :py:`G` is a special matrix: :class:`xarray.DataArray`. It provides labes for its
+dimensions (`"sample"` for rows and `"variant"` for columns) and additional metadata for
 those dimensions.
-Lets print the genotype value of sample `B003` and variant `11_316874359`:
+Lets print the genotype value of sample `B003` and variant `variant5`:
 
 .. doctest::
 
-    >>> print(G.sel(sample="B003", variant="11_316874359").values)
+    >>> variant = "variant5"
+    >>> print(G.sel(sample="B003", variant=variant).values)
     0.0
-    >>> print(G.a0.sel(variant="11_316874359").values)
-    G
+    >>> print(G.a0.sel(variant=variant).values)
+    T
 
-It means that sample `B003` has two alleles `G` at the variant `11_316874359`.
-Likewise, sample `B003` has two alleles `G` at the variant `11_316874359`:
+It means that sample `B003` has two alleles `T` at the variant `variant5`.
+Likewise, sample `B003` has two alleles `C` at the variant `variant135`:
 
 .. doctest::
 
-    >>> print(G.sel(sample="B003", variant="11_316941526").values)
+    >>> variant = "variant135"
+    >>> print(G.sel(sample="B003", variant=variant).values)
     2.0
-    >>> print(G.a1.sel(variant="11_316941526").values)
+    >>> print(G.a1.sel(variant=variant).values)
     C
 
 Now lets print a summary of the genotype values:

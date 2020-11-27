@@ -174,7 +174,7 @@ def read_plink1_bin(
         dask.array<concatenate, shape=(14, 1252), dtype=float32, chunksize=(14, 779), chunktype=numpy.ndarray>
         Coordinates:
           * sample   (sample) object 'B001' 'B002' 'B003' ... 'B012' 'B013' 'B014'
-          * variant  (variant) object '11_316849996' '11_316874359' ... '12_373081507'
+          * variant  (variant) <U11 'variant0' 'variant1' ... 'variant1251'
             fid      (sample) object 'B001' 'B002' 'B003' ... 'B012' 'B013' 'B014'
             iid      (sample) object 'B001' 'B002' 'B003' ... 'B012' 'B013' 'B014'
             father   (sample) object '0' '0' '0' '0' '0' '0' ... '0' '0' '0' '0' '0' '0'
@@ -200,7 +200,7 @@ def read_plink1_bin(
         dask.array<where, shape=(14, 779), dtype=float32, chunksize=(14, 779), chunktype=numpy.ndarray>
         Coordinates:
           * sample   (sample) object 'B001' 'B002' 'B003' ... 'B012' 'B013' 'B014'
-          * variant  (variant) object '11_316849996' '11_316874359' ... '11_345698259'
+          * variant  (variant) <U11 'variant0' 'variant1' ... 'variant777' 'variant778'
             fid      (sample) object 'B001' 'B002' 'B003' ... 'B012' 'B013' 'B014'
             iid      (sample) object 'B001' 'B002' 'B003' ... 'B012' 'B013' 'B014'
             father   (sample) object '0' '0' '0' '0' '0' '0' ... '0' '0' '0' '0' '0' '0'
@@ -216,11 +216,11 @@ def read_plink1_bin(
         >>> print(G.shape)
         (14, 779)
 
-    Lets now print the genotype value of the sample `B003` for variant `11_316874359`:
+    Lets now print the genotype value of the sample `B003` for variant `variant5`:
 
     .. doctest::
 
-        >>> print(G.sel(sample="B003", variant="11_316874359").values)
+        >>> print(G.sel(sample="B003", variant="variant5").values)
         0.0
 
     The special matrix we return is of type :class:`xarray.DataArray`. More information
@@ -291,16 +291,15 @@ def read_plink1_bin(
     nfiles = len(bed_files) + len(bim_files) + 1
     pbar = tqdm(desc="Mapping files", total=nfiles, disable=not verbose)
 
-    bims = _read_file(bim_files, lambda f: _read_bim(f), pbar)
+    bims = _read_file(bim_files, lambda f: _read_bim_noi(f), pbar)
     nmarkers = {bed_files[i]: b.shape[0] for i, b in enumerate(bims)}
     bim_df = pd.concat(bims, axis=0, ignore_index=True)
-    del bim_df["i"]
-    fam_df = _read_file(fam_files, lambda f: _read_fam(f), pbar)[0]
-    del fam_df["i"]
+    fam_df = _read_file(fam_files, lambda f: _read_fam_noi(f), pbar)[0]
 
     nsamples = fam_df.shape[0]
     sample_ids = fam_df["iid"]
-    variant_ids = bim_df[["chrom", "snp"]].agg("_".join, axis=1)
+    nvariants = bim_df.shape[0]
+    variant_ids = [f"variant{i}" for i in range(nvariants)]
 
     if ref == "a1":
         ref_al = Allele.a1
@@ -349,6 +348,12 @@ def _read_csv(fn, header):
 
 
 def _read_bim(fn):
+    df = _read_bim_noi(fn)
+    df["i"] = range(df.shape[0])
+    return df
+
+
+def _read_bim_noi(fn):
     from numpy import float64, int32
 
     header = odict(
@@ -361,13 +366,16 @@ def _read_bim(fn):
             ("a1", StringDtype()),
         ]
     )
-    df = _read_csv(fn, header)
+    return _read_csv(fn, header)
 
+
+def _read_fam(fn):
+    df = _read_fam_noi(fn)
     df["i"] = range(df.shape[0])
     return df
 
 
-def _read_fam(fn):
+def _read_fam_noi(fn):
     header = odict(
         [
             ("fid", StringDtype()),
@@ -379,10 +387,7 @@ def _read_fam(fn):
         ]
     )
 
-    df = _read_csv(fn, header)
-
-    df["i"] = range(df.shape[0])
-    return df
+    return _read_csv(fn, header)
 
 
 def _read_bed(fn, nsamples, nvariants, ref: Allele, chunk: Chunk):
