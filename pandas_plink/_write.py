@@ -43,7 +43,7 @@ def write_plink1_bin(
         >>> tmp_path = tempfile.mkdtemp()
         >>> os.chdir(tmp_path)
 
-    The following example produces a useable BED file with data.
+    The following example produces a BED file with data.
 
     .. doctest::
 
@@ -100,39 +100,6 @@ def write_plink1_bin(
             pos      (variant) int32 5 8 3
             a0       (variant) object 'A' 'T' 'G'
             a1       (variant) object 'C' 'A' 'T'
-
-    The following example is a bit too terse to be usefull to be honest...
-
-    .. doctest::
-
-        >>> from xarray import DataArray
-        >>> from pandas_plink import read_plink1_bin, write_plink1_bin
-        >>>
-        >>> G = DataArray([[0.0]], dims=["sample", "variant"])
-        >>> write_plink1_bin(G, "sample.bed", verbose=False)
-        >>> print(G)
-        <xarray.DataArray (sample: 1, variant: 1)>
-        array([[0.00]])
-        Dimensions without coordinates: sample, variant
-        >>> G = read_plink1_bin("sample.bed", verbose=False)
-        >>> print(G)
-        <xarray.DataArray 'genotype' (sample: 1, variant: 1)>
-        dask.array<transpose, shape=(1, 1), dtype=float32, chunksize=(1, 1), chunktype=numpy.ndarray>
-        Coordinates:
-          * sample   (sample) object '0'
-          * variant  (variant) <U8 'variant0'
-            fid      (sample) object '0'
-            iid      (sample) object '0'
-            father   (sample) object '?'
-            mother   (sample) object '?'
-            gender   (sample) object '0'
-            trait    (sample) object '-9'
-            chrom    (variant) object '?'
-            snp      (variant) object '0'
-            cm       (variant) float64 0.0
-            pos      (variant) int32 0
-            a0       (variant) object '?'
-            a1       (variant) object '?'
 
     The following example reads two BED files and two BIM files correspondig to
     chromosomes 11 and 12, and read a single FAM file whose filename is inferred from

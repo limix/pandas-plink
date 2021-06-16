@@ -1,6 +1,6 @@
 [build-system]
 requires = ["setuptools>=49.3.0", "wheel>=0.34.2",
-            "cffi>=1.14.2", "pytest-runner>=5.2"]
+            "cffi>=1.14.2"]
 build-backend = "setuptools.build_meta"
 
 [tool.isort]
