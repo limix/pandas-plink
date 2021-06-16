@@ -44,19 +44,19 @@ def write_plink1_bin(
         >>> os.chdir(tmp_path)
 
     The following example produces a useable BED file with data.
-    
+
     .. doctest::
-    
+
         >>> from xarray import DataArray
         >>> from pandas_plink import read_plink1_bin, write_plink1_bin
-        >>> 
+        >>>
         >>> G1 = DataArray(
         ...     [[3.0, 2.0, 2.0], [0.0, 0.0, 1.0]],
         ...     dims=["sample", "variant"],
         ...     coords = dict(
         ...         sample  = ["boffy", "jolly"],
         ...         fid     = ("sample", ["humin"] * 2 ),
-        ...         
+        ...
         ...         variant = ["not", "sure", "what"],
         ...         snp     = ("variant", ["rs1", "rs2", "rs3"]),
         ...         chrom   = ("variant", [1, 1, 2]),
@@ -65,7 +65,7 @@ def write_plink1_bin(
         ...         a1      = ("variant", ['C', 'A', 'T']),
         ...     )
         ... )
-        >>> 
+        >>>
         >>> print(G1)
         <xarray.DataArray (sample: 2, variant: 3)>
         array([[3., 2., 2.],
@@ -80,7 +80,7 @@ def write_plink1_bin(
             a0       (variant) <U1 'A' 'T' 'G'
             a1       (variant) <U1 'C' 'A' 'T'
         >>> write_plink1_bin(G1, "sample.bed", verbose=False)
-        >>> 
+        >>>
         >>> G2 = read_plink1_bin("sample.bed", verbose=False)
         >>> print(G2)
         <xarray.DataArray 'genotype' (sample: 2, variant: 3)>
