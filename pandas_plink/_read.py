@@ -4,7 +4,7 @@ from glob import glob
 from os.path import basename, dirname, join
 from typing import Optional
 
-from pandas import StringDtype
+from pandas import DataFrame, StringDtype, read_csv
 from xarray import DataArray
 
 from ._allele import Allele
@@ -121,7 +121,7 @@ def read_plink(file_prefix, verbose=True):
     ref = Allele.a1
     bed = _read_file(
         fn,
-        lambda f: _read_bed(f["bed"], nsamples, nmarkers[f["bed"]], ref, Chunk()),
+        lambda f: _read_bed(f["bed"], nsamples, nmarkers[f["bed"]], ref, Chunk()).T,
         pbar,
     )
 
@@ -311,13 +311,13 @@ def read_plink1_bin(
         raise ValueError("Unknown reference allele.")
 
     G = _read_file(
-        bed_files, lambda f: _read_bed(f, nsamples, nmarkers[f], ref_al, chunk).T, pbar
+        bed_files, lambda f: _read_bed(f, nsamples, nmarkers[f], ref_al, chunk), pbar
     )
     G = da.concatenate(G, axis=1)
 
     G = DataArray(G, dims=["sample", "variant"], coords=[sample_ids, variant_ids])
     sample = {c: ("sample", fam_df[c]) for c in fam_df.columns}
-    variant = {c: ("variant", bim_df[c]) for c in bim_df.columns}
+    variant = {c: ("variant", bim_df[c]) for c in iter(bim_df.columns)}
     G = G.assign_coords(**sample)
     G = G.assign_coords(**variant)
     G.name = "genotype"
@@ -335,10 +335,9 @@ def _read_file(fn, read_func, pbar):
     return data
 
 
-def _read_csv(fn, header):
-    from pandas import read_csv
+def _read_csv(fn, header) -> DataFrame:
 
-    return read_csv(
+    df = read_csv(
         fn,
         delim_whitespace=True,
         header=None,
@@ -346,7 +345,10 @@ def _read_csv(fn, header):
         dtype=header,
         compression=None,
         engine="c",
+        iterator=False,
     )
+    assert isinstance(df, DataFrame)
+    return df
 
 
 def _read_bim(fn):
@@ -396,17 +398,29 @@ def _read_bed(fn, nsamples, nvariants, ref: Allele, chunk: Chunk):
     _check_bed_header(fn)
     major = _major_order(fn)
 
-    ncols = nvariants
-    nrows = nsamples
-    row_chunk = nrows if chunk.nsamples is None else min(nrows, chunk.nsamples)
-    col_chunk = ncols if chunk.nvariants is None else min(ncols, chunk.nvariants)
+    # Assume major == "variant".
+    nrows = nvariants
+    ncols = nsamples
+    row_chunk = nrows if chunk.nvariants is None else min(nrows, chunk.nvariants)
+    col_chunk = ncols if chunk.nsamples is None else min(ncols, chunk.nsamples)
 
-    if major == "variant":
+    if major == "sample":
         nrows, ncols = ncols, nrows
         row_chunk, col_chunk = col_chunk, row_chunk
 
+    # k = 32_768
+    k = 16_384
+    # k = 4_096
+    # k = 2_048
+    # k = 1_024
+
+    row_chunk = max(nrows // k, row_chunk)
+    col_chunk = max(ncols // k, col_chunk)
+
+    # print(f"{nrows}: {row_chunk}")
+    # print(f"{ncols}: {col_chunk}")
     G = read_bed(fn, nrows, ncols, row_chunk, col_chunk, ref)
-    if major == "sample":
+    if major == "variant":
         G = G.T
 
     return G
@@ -423,6 +437,13 @@ def _check_bed_header(fn):
 
 
 def _major_order(fn):
+    """
+    Major order.
+
+    Variant-major lists all samples for first variant, all samples for second
+    variant, and so on. Sample-major lists all variants for first sample, all
+    variants for second sample, and so on.
+    """
     with open(fn, "rb") as f:
         f.seek(2)
         arr = f.read(1)
