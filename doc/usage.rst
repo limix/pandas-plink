@@ -34,15 +34,14 @@ It is as simple as:
     >>> print(G)
     <xarray.DataArray 'genotype' (sample: 14, variant: 779)>
     dask.array<transpose, shape=(14, 779), dtype=float32, chunksize=(14, 779), chunktype=numpy.ndarray>
-    Coordinates:
+    Coordinates: (12/14)
       * sample   (sample) object 'B001' 'B002' 'B003' ... 'B012' 'B013' 'B014'
       * variant  (variant) <U10 'variant0' 'variant1' ... 'variant777' 'variant778'
         fid      (sample) object 'B001' 'B002' 'B003' ... 'B012' 'B013' 'B014'
         iid      (sample) object 'B001' 'B002' 'B003' ... 'B012' 'B013' 'B014'
         father   (sample) object '0' '0' '0' '0' '0' '0' ... '0' '0' '0' '0' '0' '0'
         mother   (sample) object '0' '0' '0' '0' '0' '0' ... '0' '0' '0' '0' '0' '0'
-        gender   (sample) object '0' '0' '0' '0' '0' '0' ... '0' '0' '0' '0' '0' '0'
-        trait    (sample) object '-9' '-9' '-9' '-9' '-9' ... '-9' '-9' '-9' '-9'
+        ...       ...
         chrom    (variant) object '11' '11' '11' '11' '11' ... '11' '11' '11' '11'
         snp      (variant) object '316849996' '316874359' ... '345698259'
         cm       (variant) float64 0.0 0.0 0.0 0.0 0.0 0.0 ... 0.0 0.0 0.0 0.0 0.0

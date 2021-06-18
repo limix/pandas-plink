@@ -174,15 +174,14 @@ def read_plink1_bin(
         >>> print(G)
         <xarray.DataArray 'genotype' (sample: 14, variant: 1252)>
         dask.array<concatenate, shape=(14, 1252), dtype=float32, chunksize=(14, 779), chunktype=numpy.ndarray>
-        Coordinates:
+        Coordinates: (12/14)
           * sample   (sample) object 'B001' 'B002' 'B003' ... 'B012' 'B013' 'B014'
           * variant  (variant) <U11 'variant0' 'variant1' ... 'variant1251'
             fid      (sample) object 'B001' 'B002' 'B003' ... 'B012' 'B013' 'B014'
             iid      (sample) object 'B001' 'B002' 'B003' ... 'B012' 'B013' 'B014'
             father   (sample) object '0' '0' '0' '0' '0' '0' ... '0' '0' '0' '0' '0' '0'
             mother   (sample) object '0' '0' '0' '0' '0' '0' ... '0' '0' '0' '0' '0' '0'
-            gender   (sample) object '0' '0' '0' '0' '0' '0' ... '0' '0' '0' '0' '0' '0'
-            trait    (sample) object '-9' '-9' '-9' '-9' '-9' ... '-9' '-9' '-9' '-9'
+            ...       ...
             chrom    (variant) object '11' '11' '11' '11' '11' ... '12' '12' '12' '12'
             snp      (variant) object '316849996' '316874359' ... '373081507'
             cm       (variant) float64 0.0 0.0 0.0 0.0 0.0 0.0 ... 0.0 0.0 0.0 0.0 0.0
@@ -200,15 +199,14 @@ def read_plink1_bin(
         >>> print(G)
         <xarray.DataArray 'genotype' (sample: 14, variant: 779)>
         dask.array<where, shape=(14, 779), dtype=float32, chunksize=(14, 779), chunktype=numpy.ndarray>
-        Coordinates:
+        Coordinates: (12/14)
           * sample   (sample) object 'B001' 'B002' 'B003' ... 'B012' 'B013' 'B014'
           * variant  (variant) <U11 'variant0' 'variant1' ... 'variant777' 'variant778'
             fid      (sample) object 'B001' 'B002' 'B003' ... 'B012' 'B013' 'B014'
             iid      (sample) object 'B001' 'B002' 'B003' ... 'B012' 'B013' 'B014'
             father   (sample) object '0' '0' '0' '0' '0' '0' ... '0' '0' '0' '0' '0' '0'
             mother   (sample) object '0' '0' '0' '0' '0' '0' ... '0' '0' '0' '0' '0' '0'
-            gender   (sample) object '0' '0' '0' '0' '0' '0' ... '0' '0' '0' '0' '0' '0'
-            trait    (sample) object '-9' '-9' '-9' '-9' '-9' ... '-9' '-9' '-9' '-9'
+            ...       ...
             chrom    (variant) object '11' '11' '11' '11' '11' ... '11' '11' '11' '11'
             snp      (variant) object '316849996' '316874359' ... '345698259'
             cm       (variant) float64 0.0 0.0 0.0 0.0 0.0 0.0 ... 0.0 0.0 0.0 0.0 0.0
@@ -408,17 +406,10 @@ def _read_bed(fn, nsamples, nvariants, ref: Allele, chunk: Chunk):
         nrows, ncols = ncols, nrows
         row_chunk, col_chunk = col_chunk, row_chunk
 
-    # k = 32_768
-    k = 16_384
-    # k = 4_096
-    # k = 2_048
-    # k = 1_024
+    max_npartitions = 16_384
+    row_chunk = max(nrows // max_npartitions, row_chunk)
+    col_chunk = max(ncols // max_npartitions, col_chunk)
 
-    row_chunk = max(nrows // k, row_chunk)
-    col_chunk = max(ncols // k, col_chunk)
-
-    # print(f"{nrows}: {row_chunk}")
-    # print(f"{ncols}: {col_chunk}")
     G = read_bed(fn, nrows, ncols, row_chunk, col_chunk, ref)
     if major == "variant":
         G = G.T

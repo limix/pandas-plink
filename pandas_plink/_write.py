@@ -50,7 +50,7 @@ def write_plink1_bin(
         >>> from xarray import DataArray
         >>> from pandas_plink import read_plink1_bin, write_plink1_bin
         >>>
-        >>> G1 = DataArray(
+        >>> G = DataArray(
         ...     [[3.0, 2.0, 2.0], [0.0, 0.0, 1.0]],
         ...     dims=["sample", "variant"],
         ...     coords = dict(
@@ -66,10 +66,10 @@ def write_plink1_bin(
         ...     )
         ... )
         >>>
-        >>> print(G1)
+        >>> print(G)
         <xarray.DataArray (sample: 2, variant: 3)>
-        array([[3., 2., 2.],
-       [0., 0., 1.]])
+        array([[3.00, 2.00, 2.00],
+               [0.00, 0.00, 1.00]])
         Coordinates:
           * sample   (sample) <U5 'boffy' 'jolly'
             fid      (sample) <U5 'humin' 'humin'
@@ -79,21 +79,20 @@ def write_plink1_bin(
             pos      (variant) int64 5 8 3
             a0       (variant) <U1 'A' 'T' 'G'
             a1       (variant) <U1 'C' 'A' 'T'
-        >>> write_plink1_bin(G1, "sample.bed", verbose=False)
+        >>> write_plink1_bin(G, "sample.bed", verbose=False)
         >>>
-        >>> G2 = read_plink1_bin("sample.bed", verbose=False)
-        >>> print(G2)
+        >>> G = read_plink1_bin("sample.bed", verbose=False)
+        >>> print(G)
         <xarray.DataArray 'genotype' (sample: 2, variant: 3)>
         dask.array<transpose, shape=(2, 3), dtype=float32, chunksize=(2, 3), chunktype=numpy.ndarray>
-        Coordinates:
+        Coordinates: (12/14)
           * sample   (sample) object 'boffy' 'jolly'
           * variant  (variant) <U8 'variant0' 'variant1' 'variant2'
             fid      (sample) object 'humin' 'humin'
             iid      (sample) object 'boffy' 'jolly'
             father   (sample) object '?' '?'
             mother   (sample) object '?' '?'
-            gender   (sample) object '0' '0'
-            trait    (sample) object '-9' '-9'
+            ...       ...
             chrom    (variant) object '1' '1' '2'
             snp      (variant) object 'rs1' 'rs2' 'rs3'
             cm       (variant) float64 0.0 0.0 0.0
@@ -117,15 +116,14 @@ def write_plink1_bin(
         >>> print(G)
         <xarray.DataArray 'genotype' (sample: 14, variant: 1252)>
         dask.array<transpose, shape=(14, 1252), dtype=float32, chunksize=(14, 1024), chunktype=numpy.ndarray>
-        Coordinates:
+        Coordinates: (12/14)
           * sample   (sample) object 'B001' 'B002' 'B003' ... 'B012' 'B013' 'B014'
           * variant  (variant) <U11 'variant0' 'variant1' ... 'variant1251'
             fid      (sample) object 'B001' 'B002' 'B003' ... 'B012' 'B013' 'B014'
             iid      (sample) object 'B001' 'B002' 'B003' ... 'B012' 'B013' 'B014'
             father   (sample) object '0' '0' '0' '0' '0' '0' ... '0' '0' '0' '0' '0' '0'
             mother   (sample) object '0' '0' '0' '0' '0' '0' ... '0' '0' '0' '0' '0' '0'
-            gender   (sample) object '0' '0' '0' '0' '0' '0' ... '0' '0' '0' '0' '0' '0'
-            trait    (sample) object '-9' '-9' '-9' '-9' '-9' ... '-9' '-9' '-9' '-9'
+            ...       ...
             chrom    (variant) object '11' '11' '11' '11' '11' ... '12' '12' '12' '12'
             snp      (variant) object '316849996' '316874359' ... '373081507'
             cm       (variant) float64 0.0 0.0 0.0 0.0 0.0 0.0 ... 0.0 0.0 0.0 0.0 0.0
