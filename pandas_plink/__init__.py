@@ -6,7 +6,7 @@ from ._read_rel import read_rel
 from ._testit import test
 from ._write import write_plink1_bin
 
-__version__ = "2.2.5"
+__version__ = "2.2.6"
 
 
 __all__ = [

@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 
 ## Released
 
+## 2.2.6 - 2021-06-21
+
+### Fixed
+- Proper typing for xarrays.
+
+### Changed
+- Significant reading speed-up through memmap.
+
 ## 2.2.4 - 2021-06-18
 
 ### Changed

@@ -60,8 +60,7 @@ def write_plink1_bin(
         ...
         ...         variant = ["not", "sure", "what"],
         ...         snp     = ("variant", ["rs1", "rs2", "rs3"]),
-        ...         chrom   = ("variant", [1, 1, 2]),
-        ...         pos     = ("variant", [5, 8, 3]),
+        ...         chrom   = ("variant", ["1", "1", "2"]),
         ...         a0      = ("variant", ['A', 'T', 'G']),
         ...         a1      = ("variant", ['C', 'A', 'T']),
         ...     )
@@ -76,8 +75,7 @@ def write_plink1_bin(
             fid      (sample) <U5 'humin' 'humin'
           * variant  (variant) <U4 'not' 'sure' 'what'
             snp      (variant) <U3 'rs1' 'rs2' 'rs3'
-            chrom    (variant) int64 1 1 2
-            pos      (variant) int64 5 8 3
+            chrom    (variant) <U1 '1' '1' '2'
             a0       (variant) <U1 'A' 'T' 'G'
             a1       (variant) <U1 'C' 'A' 'T'
         >>> write_plink1_bin(G, "sample.bed", verbose=False)
@@ -97,7 +95,7 @@ def write_plink1_bin(
             chrom    (variant) object '1' '1' '2'
             snp      (variant) object 'rs1' 'rs2' 'rs3'
             cm       (variant) float64 0.0 0.0 0.0
-            pos      (variant) int32 5 8 3
+            pos      (variant) int32 0 0 0
             a0       (variant) object 'A' 'T' 'G'
             a1       (variant) object 'C' 'A' 'T'
 
