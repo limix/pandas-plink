@@ -1,7 +1,8 @@
 from pathlib import Path
 from typing import Optional, Union
 
-from numpy import arange, float64, full, int32
+from numpy import arange, full
+from pandas import DataFrame, array
 from xarray import DataArray
 
 from ._bed_write import write_bed
@@ -195,6 +196,8 @@ def _echo(msg: str, end: str = "\n", disable: bool = False):
 
 
 def _fill_sample(G: DataArray) -> DataArray:
+    from ._type import fam
+
     nsamples = G.sample.shape[0]
     if "fid" not in G.sample.coords:
         G = G.assign_coords(fid=("sample", G.sample.values))
@@ -203,88 +206,92 @@ def _fill_sample(G: DataArray) -> DataArray:
         G = G.assign_coords(iid=("sample", G.sample.values))
 
     if "father" not in G.sample.coords:
-        G = G.assign_coords(father=("sample", full(nsamples, "?", object)))
+        G = G.assign_coords(father=("sample", array(["?"] * nsamples, fam["father"])))
 
     if "mother" not in G.sample.coords:
-        G = G.assign_coords(mother=("sample", full(nsamples, "?", object)))
+        G = G.assign_coords(mother=("sample", array(["?"] * nsamples, fam["mother"])))
 
     if "gender" not in G.sample.coords:
-        G = G.assign_coords(gender=("sample", full(nsamples, "0", object)))
+        G = G.assign_coords(gender=("sample", array(["0"] * nsamples, fam["gender"])))
 
     if "trait" not in G.sample.coords:
-        G = G.assign_coords(trait=("sample", full(nsamples, "-9", object)))
+        G = G.assign_coords(trait=("sample", array(["-0"] * nsamples, fam["trait"])))
     return G
 
 
 def _fill_variant(G: DataArray) -> DataArray:
+    from ._type import bim
+
     nvariants = G.variant.shape[0]
     if "chrom" not in G.variant.coords:
-        G = G.assign_coords(chrom=("variant", full(nvariants, "?", object)))
+        G = G.assign_coords(chrom=("variant", array(["?"] * nvariants, bim["chrom"])))
 
     if "snp" not in G.variant.coords:
-        G = G.assign_coords(snp=("variant", arange(nvariants, dtype=object)))
+        G = G.assign_coords(snp=("variant", array(arange(nvariants), bim["snp"])))
 
     if "cm" not in G.variant.coords:
-        G = G.assign_coords(cm=("variant", full(nvariants, 0.0, float64)))
+        G = G.assign_coords(cm=("variant", full(nvariants, 0.0, bim["cm"])))
 
     if "pos" not in G.variant.coords:
-        G = G.assign_coords(pos=("variant", full(nvariants, 0.0, int32)))
+        G = G.assign_coords(pos=("variant", full(nvariants, 0.0, bim["pos"])))
 
     if "a0" not in G.variant.coords:
-        G = G.assign_coords(a0=("variant", full(nvariants, "?", object)))
+        G = G.assign_coords(a0=("variant", array(["?"] * nvariants, bim["a0"])))
 
     if "a1" not in G.variant.coords:
-        G = G.assign_coords(a1=("variant", full(nvariants, "?", object)))
+        G = G.assign_coords(a1=("variant", array(["?"] * nvariants, bim["a1"])))
     return G
 
 
 def _write_fam(filepath: Path, G: DataArray):
-    from pandas import DataFrame
+    from ._type import fam
 
     df = DataFrame()
     cols = [
-        ("fid", object),
-        ("iid", object),
-        ("father", object),
-        ("mother", object),
-        ("gender", object),
-        ("trait", object),
+        ("fid", fam["fid"]),
+        ("iid", fam["iid"]),
+        ("father", fam["father"]),
+        ("mother", fam["mother"]),
+        ("gender", fam["gender"]),
+        ("trait", fam["trait"]),
     ]
 
     for col, col_type in cols:
-        df[col] = G.sample[col].values.astype(col_type)
+        df[col] = G.sample[col].values
+        df[col] = df[col].astype(col_type)
 
     df.to_csv(
         filepath,
         index=False,
         sep="\t",
-        header=None,
+        header=False,
         encoding="ascii",
         line_terminator="\n",
     )
 
 
 def _write_bim(filepath: Path, G: DataArray):
-    from pandas import DataFrame
+    from ._type import bim
 
     df = DataFrame()
     cols = [
-        ("chrom", object),
-        ("snp", object),
-        ("cm", float64),
-        ("pos", int32),
-        ("a0", object),
-        ("a1", object),
+        ("chrom", bim["chrom"]),
+        ("snp", bim["snp"]),
+        ("cm", bim["cm"]),
+        ("pos", bim["pos"]),
+        ("a0", bim["a0"]),
+        ("a1", bim["a1"]),
     ]
 
     for col, col_type in cols:
-        df[col] = G.variant[col].values.astype(col_type)
+        df[col] = G.variant[col].values
+        df[col] = df[col].astype(col_type)
 
     df.to_csv(
         filepath,
         index=False,
         sep="\t",
-        header=None,
+        header=False,
         encoding="ascii",
         line_terminator="\n",
     )

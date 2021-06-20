@@ -181,7 +181,7 @@ def test_write_plink1_bin_empty_metadata(tmp_path: Path):
         bim_content = md5(f.read()).hexdigest()
     assert bim_content == bim_desired
 
-    fam_desired = "37dcb1a777a2a99ca3484b82cfb9c33b"
+    fam_desired = "8931cbbfa99cee705992642cab0e8c03"
     with open(tmp_path / "out.fam", "rb") as f:
         fam_content = md5(f.read()).hexdigest()
     assert fam_content == fam_desired

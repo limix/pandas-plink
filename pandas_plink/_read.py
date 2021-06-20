@@ -4,7 +4,7 @@ from glob import glob
 from os.path import basename, dirname, join
 from typing import Optional
 
-from pandas import DataFrame, StringDtype, read_csv
+from pandas import DataFrame, read_csv
 from xarray import DataArray
 
 from ._allele import Allele
@@ -356,16 +356,16 @@ def _read_bim(fn):
 
 
 def _read_bim_noi(fn):
-    from numpy import float64, int32
+    from ._type import bim
 
     header = odict(
         [
-            ("chrom", StringDtype()),
-            ("snp", StringDtype()),
-            ("cm", float64),
-            ("pos", int32),
-            ("a0", StringDtype()),
-            ("a1", StringDtype()),
+            ("chrom", bim["chrom"]),
+            ("snp", bim["snp"]),
+            ("cm", bim["cm"]),
+            ("pos", bim["pos"]),
+            ("a0", bim["a0"]),
+            ("a1", bim["a1"]),
         ]
     )
     return _read_csv(fn, header)
@@ -378,14 +378,16 @@ def _read_fam(fn):
 
 
 def _read_fam_noi(fn):
+    from ._type import fam
+
     header = odict(
         [
-            ("fid", StringDtype()),
-            ("iid", StringDtype()),
-            ("father", StringDtype()),
-            ("mother", StringDtype()),
-            ("gender", StringDtype()),
-            ("trait", StringDtype()),
+            ("fid", fam["fid"]),
+            ("iid", fam["iid"]),
+            ("father", fam["father"]),
+            ("mother", fam["mother"]),
+            ("gender", fam["gender"]),
+            ("trait", fam["trait"]),
         ]
     )
 
