@@ -133,7 +133,7 @@ def write_plink1_bin(
     .. testcleanup::
 
         >>> os.chdir(old_path)
-        >>> shutil.rmtree(tmp_path)
+        >>> shutil.rmtree(tmp_path, ignore_errors=True)
 
     Parameters
     ----------
