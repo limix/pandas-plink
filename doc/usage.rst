@@ -150,7 +150,7 @@ formats since version 2.0.0.
 .. testcleanup::
 
     >>> os.chdir(old_path)
-    >>> shutil.rmtree(tmp_path)
+    >>> shutil.rmtree(tmp_path, ignore_errors=True)
 
 Please, refer to the functions :func:`pandas_plink.read_rel` and
 :func:`pandas_plink.read_grm` for more details.
