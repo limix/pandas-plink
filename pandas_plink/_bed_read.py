@@ -31,7 +31,7 @@ def read_bed(filepath, nrows, ncols, row_chunk, col_chunk, ref: Allele):
         while col_start < ncols:
             col_end = min(col_start + col_chunk, ncols)
 
-            x = delayed(_read_bed_chunk, None, True, None, False)(
+            x = delayed(_read_bed_chunk, None, False, None, False)(
                 buff,
                 nrows,
                 ncols,
