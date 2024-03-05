@@ -49,7 +49,7 @@ It is as simple as:
         a0       (variant) object 'C' 'G' 'G' 'C' 'C' 'T' ... 'A' 'C' 'A' 'A' 'T'
         a1       (variant) object 'T' 'C' 'C' 'T' 'T' 'A' ... 'G' 'T' 'G' 'C' 'C'
 
-The matrix :data:`G` is a special matrix: :class:`xarray.DataArray`. It provides labes
+The matrix :data:`G` is a special matrix: :class:`xarray.DataArray`. It provides labels
 for its dimensions (:const:`"sample"` for rows and :const:`"variant"` for columns) and
 additional metadata for those dimensions.
 Lets print the genotype value of sample :const:`"B003"` and variant :const:`"variant5"`:
@@ -62,9 +62,10 @@ Lets print the genotype value of sample :const:`"B003"` and variant :const:`"var
     >>> print(G.a0.sel(variant=variant).values)
     T
 
-It means that sample :data:`"B003"` has two alleles **T** at the variant
+It shows that sample :data:`"B003"` has two **T** alleles (`a0`) at the variant
 :data:`"variant5"`.
-Likewise, sample :data:`"B003"` has two alleles **C** at the variant
+
+Likewise, sample :data:`"B003"` has two **C** alleles (`a1`) at the variant
 :data:`"variant135"`:
 
 .. doctest::
@@ -74,6 +75,8 @@ Likewise, sample :data:`"B003"` has two alleles **C** at the variant
     2.0
     >>> print(G.a1.sel(variant=variant).values)
     C
+
+To see how the genotype value maps to the alleles, see below.
 
 Now lets print a summary of the genotype values:
 
