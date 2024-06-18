@@ -3,7 +3,7 @@ from collections import OrderedDict as odict
 from glob import glob
 from os.path import basename, dirname, join
 from pathlib import Path
-from typing import Callable, Optional, TypeVar
+from typing import Callable, Optional, TypeVar, Union
 
 from pandas import DataFrame, read_csv
 from xarray import DataArray
@@ -16,7 +16,7 @@ from ._util import last_replace
 __all__ = ["read_plink", "read_plink1_bin"]
 
 
-def read_plink(file_prefix: str | Path, verbose=True):
+def read_plink(file_prefix: Union[str, Path], verbose=True):
     """
     Read PLINK files into data frames.
 
@@ -165,7 +165,7 @@ def read_plink(file_prefix: str | Path, verbose=True):
 
 
 def read_plink1_bin(
-    bed: str | Path,
+    bed: Union[str, Path],
     bim: Optional[str] = None,
     fam: Optional[str] = None,
     verbose: bool = True,
