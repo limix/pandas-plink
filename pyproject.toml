@@ -1,8 +1,40 @@
 [build-system]
-requires = ["setuptools>=49.3.0", "wheel>=0.34.2",
-            "cffi>=1.14.2"]
-build-backend = "setuptools.build_meta"
+requires = ["poetry-core", "cffi", "cmake", "setuptools;python_version>='3.12'"]
+build-backend = "poetry.core.masonry.api"
 
-[tool.isort]
-profile = "black"
-src_paths = ["pandas_plink"]
+[tool.poetry]
+name = "pandas-plink"
+version = "2.3.0"
+description = "Read PLINK files into Pandas data frames"
+license = "MIT"
+authors = ["Danilo Horta <danilo.horta@pm.me>"]
+readme = "README.md"
+repository = "https://github.com/limix/pandas-plink"
+homepage = "https://github.com/limix/pandas-plink"
+keywords = ["plink", "reader", "genetics"]
+classifiers = ["License :: OSI Approved :: MIT License"]
+include = [
+  { path = "pandas_plink/*.c", format = "sdist" },
+  { path = "pandas_plink/*.h", format = "sdist" },
+  { path = "pandas_plink/*.pyd", format = "wheel" },
+  { path = "pandas_plink/*.so", format = "wheel" },
+]
+
+[tool.poetry.dependencies]
+cffi = "^1.16"
+deprecated = "^1.2"
+numpy = "^1.0"
+pandas = "^2.2"
+python = "^3.9"
+tqdm = "^4.66"
+xarray = "*"
+zstandard = "^0.22"
+pandera = {version = "*", extras = ["mypy", "dask"]}
+dask = {version = "*", extras = ["dataframe"]}
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.2"
+
+[tool.poetry.build]
+generate-setup-file = false
+script = "build_ext.py"
