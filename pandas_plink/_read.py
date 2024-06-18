@@ -2,7 +2,8 @@ import warnings
 from collections import OrderedDict as odict
 from glob import glob
 from os.path import basename, dirname, join
-from typing import Optional, Callable, TypeVar
+from pathlib import Path
+from typing import Callable, Optional, TypeVar
 
 from pandas import DataFrame, read_csv
 from xarray import DataArray
@@ -15,7 +16,7 @@ from ._util import last_replace
 __all__ = ["read_plink", "read_plink1_bin"]
 
 
-def read_plink(file_prefix, verbose=True):
+def read_plink(file_prefix: str | Path, verbose=True):
     """
     Read PLINK files into data frames.
 
@@ -70,7 +71,7 @@ def read_plink(file_prefix, verbose=True):
 
     Parameters
     ----------
-    file_prefix : str
+    file_prefix : str | :class:`pathlib.Path`
         Path prefix to the set of PLINK files. It supports loading many BED files at
         once using globstrings wildcard.
     verbose : bool
@@ -87,24 +88,31 @@ def read_plink(file_prefix, verbose=True):
     """
     import pandas as pd
     import pandera as pa
-    from dask.array.core import concatenate, Array
+    from dask.array.core import Array, concatenate
     from tqdm import tqdm
 
-    file_prefixes = sorted(glob(file_prefix))
-    if len(file_prefixes) == 0:
-        file_prefixes = [file_prefix.replace("*", "")]
+    if isinstance(file_prefix, Path):
+        root_dir = file_prefix.parent
+        pathname = file_prefix.name
+    else:
+        root_dir = "."
+        pathname = file_prefix
 
-    file_prefixes = sorted(_clean_prefixes(file_prefixes))
+    prefixes = sorted(glob(pathname, root_dir=root_dir))
+    if len(prefixes) == 0:
+        prefixes = [pathname.replace("*", "")]
 
-    fn = [{s: "%s.%s" % (fp, s) for s in ["bed", "bim", "fam"]} for fp in file_prefixes]
+    prefixes = sorted(_clean_prefixes(prefixes))
+
+    fn = [{s: "%s.%s" % (fp, s) for s in ["bed", "bim", "fam"]} for fp in prefixes]
 
     pbar = tqdm(desc="Mapping files", total=3 * len(fn), disable=not verbose)
 
     bim = _read_file([f["bim"] for f in fn], lambda fn: _read_bim(fn), pbar)
-    if len(file_prefixes) > 1:
+    if len(prefixes) > 1:
         if verbose:
             msg = "Multiple files read in this order: {}"
-            print(msg.format([basename(f) for f in file_prefixes]))
+            print(msg.format([basename(f) for f in prefixes]))
 
     nmarkers = dict()
     index_offset = 0
@@ -157,7 +165,7 @@ def read_plink(file_prefix, verbose=True):
 
 
 def read_plink1_bin(
-    bed: str,
+    bed: str | Path,
     bim: Optional[str] = None,
     fam: Optional[str] = None,
     verbose: bool = True,
@@ -280,11 +288,14 @@ def read_plink1_bin(
     ----------
     .. [a] PLINK 1 binary. https://www.cog-genomics.org/plink/2.0/input#bed
     """
-    from dask.array.core import concatenate, Array
     import pandas as pd
+    from dask.array.core import Array, concatenate
     from tqdm import tqdm
 
-    bed_files = sorted(glob(bed))
+    if isinstance(bed, Path):
+        bed_files = [str(bed.resolve())]
+    else:
+        bed_files = sorted(glob(bed))
     if len(bed_files) == 0:
         raise ValueError("No BED file has been found.")
 

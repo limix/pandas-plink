@@ -150,13 +150,13 @@ def _read_rel_zs(filepath, id_filepath):
 def _data_array(K, df):
     from xarray import DataArray
 
-    coords = (df.iloc[:, 1], df.iloc[:, 1])
+    coords = (df[1], df[1])
     K = DataArray(K, dims=["sample_0", "sample_1"], coords=coords)
-    K = K.assign_coords({"fid": ("sample_0", df.iloc[:, 0])})
-    K = K.assign_coords({"fid": ("sample_1", df.iloc[:, 0])})
+    K = K.assign_coords({"fid": ("sample_0", df[0])})
+    K = K.assign_coords({"fid": ("sample_1", df[0])})
 
-    K = K.assign_coords({"iid": ("sample_0", df.iloc[:, 1])})
-    K = K.assign_coords({"iid": ("sample_1", df.iloc[:, 1])})
+    K = K.assign_coords({"iid": ("sample_0", df[1])})
+    K = K.assign_coords({"iid": ("sample_1", df[1])})
 
     return K
 

@@ -128,22 +128,22 @@ def _read_gcta_grm(filepath, id_filepath):
 
     df = read_csv(filepath, sep="\t", header=None)
     df_id = read_csv(id_filepath, sep="\t", header=None)
-    n = int64(df.iloc[-1, 0])
-    x = asarray(df.iloc[:, 0] - 1, int64)
-    y = asarray(df.iloc[:, 1] - 1, int64)
+    n = int64(df.iat[-1, 0])
+    x = asarray(df[0] - 1, int64)
+    y = asarray(df[1] - 1, int64)
 
     K = zeros((n, n))
-    K[x, y] = df.iloc[:, 3]
+    K[x, y] = df[3]
     K = K + tril(K, -1).T
-    coords = (df_id.iloc[:, 1], df_id.iloc[:, 1])
+    coords = {"sample_0": df_id[1], "sample_1": df_id[1]}
     K = DataArray(K, dims=["sample_0", "sample_1"], coords=coords)
-    K = K.assign_coords({"fid": ("sample_0", df_id.iloc[:, 0])})
-    K = K.assign_coords({"fid": ("sample_1", df_id.iloc[:, 0])})
+    K = K.assign_coords({"fid": ("sample_0", df_id[0])})
+    K = K.assign_coords({"fid": ("sample_1", df_id[0])})
 
-    K = K.assign_coords({"iid": ("sample_0", df_id.iloc[:, 1])})
-    K = K.assign_coords({"iid": ("sample_1", df_id.iloc[:, 1])})
+    K = K.assign_coords({"iid": ("sample_0", df_id[1])})
+    K = K.assign_coords({"iid": ("sample_1", df_id[1])})
 
-    n_snps = asarray(df.iloc[:, 2], int64)
+    n_snps = asarray(df[2], int64)
 
     return (K, n_snps)
 
@@ -176,13 +176,13 @@ def _read_gcta_grm_bin(filepath, id_filepath, n_snps_filepath):
     K = zeros((n, n))
     K[tril_indices_from(K)] = k
     K = K + tril(K, -1).T
-    coords = (df_id.iloc[:, 1], df_id.iloc[:, 1])
+    coords = {"sample_0": df_id[1], "sample_1": df_id[1]}
     K = DataArray(K, dims=["sample_0", "sample_1"], coords=coords)
 
-    K = K.assign_coords({"fid": ("sample_0", df_id.iloc[:, 0])})
-    K = K.assign_coords({"fid": ("sample_1", df_id.iloc[:, 0])})
+    K = K.assign_coords({"fid": ("sample_0", df_id[0])})
+    K = K.assign_coords({"fid": ("sample_1", df_id[0])})
 
-    K = K.assign_coords({"iid": ("sample_0", df_id.iloc[:, 1])})
-    K = K.assign_coords({"iid": ("sample_1", df_id.iloc[:, 1])})
+    K = K.assign_coords({"iid": ("sample_0", df_id[1])})
+    K = K.assign_coords({"iid": ("sample_1", df_id[1])})
 
     return (K, n_snps)
