@@ -137,11 +137,11 @@ def _read_gcta_grm(filepath, id_filepath):
     K = K + tril(K, -1).T
     coords = (df_id.iloc[:, 1], df_id.iloc[:, 1])
     K = DataArray(K, dims=["sample_0", "sample_1"], coords=coords)
-    K = K.assign_coords(**{"fid": ("sample_0", df_id.iloc[:, 0])})
-    K = K.assign_coords(**{"fid": ("sample_1", df_id.iloc[:, 0])})
+    K = K.assign_coords({"fid": ("sample_0", df_id.iloc[:, 0])})
+    K = K.assign_coords({"fid": ("sample_1", df_id.iloc[:, 0])})
 
-    K = K.assign_coords(**{"iid": ("sample_0", df_id.iloc[:, 1])})
-    K = K.assign_coords(**{"iid": ("sample_1", df_id.iloc[:, 1])})
+    K = K.assign_coords({"iid": ("sample_0", df_id.iloc[:, 1])})
+    K = K.assign_coords({"iid": ("sample_1", df_id.iloc[:, 1])})
 
     n_snps = asarray(df.iloc[:, 2], int64)
 
@@ -179,10 +179,10 @@ def _read_gcta_grm_bin(filepath, id_filepath, n_snps_filepath):
     coords = (df_id.iloc[:, 1], df_id.iloc[:, 1])
     K = DataArray(K, dims=["sample_0", "sample_1"], coords=coords)
 
-    K = K.assign_coords(**{"fid": ("sample_0", df_id.iloc[:, 0])})
-    K = K.assign_coords(**{"fid": ("sample_1", df_id.iloc[:, 0])})
+    K = K.assign_coords({"fid": ("sample_0", df_id.iloc[:, 0])})
+    K = K.assign_coords({"fid": ("sample_1", df_id.iloc[:, 0])})
 
-    K = K.assign_coords(**{"iid": ("sample_0", df_id.iloc[:, 1])})
-    K = K.assign_coords(**{"iid": ("sample_1", df_id.iloc[:, 1])})
+    K = K.assign_coords({"iid": ("sample_0", df_id.iloc[:, 1])})
+    K = K.assign_coords({"iid": ("sample_1", df_id.iloc[:, 1])})
 
     return (K, n_snps)

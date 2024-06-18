@@ -152,11 +152,11 @@ def _data_array(K, df):
 
     coords = (df.iloc[:, 1], df.iloc[:, 1])
     K = DataArray(K, dims=["sample_0", "sample_1"], coords=coords)
-    K = K.assign_coords(**{"fid": ("sample_0", df.iloc[:, 0])})
-    K = K.assign_coords(**{"fid": ("sample_1", df.iloc[:, 0])})
+    K = K.assign_coords({"fid": ("sample_0", df.iloc[:, 0])})
+    K = K.assign_coords({"fid": ("sample_1", df.iloc[:, 0])})
 
-    K = K.assign_coords(**{"iid": ("sample_0", df.iloc[:, 1])})
-    K = K.assign_coords(**{"iid": ("sample_1", df.iloc[:, 1])})
+    K = K.assign_coords({"iid": ("sample_0", df.iloc[:, 1])})
+    K = K.assign_coords({"iid": ("sample_1", df.iloc[:, 1])})
 
     return K
 

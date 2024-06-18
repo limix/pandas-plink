@@ -2,7 +2,7 @@ import warnings
 from collections import OrderedDict as odict
 from glob import glob
 from os.path import basename, dirname, join
-from typing import Optional
+from typing import Optional, Callable, TypeVar
 
 from pandas import DataFrame, read_csv
 from xarray import DataArray
@@ -86,7 +86,8 @@ def read_plink(file_prefix, verbose=True):
         Genotype.
     """
     import pandas as pd
-    from dask.array import concatenate
+    import pandera as pa
+    from dask.array.core import concatenate, Array
     from tqdm import tqdm
 
     file_prefixes = sorted(glob(file_prefix))
@@ -95,13 +96,11 @@ def read_plink(file_prefix, verbose=True):
 
     file_prefixes = sorted(_clean_prefixes(file_prefixes))
 
-    fn = []
-    for fp in file_prefixes:
-        fn.append({s: "%s.%s" % (fp, s) for s in ["bed", "bim", "fam"]})
+    fn = [{s: "%s.%s" % (fp, s) for s in ["bed", "bim", "fam"]} for fp in file_prefixes]
 
     pbar = tqdm(desc="Mapping files", total=3 * len(fn), disable=not verbose)
 
-    bim = _read_file(fn, lambda fn: _read_bim(fn["bim"]), pbar)
+    bim = _read_file([f["bim"] for f in fn], lambda fn: _read_bim(fn), pbar)
     if len(file_prefixes) > 1:
         if verbose:
             msg = "Multiple files read in this order: {}"
@@ -115,20 +114,45 @@ def read_plink(file_prefix, verbose=True):
         index_offset += bi.shape[0]
     bim = pd.concat(bim, axis=0, ignore_index=True)
 
-    fam = _read_file([fn[0]], lambda fn: _read_fam(fn["fam"]), pbar)[0]
+    fam = _read_file([fn[0]["fam"]], lambda fn: _read_fam(fn), pbar)[0]
     nsamples = fam.shape[0]
 
     ref = Allele.a1
     bed = _read_file(
-        fn,
-        lambda f: _read_bed(f["bed"], nsamples, nmarkers[f["bed"]], ref, Chunk()).T,
+        [f["bed"] for f in fn],
+        lambda f: _read_bed(f, nsamples, nmarkers[f], ref, Chunk()).T,
         pbar,
     )
 
     bed = concatenate(bed, axis=0)
+    assert isinstance(bed, Array)
 
     pbar.close()
 
+    bim_schema = pa.DataFrameSchema(
+        {
+            "chrom": pa.Column(str),
+            "snp": pa.Column(str),
+            "cm": pa.Column("float64"),
+            "pos": pa.Column("int32"),
+            "a0": pa.Column(str),
+            "a1": pa.Column(str),
+            "i": pa.Column("int64"),
+        }
+    )
+    fam_schema = pa.DataFrameSchema(
+        {
+            "fid": pa.Column(str),
+            "iid": pa.Column(str),
+            "father": pa.Column(str),
+            "mother": pa.Column(str),
+            "gender": pa.Column(str),
+            "trait": pa.Column(str),
+            "i": pa.Column("int64"),
+        }
+    )
+    bim = bim_schema(bim)
+    fam = fam_schema(fam)
     return (bim, fam, bed)
 
 
@@ -256,7 +280,7 @@ def read_plink1_bin(
     ----------
     .. [a] PLINK 1 binary. https://www.cog-genomics.org/plink/2.0/input#bed
     """
-    import dask.array as da
+    from dask.array.core import concatenate, Array
     import pandas as pd
     from tqdm import tqdm
 
@@ -297,7 +321,7 @@ def read_plink1_bin(
     fam_df = _read_file(fam_files, lambda f: _read_fam_noi(f), pbar)[0]
 
     nsamples = fam_df.shape[0]
-    sample_ids = fam_df["iid"]
+    sample_ids = [x for x in fam_df["iid"]]
     nvariants = bim_df.shape[0]
     variant_ids = [f"variant{i}" for i in range(nvariants)]
 
@@ -311,13 +335,14 @@ def read_plink1_bin(
     G = _read_file(
         bed_files, lambda f: _read_bed(f, nsamples, nmarkers[f], ref_al, chunk), pbar
     )
-    G = da.concatenate(G, axis=1)
+    G = concatenate(G, axis=1)
+    assert isinstance(G, Array)
 
     G = DataArray(G, dims=["sample", "variant"], coords=[sample_ids, variant_ids])
     sample = {c: ("sample", fam_df[c]) for c in fam_df.columns}
     variant = {c: ("variant", bim_df[c]) for c in iter(bim_df.columns)}
-    G = G.assign_coords(**sample)
-    G = G.assign_coords(**variant)
+    G = G.assign_coords(sample)
+    G = G.assign_coords(variant)
     G.name = "genotype"
 
     pbar.close()
@@ -325,19 +350,21 @@ def read_plink1_bin(
     return G
 
 
-def _read_file(fn, read_func, pbar):
-    data = []
-    for f in fn:
+T = TypeVar("T")
+
+
+def _read_file(files: list[str], read_func: Callable[[str], T], pbar):
+    data: list[T] = []
+    for f in files:
         data.append(read_func(f))
         pbar.update(1)
     return data
 
 
-def _read_csv(fn, header) -> DataFrame:
-
+def _read_csv(filename: str, header) -> DataFrame:
     df = read_csv(
-        fn,
-        delim_whitespace=True,
+        filename,
+        sep=r"\s+",
         header=None,
         names=list(header.keys()),
         dtype=header,
@@ -349,13 +376,13 @@ def _read_csv(fn, header) -> DataFrame:
     return df
 
 
-def _read_bim(fn):
+def _read_bim(fn: str):
     df = _read_bim_noi(fn)
     df["i"] = range(df.shape[0])
     return df
 
 
-def _read_bim_noi(fn):
+def _read_bim_noi(fn: str):
     from ._type import bim
 
     header = odict(
@@ -371,13 +398,13 @@ def _read_bim_noi(fn):
     return _read_csv(fn, header)
 
 
-def _read_fam(fn):
+def _read_fam(fn: str):
     df = _read_fam_noi(fn)
     df["i"] = range(df.shape[0])
     return df
 
 
-def _read_fam_noi(fn):
+def _read_fam_noi(fn: str):
     from ._type import fam
 
     header = odict(
@@ -394,7 +421,9 @@ def _read_fam_noi(fn):
     return _read_csv(fn, header)
 
 
-def _read_bed(fn, nsamples, nvariants, ref: Allele, chunk: Chunk):
+def _read_bed(fn: str, nsamples: int, nvariants: int, ref: Allele, chunk: Chunk):
+    from dask.array.core import Array
+
     _check_bed_header(fn)
     major = _major_order(fn)
 
@@ -416,10 +445,11 @@ def _read_bed(fn, nsamples, nvariants, ref: Allele, chunk: Chunk):
     if major == "variant":
         G = G.T
 
+    assert isinstance(G, Array)
     return G
 
 
-def _check_bed_header(fn):
+def _check_bed_header(fn: str):
     with open(fn, "rb") as f:
         arr = f.read(2)
         if len(arr) < 2:
@@ -429,7 +459,7 @@ def _check_bed_header(fn):
             raise ValueError("Invalid BED file: %s." % fn)
 
 
-def _major_order(fn):
+def _major_order(fn: str):
     """
     Major order.
 
