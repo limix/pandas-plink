@@ -1,6 +1,9 @@
 name: 📦 Release
 
-on: push
+on:
+  push:
+    tags:
+      - v*
 
 env:
   CIBW_PROJECT_REQUIRES_PYTHON: ">=3.9,<3.13"
