@@ -11,11 +11,8 @@ void read_bed_chunk(uint8_t *buff, uint64_t nrows, uint64_t ncols,
     char b, b0, b1, p0, p1;
     uint64_t r;
     uint64_t c, ce;
-    uint64_t row_chunk;
     uint64_t row_size;
 
-    // in bytes
-    row_chunk = (col_end - col_start + 3) / 4;
     // in bytes
     row_size = (ncols + 3) / 4;
 
