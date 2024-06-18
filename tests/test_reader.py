@@ -8,7 +8,6 @@ from pandas_plink import example_file_prefix, read_plink, read_plink1_bin
 
 
 def test_read_plink():
-
     datafiles = join(dirname(realpath(__file__)), "data_files")
     file_prefix = join(datafiles, "data")
 
@@ -55,7 +54,6 @@ def test_read_plink_wildcard():
 
 
 def test_read_plink1_bin():
-
     datafiles = join(dirname(realpath(__file__)), "data_files")
     file_prefix = join(datafiles, "data")
     bim = file_prefix + ".bim"
@@ -86,7 +84,6 @@ def test_read_plink1_bin():
 
 
 def test_read_plink1_bin_a0():
-
     datafiles = join(dirname(realpath(__file__)), "data_files")
     file_prefix = join(datafiles, "data")
     bim = file_prefix + ".bim"

@@ -9,7 +9,6 @@ from pandas_plink import read_plink1_bin, write_plink1_bin
 
 
 def test_write_plink1_bin(tmp_path: Path):
-
     datafiles = join(dirname(realpath(__file__)), "data_files")
     file_prefix = join(datafiles, "data")
     bim = file_prefix + ".bim"
@@ -60,7 +59,6 @@ def test_write_plink1_bin(tmp_path: Path):
 
 
 def test_write_plink1_bin_filename(tmp_path: Path):
-
     datafiles = join(dirname(realpath(__file__)), "data_files")
     file_prefix = join(datafiles, "data")
     bim = file_prefix + ".bim"
@@ -93,7 +91,6 @@ def test_write_plink1_bin_filename(tmp_path: Path):
 
 
 def test_write_plink1_bin_transpose(tmp_path: Path):
-
     datafiles = join(dirname(realpath(__file__)), "data_files")
     file_prefix = join(datafiles, "data")
     bim = file_prefix + ".bim"
@@ -123,7 +120,6 @@ def test_write_plink1_bin_transpose(tmp_path: Path):
 
 
 def test_write_plink1_bin_sample_major(tmp_path: Path):
-
     datafiles = join(dirname(realpath(__file__)), "data_files")
     file_prefix = join(datafiles, "data")
     bim = file_prefix + ".bim"
@@ -156,7 +152,6 @@ def test_write_plink1_bin_sample_major(tmp_path: Path):
 
 
 def test_write_plink1_bin_empty_metadata(tmp_path: Path):
-
     datafiles = join(dirname(realpath(__file__)), "data_files")
     file_prefix = join(datafiles, "data")
     bim = file_prefix + ".bim"
