@@ -1,0 +1,63 @@
+name: 📦 Release
+
+on: push
+
+env:
+  CIBW_PROJECT_REQUIRES_PYTHON: ">=3.9,<3.13"
+
+jobs:
+  make_sdist:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Build SDist
+        run: pipx run build --sdist
+
+      - uses: actions/upload-artifact@v3
+        with:
+          path: dist/*.tar.gz
+
+  make_wheels:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - {os: macos-13, arch: x86_64, build: "*"}
+          - {os: macos-14, arch: arm64, build: "*"}
+          - {os: windows-2022, arch: AMD64, build: "*"}
+          - {os: ubuntu-latest, arch: x86_64, build: "*"}
+          - {os: ubuntu-latest, arch: aarch64, build: "*9-manylinux*"}
+          - {os: ubuntu-latest, arch: aarch64, build: "*0-manylinux*"}
+          - {os: ubuntu-latest, arch: aarch64, build: "*1-manylinux*"}
+          - {os: ubuntu-latest, arch: aarch64, build: "*9-musllinux*"}
+          - {os: ubuntu-latest, arch: aarch64, build: "*0-musllinux*"}
+          - {os: ubuntu-latest, arch: aarch64, build: "*1-musllinux*"}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: docker/setup-qemu-action@v3
+        with:
+          platforms: arm64
+        if: matrix.os == 'ubuntu-latest'
+      - name: Build wheels
+        run: pipx run cibuildwheel==2.19.1
+        env:
+          CIBW_ARCHS: ${{ matrix.arch }}
+          CIBW_BUILD: ${{ matrix.build }}
+      - uses: actions/upload-artifact@v3
+        with:
+          path: wheelhouse/*.whl
+
+  upload_all:
+    needs: [make_wheels, make_sdist]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+          name: artifact
+          path: dist
+
+      - uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          password: ${{secrets.PYPI_API_TOKEN}}
+          skip-existing: true
