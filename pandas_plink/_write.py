@@ -264,6 +264,7 @@ def _write_fam(filepath: Path, G: DataArray):
         sep="\t",
         header=False,
         encoding="ascii",
+        lineterminator="\n",
     )
 
 
@@ -290,4 +291,5 @@ def _write_bim(filepath: Path, G: DataArray):
         sep="\t",
         header=False,
         encoding="ascii",
+        lineterminator="\n",
     )
