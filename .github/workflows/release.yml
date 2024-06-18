@@ -6,7 +6,7 @@ on:
       - v*
 
 env:
-  CIBW_PROJECT_REQUIRES_PYTHON: ">=3.9,<3.13"
+  CIBW_PROJECT_REQUIRES_PYTHON: ">=3.10,<3.13"
 
 jobs:
   make_sdist:
