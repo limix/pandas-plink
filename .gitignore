@@ -1,3 +1,5 @@
+bed_reader.c
+bed_reader.o
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
