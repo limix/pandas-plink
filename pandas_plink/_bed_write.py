@@ -1,7 +1,7 @@
 from math import floor
 from pathlib import Path
 
-import dask.array as da
+from dask.array.core import asanyarray, Array
 from numpy import ascontiguousarray, empty, float32, float64, nan_to_num, uint8, uint64
 from tqdm import tqdm
 from xarray import DataArray
@@ -17,10 +17,12 @@ def write_bed(filepath: Path, X: DataArray, major: str, verbose: bool):
     """
     from .bed_reader import lib
 
-    G = da.asanyarray(X)
+    G = asanyarray(X)
+    assert isinstance(G, Array)
 
     if major == "variant":
         G = G.T
+        assert isinstance(G, Array)
 
     major_code = 1 if major == "variant" else 0
     e = lib.write_bed_header(str(filepath).encode(), major_code)
@@ -29,6 +31,8 @@ def write_bed(filepath: Path, X: DataArray, major: str, verbose: bool):
 
     nrows = G.shape[0]
     ncols = G.shape[1]
+    assert isinstance(nrows, int)
+    assert isinstance(ncols, int)
 
     row_chunk = max(1, floor((1024 * 1024 * 256) / ncols))
     row_chunk = min(row_chunk, nrows)

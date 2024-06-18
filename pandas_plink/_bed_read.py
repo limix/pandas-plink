@@ -15,19 +15,21 @@ from ._allele import Allele
 __all__ = ["read_bed"]
 
 
-def read_bed(filepath, nrows, ncols, row_chunk, col_chunk, ref: Allele):
-    from dask.array import concatenate, from_delayed
+def read_bed(
+    filepath: str, nrows: int, ncols: int, row_chunk: int, col_chunk: int, ref: Allele
+):
+    from dask.array.core import concatenate, from_delayed, Array
     from dask.delayed import delayed
 
     row_size = (ncols + 3) // 4
     size = nrows * row_size
     buff = memmap(filepath, uint8, "r", 3, shape=(size,))
     row_start = 0
-    col_xs = []
+    col_xs: list[Array] = []
     while row_start < nrows:
         row_end = min(row_start + row_chunk, nrows)
         col_start = 0
-        row_xs = []
+        row_xs: list[Array] = []
         while col_start < ncols:
             col_end = min(col_start + col_chunk, ncols)
 
@@ -48,7 +50,9 @@ def read_bed(filepath, nrows, ncols, row_chunk, col_chunk, ref: Allele):
 
         col_xs.append(concatenate(row_xs, 1, True))
         row_start = row_end
-    return concatenate(col_xs, 0, True)
+    X = concatenate(col_xs, 0, True)
+    assert isinstance(X, Array)
+    return X
 
 
 def _read_bed_chunk(
