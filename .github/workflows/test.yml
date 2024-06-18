@@ -14,6 +14,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.10'
+          cache: 'poetry'
         if: matrix.os == 'windows-latest'
 
       - name: Run tests
