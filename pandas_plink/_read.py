@@ -166,8 +166,8 @@ def read_plink(file_prefix: Union[str, Path], verbose=True):
 
 def read_plink1_bin(
     bed: Union[str, Path],
-    bim: Optional[str] = None,
-    fam: Optional[str] = None,
+    bim: Optional[Union[str, Path]] = None,
+    fam: Optional[Union[str, Path]] = None,
     verbose: bool = True,
     ref: str = "a1",
     chunk: Chunk = Chunk(),
@@ -301,6 +301,8 @@ def read_plink1_bin(
 
     if bim is None:
         bim_files = [last_replace(f, ".bed", ".bim") for f in bed_files]
+    elif isinstance(bim, Path):
+        bim_files = [str(bim.resolve())]
     else:
         bim_files = sorted(glob(bim))
     if len(bim_files) == 0:
@@ -308,6 +310,8 @@ def read_plink1_bin(
 
     if fam is None:
         fam_files = [last_replace(f, ".bed", ".fam") for f in bed_files]
+    elif isinstance(fam, Path):
+        fam_files = [str(fam.resolve())]
     else:
         fam_files = sorted(glob(fam))
     if len(fam_files) == 0:
