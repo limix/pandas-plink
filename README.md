@@ -1,6 +1,7 @@
 # pandas-plink
 
-Pandas-plink is a Python package for reading [PLINK binary file format](https://www.cog-genomics.org/plink2/formats) andrealized relationship matrices (PLINK or GCTA).
+Pandas-plink is a Python package for reading [PLINK binary file format](https://www.cog-genomics.org/plink2/formats)
+and realized relationship matrices (PLINK or GCTA).
 The file reading is taken place via [lazy loading](https://en.wikipedia.org/wiki/Lazy_loading), meaning that it saves up memory by actually reading only the genotypes that are actually accessed by the user.
 
 Notable changes can be found at the [CHANGELOG.md](https://raw.githubusercontent.com/limix/pandas-plink/master/CHANGELOG.md).
