@@ -4,7 +4,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
 name = "pandas-plink"
-version = "2.3.1"
+version = "2.3.2"
 description = "Read PLINK files into Pandas data frames"
 license = "MIT"
 authors = ["Danilo Horta <danilo.horta@pm.me>"]
