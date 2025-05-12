@@ -26,9 +26,9 @@ deprecated = "^1.2"
 numpy = "^1.0"
 pandas = "^2.2"
 python = "^3.10"
-tqdm = "^4.66"
+tqdm = "^4.67"
 xarray = "*"
-zstandard = "^0.22"
+zstandard = "^0.23"
 pandera = {version = "*", extras = ["mypy", "dask"]}
 dask = {version = "*", extras = ["dataframe"]}
 
