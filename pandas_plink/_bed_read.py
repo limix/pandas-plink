@@ -33,7 +33,7 @@ def read_bed(
         while col_start < ncols:
             col_end = min(col_start + col_chunk, ncols)
 
-            x = delayed(_read_bed_chunk, None, True, None, False)(
+            x = delayed(_read_bed_chunk, None, None, None, False)(
                 buff,
                 nrows,
                 ncols,
