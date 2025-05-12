@@ -12,13 +12,14 @@ jobs:
   make_sdist:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Build SDist
         run: pipx run build --sdist
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
+          name: artifact-sdist
           path: dist/*.tar.gz
 
   make_wheels:
@@ -26,18 +27,18 @@ jobs:
     strategy:
       matrix:
         include:
-          - {os: macos-13, arch: x86_64, build: "*"}
-          - {os: macos-14, arch: arm64, build: "*"}
-          - {os: windows-2022, arch: AMD64, build: "*"}
-          - {os: ubuntu-latest, arch: x86_64, build: "*"}
-          - {os: ubuntu-latest, arch: aarch64, build: "*0-manylinux*"}
-          - {os: ubuntu-latest, arch: aarch64, build: "*1-manylinux*"}
-          - {os: ubuntu-latest, arch: aarch64, build: "*2-manylinux*"}
-          - {os: ubuntu-latest, arch: aarch64, build: "*0-musllinux*"}
-          - {os: ubuntu-latest, arch: aarch64, build: "*1-musllinux*"}
-          - {os: ubuntu-latest, arch: aarch64, build: "*2-musllinux*"}
+          - {os: macos-13,      arch: x86_64,  build: "*",             version: "a"}
+          - {os: macos-14,      arch: arm64,   build: "*",             version: "b"}
+          - {os: windows-2022,  arch: AMD64,   build: "*",             version: "c"}
+          - {os: ubuntu-latest, arch: x86_64,  build: "*",             version: "d"}
+          - {os: ubuntu-latest, arch: aarch64, build: "*0-manylinux*", version: "e"}
+          - {os: ubuntu-latest, arch: aarch64, build: "*1-manylinux*", version: "f"}
+          - {os: ubuntu-latest, arch: aarch64, build: "*2-manylinux*", version: "g"}
+          - {os: ubuntu-latest, arch: aarch64, build: "*0-musllinux*", version: "h"}
+          - {os: ubuntu-latest, arch: aarch64, build: "*1-musllinux*", version: "i"}
+          - {os: ubuntu-latest, arch: aarch64, build: "*2-musllinux*", version: "j"}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: docker/setup-qemu-action@v3
         with:
           platforms: arm64
@@ -47,8 +48,9 @@ jobs:
         env:
           CIBW_ARCHS: ${{ matrix.arch }}
           CIBW_BUILD: ${{ matrix.build }}
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
+          name: artifact-wheels-${{ matrix.os }}-${{ matrix.arch }}-${{ matrix.version }}
           path: wheelhouse/*.whl
 
   upload_all:
@@ -60,10 +62,11 @@ jobs:
     permissions:
       id-token: write
     steps:
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
-          name: artifact
           path: dist
+          pattern: artifact-*
+          merge-multiple: true
 
       - uses: pypa/gh-action-pypi-publish@release/v1
         with:
