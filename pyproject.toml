@@ -1,5 +1,5 @@
 [build-system]
-requires = ["poetry-core", "cffi", "cmake", "setuptools;python_version>='3.12'"]
+requires = ["poetry-core", "cffi>=1.17", "cmake", "setuptools;python_version>='3.12'"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
@@ -21,7 +21,7 @@ include = [
 ]
 
 [tool.poetry.dependencies]
-cffi = "^1.17"
+cffi = ">=1.17"
 deprecated = "^1.2"
 numpy = "^1.0"
 pandas = "^2.2"
