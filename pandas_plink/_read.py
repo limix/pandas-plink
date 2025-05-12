@@ -354,8 +354,8 @@ def read_plink1_bin(
     assert isinstance(G, Array)
 
     G = DataArray(G, dims=["sample", "variant"], coords=[sample_ids, variant_ids])
-    sample = {c: ("sample", fam_df[c]) for c in fam_df.columns}
-    variant = {c: ("variant", bim_df[c]) for c in iter(bim_df.columns)}
+    sample = {c: ("sample", fam_df[c].to_list()) for c in fam_df.columns}
+    variant = {c: ("variant", bim_df[c].to_list()) for c in iter(bim_df.columns)}
     G = G.assign_coords(sample)
     G = G.assign_coords(variant)
     G.name = "genotype"
