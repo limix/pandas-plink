@@ -21,7 +21,7 @@ include = [
 ]
 
 [tool.poetry.dependencies]
-cffi = "^1.16"
+cffi = "^1.17"
 deprecated = "^1.2"
 numpy = "^1.0"
 pandas = "^2.2"
